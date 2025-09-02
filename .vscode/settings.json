@@ -1,0 +1,12 @@
+{
+    "cSpell.words": [
+        "Apsara",
+        "cupertino",
+        "dotenv"
+    ],
+    "java.project.sourcePaths": [
+        "android"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic"
+}
