@@ -39,6 +39,8 @@ dependencies:
   auto_route: ^10.1.0+1
   flex_color_scheme: ^8.1.1
   lucide_icons_flutter: ^3.0.9
+  flutter_svg: ^2.0.10+1
+  google_fonts: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,7 @@ flutter:
     - .env.development
     - .env.production
     - .env.staging
+    - assets/svg/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
