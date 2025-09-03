@@ -2,7 +2,9 @@
     "cSpell.words": [
         "Apsara",
         "cupertino",
-        "dotenv"
+        "dotenv",
+        "Lucide",
+        "shadcn"
     ],
     "java.project.sourcePaths": [
         "android"
