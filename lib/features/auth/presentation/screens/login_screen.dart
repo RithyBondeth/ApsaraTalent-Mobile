@@ -1,16 +1,19 @@
+import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
 import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
@@ -32,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Text(
                         'Login to your account',
-                        style: context.headlineSmall.bold,
+                        style: context.headlineMedium.bold,
                       ),
                       const SizedBox(height: 5),
                       Text(
@@ -90,7 +93,22 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20),
               Column(
                 children: [
-                  CustomInputWidget(),
+                  CustomInputWidget(
+                    prefixIcon: LucideIcons.mail,
+                    hintText: 'Email',
+                  ),
+                  SizedBox(height: 20),
+                  CustomInputWidget(
+                    prefixIcon: LucideIcons.key,
+                    hintText: 'Password',
+                    isPassword: true,
+                  ),
+                  _buildRememberMeDivider(context, ref),
+                  CustomButtonWidget(
+                    text: 'Login',
+                    onPressed: () {},
+                  ),
+                  _buildCreateNewAccountDivider(context),
                 ],
               ),
             ],
@@ -116,14 +134,10 @@ class LoginScreen extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              image,
-              height: 35,
-              width: 35,
-            ),
+            child: Image.asset(image, height: 35, width: 35),
           ),
           SizedBox(width: 10),
-          Text(label, style: context.titleMedium),
+          Text(label, style: context.titleSmall),
         ],
       ),
     );
@@ -148,7 +162,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               Icon(LucideIcons.phone),
               SizedBox(width: 10),
-              Text(label, style: context.titleMedium),
+              Text(label, style: context.titleSmall),
             ],
           ),
         ),
@@ -172,6 +186,59 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Expanded(child: Divider()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRememberMeDivider(BuildContext context, WidgetRef ref) {
+    final rememberMe = ref.watch(rememberMeProvider);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Transform.scale(
+                scale: 0.8,
+                child: Checkbox(
+                  value: rememberMe,
+                  onChanged: (val) {
+                    ref.read(rememberMeProvider.notifier).state = val ?? false;
+                  },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity.compact,
+                ),
+              ),
+              Text('Remember Me', style: context.titleSmall.secondary),
+            ],
+          ),
+          InkWell(
+            onTap: () {},
+            child: Text('Forgot Password?', style: context.titleSmall.xs),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreateNewAccountDivider(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Do not have account yet?',
+            style: context.titleSmall.secondary,
+          ),
+          SizedBox(width: 5),
+          InkWell(
+            onTap: () {},
+            child: Text('Create account', style: context.titleSmall),
+          ),
         ],
       ),
     );
