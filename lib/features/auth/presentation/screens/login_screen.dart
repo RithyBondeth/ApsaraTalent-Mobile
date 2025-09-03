@@ -4,11 +4,13 @@ import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+@RoutePage()
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
@@ -216,8 +218,10 @@ class LoginScreen extends ConsumerWidget {
             ],
           ),
           InkWell(
-            onTap: () {},
-            child: Text('Forgot Password?', style: context.titleSmall.xs),
+            onTap: () {
+              context.router.pushPath('/forgot-password');
+            },
+            child: Text('Forgot Password?', style: context.titleSmall),
           ),
         ],
       ),
