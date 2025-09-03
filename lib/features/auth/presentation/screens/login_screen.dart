@@ -1,7 +1,10 @@
 import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
+import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,13 +14,13 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
@@ -29,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Text(
                         'Login to your account',
-                        style: context.headlineSmall,
+                        style: context.headlineSmall.bold,
                       ),
                       const SizedBox(height: 5),
                       Text(
@@ -49,37 +52,127 @@ class LoginScreen extends StatelessWidget {
                     crossAxisSpacing: 10,
                     childAspectRatio: 3,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      _buildSocialButton(
+                        context: context,
+                        image: AppAssetContant.googleIcon,
+                        label: 'Google',
+                        onClick: () {},
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      _buildSocialButton(
+                        context: context,
+                        image: AppAssetContant.facebookIcon,
+                        label: 'Facebook',
+                        onClick: () {},
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      _buildSocialButton(
+                        context: context,
+                        image: AppAssetContant.linkedInIcon,
+                        label: 'LinkedIn',
+                        onClick: () {},
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      )
+                      _buildSocialButton(
+                        context: context,
+                        image: AppAssetContant.githubIcon,
+                        label: 'Github',
+                        onClick: () {},
+                      ),
                     ],
-                  )
+                  ),
+                  _buildPhoneNumberButton(
+                    context: context,
+                    label: 'Phone Number',
+                    onClick: () {},
+                  ),
+                  SizedBox(height: 10),
+                  _buildDividerBar(context),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: 20),
+              Column(
+                children: [
+                  CustomInputWidget(),
+                ],
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required BuildContext context,
+    required String image,
+    required String label,
+    required VoidCallback onClick,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: context.primaryForeground,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: Image.asset(
+              image,
+              height: 35,
+              width: 35,
+            ),
+          ),
+          SizedBox(width: 10),
+          Text(label, style: context.titleMedium),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhoneNumberButton({
+    required BuildContext context,
+    required String label,
+    required VoidCallback onClick,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          color: context.primaryForeground,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(LucideIcons.phone),
+              SizedBox(width: 10),
+              Text(label, style: context.titleMedium),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDividerBar(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        children: [
+          Expanded(child: Divider()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Expanded(
+              child: Text(
+                'or continute with',
+                style: context.titleSmall.secondary,
+              ),
+            ),
+          ),
+          Expanded(child: Divider()),
+        ],
       ),
     );
   }
