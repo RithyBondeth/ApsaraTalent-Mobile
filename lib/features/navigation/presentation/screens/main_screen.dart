@@ -17,7 +17,11 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         extendBody: true,
         routes: const [
+          FeedRoute(),
+          SearchRoute(),
+          ChatRoute(),
           ResumeBuilderRoute(),
+          SettingRoute(),
         ],
         bottomNavigationBuilder: (context, tabsRouter) {
           return CustomBottomNavigationBar(tabsRouter: tabsRouter);

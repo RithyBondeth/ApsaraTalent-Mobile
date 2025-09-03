@@ -7,14 +7,47 @@
 
 // ignore_for_file: type=lint
 // coverage:ignore-file
+// dart run build_runner build
 
 part of 'app_route.dart';
+
+/// generated route for
+/// [ChatScreen]
+class ChatRoute extends PageRouteInfo<void> {
+  const ChatRoute({List<PageRouteInfo>? children})
+      : super(ChatRoute.name, initialChildren: children);
+
+  static const String name = 'ChatRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ChatScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [FeedScreen]
+class FeedRoute extends PageRouteInfo<void> {
+  const FeedRoute({List<PageRouteInfo>? children})
+      : super(FeedRoute.name, initialChildren: children);
+
+  static const String name = 'FeedRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const FeedScreen();
+    },
+  );
+}
 
 /// generated route for
 /// [MainScreen]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
@@ -30,7 +63,7 @@ class MainRoute extends PageRouteInfo<void> {
 /// [ResumeBuilderScreen]
 class ResumeBuilderRoute extends PageRouteInfo<void> {
   const ResumeBuilderRoute({List<PageRouteInfo>? children})
-    : super(ResumeBuilderRoute.name, initialChildren: children);
+      : super(ResumeBuilderRoute.name, initialChildren: children);
 
   static const String name = 'ResumeBuilderRoute';
 
@@ -38,6 +71,38 @@ class ResumeBuilderRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const ResumeBuilderScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SearchScreen]
+class SearchRoute extends PageRouteInfo<void> {
+  const SearchRoute({List<PageRouteInfo>? children})
+      : super(SearchRoute.name, initialChildren: children);
+
+  static const String name = 'SearchRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SearchScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SettingScreen]
+class SettingRoute extends PageRouteInfo<void> {
+  const SettingRoute({List<PageRouteInfo>? children})
+      : super(SettingRoute.name, initialChildren: children);
+
+  static const String name = 'SettingRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingScreen();
     },
   );
 }
