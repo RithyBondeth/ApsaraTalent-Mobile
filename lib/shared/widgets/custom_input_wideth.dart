@@ -4,13 +4,19 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CustomInputWidget extends StatefulWidget {
   final String hintText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final bool isPassword;
+  final Function(String)? onChanged;
+  final TextEditingController? controller;
+  final String? errorText;
   const CustomInputWidget({
     super.key,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.hintText,
     this.isPassword = false,
+    this.onChanged,
+    this.controller,
+    this.errorText,
   });
 
   @override
@@ -35,13 +41,18 @@ class _CustomInputWidgetState extends State<CustomInputWidget> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
+      onChanged: widget.onChanged,
       obscureText: widget.isPassword ? _isObscured : false,
       decoration: InputDecoration(
-        prefixIcon: Icon(
-          widget.prefixIcon,
-          color: context.mutedForeground,
-        ),
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon!,
+                color: context.mutedForeground,
+              )
+            : null,
         hintText: widget.hintText,
+        errorText: widget.errorText,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: _toggleObscureText,

@@ -1,3 +1,6 @@
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/login_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:apsaratalent_mobile/features/chat/presentation/screens/chat_screen.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
@@ -12,10 +15,24 @@ part 'app_route.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
+        // Auth routes
+        AutoRoute(
+          page: LoginRoute.page,
+          path: '/login',
+          initial: true,
+        ),
+        AutoRoute(
+          page: ForgotPasswordRoute.page,
+          path: '/forgot-password',
+        ),
+        AutoRoute(
+          page: ResetPasswordRoute.page,
+          path: '/reset-password',
+        ),
+        // Main app routes
         AutoRoute(
           page: MainRoute.page,
-          path: '/',
-          initial: true,
+          path: '/home',
           children: [
             AutoRoute(
               page: FeedRoute.page,

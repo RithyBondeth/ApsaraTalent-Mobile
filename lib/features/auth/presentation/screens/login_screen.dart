@@ -1,19 +1,26 @@
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
 import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+@RoutePage()
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final emailValidationError = ref.watch(emailValidationProvider);
+    final passwordValidationError = ref.watch(passwordValidationProvider);
+    final isValidLoginForm = ref.watch(loginFormValidProvider);
+
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
@@ -29,10 +36,7 @@ class LoginScreen extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(
-                        AppAssetContant.logoForWhiteBg,
-                        height: 150,
-                      ),
+                      CustomLogoWidget(),
                       Text(
                         'Login to your account',
                         style: context.headlineMedium.bold,
@@ -40,8 +44,7 @@ class LoginScreen extends ConsumerWidget {
                       const SizedBox(height: 5),
                       Text(
                         'Welcome to Apsara Talent! Select method to log in',
-                        style: context.labelMedium.secondary,
-                        textAlign: TextAlign.center,
+                        style: context.titleSmall.secondary,
                       ),
                     ],
                   ),
@@ -96,17 +99,25 @@ class LoginScreen extends ConsumerWidget {
                   CustomInputWidget(
                     prefixIcon: LucideIcons.mail,
                     hintText: 'Email',
+                    errorText: emailValidationError,
+                    onChanged: (String value) {
+                      ref.read(emailInputProvider.notifier).state = value;
+                    },
                   ),
                   SizedBox(height: 20),
                   CustomInputWidget(
                     prefixIcon: LucideIcons.key,
                     hintText: 'Password',
+                    errorText: passwordValidationError,
+                    onChanged: (String value) {
+                      ref.read(passwordInputProvider.notifier).state = value;
+                    },
                     isPassword: true,
                   ),
                   _buildRememberMeDivider(context, ref),
                   CustomButtonWidget(
                     text: 'Login',
-                    onPressed: () {},
+                    onPressed: isValidLoginForm ? () {} : null,
                   ),
                   _buildCreateNewAccountDivider(context),
                 ],
@@ -216,8 +227,10 @@ class LoginScreen extends ConsumerWidget {
             ],
           ),
           InkWell(
-            onTap: () {},
-            child: Text('Forgot Password?', style: context.titleSmall.xs),
+            onTap: () {
+              context.router.pushPath('/forgot-password');
+            },
+            child: Text('Forgot Password?', style: context.titleSmall),
           ),
         ],
       ),
@@ -236,7 +249,9 @@ class LoginScreen extends ConsumerWidget {
           ),
           SizedBox(width: 5),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.router.pushPath('/reset-password');
+            },
             child: Text('Create account', style: context.titleSmall),
           ),
         ],
