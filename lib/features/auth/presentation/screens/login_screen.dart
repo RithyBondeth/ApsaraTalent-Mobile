@@ -87,7 +87,9 @@ class LoginScreen extends ConsumerWidget {
                   _buildPhoneNumberButton(
                     context: context,
                     label: 'Phone Number',
-                    onClick: () {},
+                    onClick: () {
+                      context.router.pushPath('/phone-number');
+                    },
                   ),
                   SizedBox(height: 10),
                   _buildDividerBar(context),
@@ -159,22 +161,25 @@ class LoginScreen extends ConsumerWidget {
     required String label,
     required VoidCallback onClick,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.primaryForeground,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(LucideIcons.phone),
-              SizedBox(width: 10),
-              Text(label, style: context.titleSmall),
-            ],
+    return InkWell(
+      onTap: onClick,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.primaryForeground,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(LucideIcons.phone),
+                SizedBox(width: 10),
+                Text(label, style: context.titleSmall),
+              ],
+            ),
           ),
         ),
       ),

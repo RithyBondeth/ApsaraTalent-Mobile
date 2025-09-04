@@ -1,5 +1,6 @@
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/login_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/phone_number_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:apsaratalent_mobile/features/chat/presentation/screens/chat_screen.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
@@ -28,6 +29,10 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: ResetPasswordRoute.page,
           path: '/reset-password',
+        ),
+        AutoRoute(
+          page: PhoneNumberRoute.page,
+          path: '/phone-number',
         ),
         // Main app routes
         AutoRoute(
