@@ -8,6 +8,7 @@ class CustomInputWidget extends StatefulWidget {
   final bool isPassword;
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final String? errorText;
   const CustomInputWidget({
     super.key,
     this.prefixIcon,
@@ -15,6 +16,7 @@ class CustomInputWidget extends StatefulWidget {
     this.isPassword = false,
     this.onChanged,
     this.controller,
+    this.errorText,
   });
 
   @override
@@ -43,11 +45,14 @@ class _CustomInputWidgetState extends State<CustomInputWidget> {
       onChanged: widget.onChanged,
       obscureText: widget.isPassword ? _isObscured : false,
       decoration: InputDecoration(
-        prefixIcon: widget.prefixIcon != null ? Icon(
-          widget.prefixIcon!,
-          color: context.mutedForeground,
-        ) : null,
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon!,
+                color: context.mutedForeground,
+              )
+            : null,
         hintText: widget.hintText,
+        errorText: widget.errorText,
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: _toggleObscureText,

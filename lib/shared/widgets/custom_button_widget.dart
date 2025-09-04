@@ -6,6 +6,8 @@ enum ButtonVariant { primary, secondary, outline, ghost }
 
 enum ButtonSize { small, medium, large }
 
+enum IconPosition { before, after }
+
 class CustomButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -13,6 +15,7 @@ class CustomButtonWidget extends StatelessWidget {
   final ButtonSize size;
   final bool fullWidth;
   final Widget? icon;
+  final IconPosition iconPosition;
   final bool loading;
 
   const CustomButtonWidget({
@@ -23,6 +26,7 @@ class CustomButtonWidget extends StatelessWidget {
     this.size = ButtonSize.medium,
     this.fullWidth = true,
     this.icon,
+    this.iconPosition = IconPosition.before,
     this.loading = false,
   });
 
@@ -36,6 +40,8 @@ class CustomButtonWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: _getBackgroundColor(context),
           foregroundColor: _getForegroundColor(context),
+          disabledBackgroundColor: _getBackgroundColor(context).withAlpha(200),
+          disabledForegroundColor: _getForegroundColor(context).withAlpha(200),
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
@@ -61,21 +67,46 @@ class CustomButtonWidget extends StatelessWidget {
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (icon != null) ...[
-                    icon!,
-                    const SizedBox(width: 8),
-                  ],
-                  Text(
-                    text,
-                    style: _getTextStyle(context).copyWith(
-                      color: _getForegroundColor(context),
-                    ),
-                  ),
-                ],
+                children: _buildRowChildren(context),
               ),
       ),
     );
+  }
+
+  List<Widget> _buildRowChildren(BuildContext context) {
+    final iconWidget = icon != null
+        ? IconTheme(
+            data: IconThemeData(
+              color: _getForegroundColor(context),
+            ),
+            child: icon!,
+          )
+        : null;
+
+    final textWidget = Text(
+      text,
+      style: _getTextStyle(context).copyWith(
+        color: _getForegroundColor(context),
+      ),
+    );
+
+    if (iconWidget == null) {
+      return [textWidget];
+    }
+
+    if (iconPosition == IconPosition.before) {
+      return [
+        iconWidget,
+        const SizedBox(width: 8),
+        textWidget,
+      ];
+    } else {
+      return [
+        textWidget,
+        const SizedBox(width: 8),
+        iconWidget,
+      ];
+    }
   }
 
   Color _getBackgroundColor(BuildContext context) {
