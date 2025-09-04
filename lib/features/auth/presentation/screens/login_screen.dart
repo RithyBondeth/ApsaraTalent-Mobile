@@ -1,6 +1,7 @@
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
+import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
 import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
@@ -88,7 +89,8 @@ class LoginScreen extends ConsumerWidget {
                     context: context,
                     label: 'Phone Number',
                     onClick: () {
-                      context.router.pushPath('/phone-number');
+                      context.router
+                          .pushPath(AuthRouteConstant.phoneNumberLoginPath);
                     },
                   ),
                   SizedBox(height: 10),
@@ -233,7 +235,7 @@ class LoginScreen extends ConsumerWidget {
           ),
           InkWell(
             onTap: () {
-              context.router.pushPath('/forgot-password');
+              context.router.pushPath(AuthRouteConstant.forgotPasswordPath);
             },
             child: Text('Forgot Password?', style: context.titleSmall),
           ),
@@ -255,7 +257,7 @@ class LoginScreen extends ConsumerWidget {
           SizedBox(width: 5),
           InkWell(
             onTap: () {
-              context.router.pushPath('/reset-password');
+              context.router.pushPath(AuthRouteConstant.resetPasswordPath);
             },
             child: Text('Create account', style: context.titleSmall),
           ),

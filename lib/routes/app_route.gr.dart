@@ -91,6 +91,22 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [OTPScreen]
+class OTPRoute extends PageRouteInfo<void> {
+  const OTPRoute({List<PageRouteInfo>? children})
+      : super(OTPRoute.name, initialChildren: children);
+
+  static const String name = 'OTPRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const OTPScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [PhoneNumberScreen]
 class PhoneNumberRoute extends PageRouteInfo<void> {
   const PhoneNumberRoute({List<PageRouteInfo>? children})
