@@ -14,7 +14,7 @@ part of 'app_route.dart';
 /// [ChatScreen]
 class ChatRoute extends PageRouteInfo<void> {
   const ChatRoute({List<PageRouteInfo>? children})
-    : super(ChatRoute.name, initialChildren: children);
+      : super(ChatRoute.name, initialChildren: children);
 
   static const String name = 'ChatRoute';
 
@@ -30,7 +30,7 @@ class ChatRoute extends PageRouteInfo<void> {
 /// [FeedScreen]
 class FeedRoute extends PageRouteInfo<void> {
   const FeedRoute({List<PageRouteInfo>? children})
-    : super(FeedRoute.name, initialChildren: children);
+      : super(FeedRoute.name, initialChildren: children);
 
   static const String name = 'FeedRoute';
 
@@ -46,7 +46,7 @@ class FeedRoute extends PageRouteInfo<void> {
 /// [ForgotPasswordScreen]
 class ForgotPasswordRoute extends PageRouteInfo<void> {
   const ForgotPasswordRoute({List<PageRouteInfo>? children})
-    : super(ForgotPasswordRoute.name, initialChildren: children);
+      : super(ForgotPasswordRoute.name, initialChildren: children);
 
   static const String name = 'ForgotPasswordRoute';
 
@@ -62,7 +62,7 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
 /// [LoginScreen]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+      : super(LoginRoute.name, initialChildren: children);
 
   static const String name = 'LoginRoute';
 
@@ -78,7 +78,7 @@ class LoginRoute extends PageRouteInfo<void> {
 /// [MainScreen]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
@@ -91,10 +91,26 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ResetPasswordScreen]
+class ResetPasswordRoute extends PageRouteInfo<void> {
+  const ResetPasswordRoute({List<PageRouteInfo>? children})
+      : super(ResetPasswordRoute.name, initialChildren: children);
+
+  static const String name = 'ResetPasswordRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ResetPasswordScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ResumeBuilderScreen]
 class ResumeBuilderRoute extends PageRouteInfo<void> {
   const ResumeBuilderRoute({List<PageRouteInfo>? children})
-    : super(ResumeBuilderRoute.name, initialChildren: children);
+      : super(ResumeBuilderRoute.name, initialChildren: children);
 
   static const String name = 'ResumeBuilderRoute';
 
@@ -110,7 +126,7 @@ class ResumeBuilderRoute extends PageRouteInfo<void> {
 /// [SearchScreen]
 class SearchRoute extends PageRouteInfo<void> {
   const SearchRoute({List<PageRouteInfo>? children})
-    : super(SearchRoute.name, initialChildren: children);
+      : super(SearchRoute.name, initialChildren: children);
 
   static const String name = 'SearchRoute';
 
@@ -126,7 +142,7 @@ class SearchRoute extends PageRouteInfo<void> {
 /// [SettingScreen]
 class SettingRoute extends PageRouteInfo<void> {
   const SettingRoute({List<PageRouteInfo>? children})
-    : super(SettingRoute.name, initialChildren: children);
+      : super(SettingRoute.name, initialChildren: children);
 
   static const String name = 'SettingRoute';
 
