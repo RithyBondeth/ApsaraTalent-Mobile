@@ -42,8 +42,7 @@ class LoginScreen extends ConsumerWidget {
                       const SizedBox(height: 5),
                       Text(
                         'Welcome to Apsara Talent! Select method to log in',
-                        style: context.labelMedium.secondary,
-                        textAlign: TextAlign.center,
+                        style: context.titleSmall.secondary,
                       ),
                     ],
                   ),
