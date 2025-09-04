@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
@@ -8,11 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 @RoutePage()
-class ResetPasswordScreen extends ConsumerWidget {
-  const ResetPasswordScreen({super.key});
+class PhoneNumberScreen extends ConsumerWidget {
+  const PhoneNumberScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final rememberMe = ref.watch(rememberMeProvider);
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
@@ -22,44 +24,45 @@ class ResetPasswordScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomLogoWidget(withoutTitle: true),
-                    SizedBox(height: 5),
-                    Text(
-                      'Reset Password',
-                      style: context.headlineMedium.bold,
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Create a strong password to keep your account safe.',
-                      style: context.titleSmall.secondary,
-                    ),
-                  ],
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomLogoWidget(
+                    withoutTitle: true,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Phone Number',
+                    style: context.headlineMedium.bold,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Enter your phone number. We will send you a verification code.',
+                    style: context.titleSmall.secondary,
+                  )
+                ],
               ),
               SizedBox(height: 20),
-              Column(
+              CustomInputWidget(
+                prefixIcon: LucideIcons.phone,
+                hintText: 'Phone Number',
+              ),
+              SizedBox(height: 10),
+              Row(
                 children: [
-                  CustomInputWidget(
-                    prefixIcon: LucideIcons.key,
-                    hintText: 'Token',
+                  Transform.scale(
+                    scale: 0.8,
+                    child: Checkbox(
+                      value: rememberMe,
+                      onChanged: (val) {
+                        ref.read(rememberMeProvider.notifier).state =
+                            val ?? false;
+                      },
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                    ),
                   ),
-                  SizedBox(height: 20),
-                  CustomInputWidget(
-                    prefixIcon: LucideIcons.lock,
-                    hintText: 'Password',
-                    isPassword: true,
-                  ),
-                  SizedBox(height: 20),
-                  CustomInputWidget(
-                    prefixIcon: LucideIcons.lock,
-                    hintText: 'Confirm Password',
-                    isPassword: true,
-                  ),
+                  Text('Remember Me', style: context.titleSmall.secondary),
                 ],
               ),
               SizedBox(height: 20),
@@ -76,14 +79,17 @@ class ResetPasswordScreen extends ConsumerWidget {
                   SizedBox(width: 10),
                   Expanded(
                     child: CustomButtonWidget(
-                      text: 'Continue',
+                      text: 'Send Code',
                       icon: Icon(LucideIcons.arrowRight),
                       iconPosition: IconPosition.after,
-                      onPressed: () {},
+                      onPressed: () {
+                        // Handle form submission
+                        debugPrint('Send verification code');
+                      },
                     ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ),

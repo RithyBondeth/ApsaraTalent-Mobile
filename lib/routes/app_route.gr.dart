@@ -91,6 +91,22 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PhoneNumberScreen]
+class PhoneNumberRoute extends PageRouteInfo<void> {
+  const PhoneNumberRoute({List<PageRouteInfo>? children})
+      : super(PhoneNumberRoute.name, initialChildren: children);
+
+  static const String name = 'PhoneNumberRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PhoneNumberScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ResetPasswordScreen]
 class ResetPasswordRoute extends PageRouteInfo<void> {
   const ResetPasswordRoute({List<PageRouteInfo>? children})
