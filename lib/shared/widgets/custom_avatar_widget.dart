@@ -1,14 +1,18 @@
 import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/shared/themes/tailwind_styles.dart';
 import 'package:flutter/material.dart';
 
-enum AvatarSize { small, medium, large, extraLarge }
+enum AvatarSize { small, medium, large, extraLarge, veryLarge }
+
+enum AvatarBorderRadius { none, sm, md, lg, xl, full }
 
 class CustomAvatarWidget extends StatelessWidget {
   final String? imageUrl;
   final String? name;
   final String? fallbackText;
   final AvatarSize size;
+  final AvatarBorderRadius borderRadius;
   final Color? backgroundColor;
   final Color? textColor;
   final VoidCallback? onTap;
@@ -19,6 +23,7 @@ class CustomAvatarWidget extends StatelessWidget {
     this.name,
     this.fallbackText,
     this.size = AvatarSize.medium,
+    this.borderRadius = AvatarBorderRadius.full,
     this.backgroundColor,
     this.textColor,
     this.onTap,
@@ -27,20 +32,21 @@ class CustomAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final avatarSize = _getAvatarSize();
+    final radius = _getBorderRadius(avatarSize);
 
     Widget avatar = Container(
       height: avatarSize,
       width: avatarSize,
       decoration: BoxDecoration(
         color: backgroundColor ?? context.muted,
-        borderRadius: BorderRadius.circular(avatarSize / 2),
+        borderRadius: BorderRadius.circular(radius),
         border: Border.all(
           color: context.border.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(avatarSize / 2),
+        borderRadius: BorderRadius.circular(radius),
         child: _buildAvatarContent(context),
       ),
     );
@@ -119,6 +125,25 @@ class CustomAvatarWidget extends StatelessWidget {
         return 48;
       case AvatarSize.extraLarge:
         return 64;
+      case AvatarSize.veryLarge:
+        return 72;
+    }
+  }
+
+  double _getBorderRadius(double avatarSize) {
+    switch (borderRadius) {
+      case AvatarBorderRadius.none:
+        return TailwindBorder.radiusNone;
+      case AvatarBorderRadius.sm:
+        return TailwindBorder.radiusSm;
+      case AvatarBorderRadius.md:
+        return TailwindBorder.radiusMd;
+      case AvatarBorderRadius.lg:
+        return TailwindBorder.radiusLg;
+      case AvatarBorderRadius.xl:
+        return TailwindBorder.radiusXl;
+      case AvatarBorderRadius.full:
+        return avatarSize / 2; // Full circle
     }
   }
 
@@ -131,6 +156,7 @@ class CustomAvatarWidget extends StatelessWidget {
       case AvatarSize.large:
         return context.titleMedium;
       case AvatarSize.extraLarge:
+      case AvatarSize.veryLarge:
         return context.titleLarge;
     }
   }
