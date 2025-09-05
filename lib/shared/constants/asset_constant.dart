@@ -7,4 +7,6 @@ class AppAssetContant {
   static String githubIcon = 'assets/socials/github.png';
   static String facebookIcon = 'assets/socials/facebook.webp';
   static String linkedInIcon = 'assets/socials/linkedin.png';
+
+  static String employeeFeedBannerIcon = 'assets/svg/feed-company.svg';
 }

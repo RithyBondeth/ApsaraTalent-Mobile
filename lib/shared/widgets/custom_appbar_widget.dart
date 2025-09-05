@@ -1,12 +1,11 @@
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class CustomAppbarWidget extends ConsumerWidget implements PreferredSizeWidget {
-  const CustomAppbarWidget({super.key});
+class CustomAppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
+  const CustomAppBarWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
