@@ -141,7 +141,7 @@ class RoleSelectionDialog extends ConsumerWidget {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         width: double.infinity,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(25),
         decoration: BoxDecoration(
           gradient: isSelected
               ? LinearGradient(
@@ -189,25 +189,27 @@ class RoleSelectionDialog extends ConsumerWidget {
                     size: 28,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 15),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
-                        style: context.titleLarge.copyWith(
-                          color:
-                              isSelected ? context.primary : context.foreground,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: context.titleLarge
+                            .copyWith(
+                              color: isSelected
+                                  ? context.primary
+                                  : context.foreground,
+                            )
+                            .bold,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 5),
                       Text(
                         description,
                         style: context.bodyMedium.copyWith(
                           color: context.mutedForeground,
-                          height: 1.4,
+                          height: 1.5,
                         ),
                       ),
                     ],
@@ -217,8 +219,8 @@ class RoleSelectionDialog extends ConsumerWidget {
                   scale: isSelected ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   child: Container(
-                    width: 24,
-                    height: 24,
+                    width: 25,
+                    height: 25,
                     decoration: BoxDecoration(
                       color: context.primary,
                       shape: BoxShape.circle,
@@ -226,7 +228,7 @@ class RoleSelectionDialog extends ConsumerWidget {
                     child: Icon(
                       Icons.check,
                       color: context.primaryForeground,
-                      size: 16,
+                      size: 15,
                     ),
                   ),
                 ),
