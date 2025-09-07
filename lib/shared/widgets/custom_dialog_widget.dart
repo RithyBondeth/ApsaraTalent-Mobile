@@ -77,12 +77,7 @@ class CustomDialog extends StatelessWidget {
         children: [
           if (title != null)
             Expanded(
-              child: Text(
-                title!,
-                style: context.headlineSmall.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: Text(title!, style: context.titleMedium),
             ),
           if (showCloseButton)
             IconButton(
@@ -115,9 +110,8 @@ class CustomDialog extends StatelessWidget {
             if (description != null)
               Text(
                 description!,
-                style: context.bodyMedium.copyWith(
-                  color: context.mutedForeground,
-                ),
+                style:
+                    context.titleSmall.copyWith(color: context.mutedForeground),
               ),
             if (description != null && content != null)
               const SizedBox(height: 16),
@@ -309,11 +303,11 @@ class DialogUtils {
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDestructive 
-                  ? context.destructive 
+              backgroundColor: isDestructive
+                  ? context.destructive
                   : (confirmColor ?? context.primary),
-              foregroundColor: isDestructive 
-                  ? context.destructiveForeground 
+              foregroundColor: isDestructive
+                  ? context.destructiveForeground
                   : context.primaryForeground,
             ),
             child: Text(confirmText),
@@ -335,7 +329,7 @@ class DialogUtils {
       dialog: CustomDialog(
         title: title,
         description: message,
-        content: icon != null 
+        content: icon != null
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

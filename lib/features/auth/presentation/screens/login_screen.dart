@@ -7,6 +7,7 @@ import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/role_selection_dialog.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -256,8 +257,27 @@ class LoginScreen extends ConsumerWidget {
           ),
           SizedBox(width: 5),
           InkWell(
-            onTap: () {
-              context.router.pushPath(AuthRouteConstant.employeeSignupPath);
+            onTap: () async {
+              final selectedRole =
+                  await RoleSelectionUtils.showRoleSelectionDialog(
+                context: context,
+              );
+
+              if (selectedRole != null && context.mounted) {
+                // Navigate to appropriate signup screen based on role
+                switch (selectedRole) {
+                  case UserRole.company:
+                    // Navigate to company signup
+                    context.router
+                        .pushPath(AuthRouteConstant.companySignupPath);
+                    break;
+                  case UserRole.employee:
+                    // Navigate to employee signup
+                    context.router
+                        .pushPath(AuthRouteConstant.employeeSignupPath);
+                    break;
+                }
+              }
             },
             child: Text('Create account', style: context.titleSmall),
           ),
