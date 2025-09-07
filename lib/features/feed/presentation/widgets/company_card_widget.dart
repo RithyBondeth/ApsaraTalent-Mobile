@@ -3,6 +3,7 @@ import 'package:apsaratalent_mobile/shared/extensions/tailwind_widget_extensions
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/themes/tailwind_styles.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_avatar_widget.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_icon_label_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -19,6 +20,7 @@ class CompanyCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(TW.border2xl),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildAvatarSection(
             context: context,
@@ -27,6 +29,8 @@ class CompanyCardWidget extends StatelessWidget {
             avatarUrl: 'Quantum Edge',
             onLikeTap: () {},
           ),
+          SizedBox(height: 20),
+          _buildInfoSection(context),
         ],
       ).p(15),
     ).py(10).px(20);
@@ -54,9 +58,17 @@ class CompanyCardWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: context.titleMedium),
+                Text(title, style: context.titleMedium.lg.bold),
                 SizedBox(height: 5),
-                Text(subTitle, style: context.labelMedium),
+                CustomIconLabel(
+                  icon: LucideIcons.users,
+                  label: '250 employees',
+                ),
+                SizedBox(height: 5),
+                CustomIconLabel(
+                  icon: LucideIcons.mapPin,
+                  label: 'Phnom Penh',
+                ),
               ],
             ),
           ],
@@ -75,6 +87,33 @@ class CompanyCardWidget extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+
+  Widget _buildInfoSection(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomIconLabel(
+            icon: LucideIcons.building,
+            iconSize: 20,
+            label: 'Description',
+            labelStyle: context.titleMedium,
+          ),
+          SizedBox(height: 5),
+          Container(
+            width: double.infinity,
+            color: Colors.amber,
+            child: Text(
+              'QuantumEdge is a pioneering technology firm developing next-generation quantum computing platforms, algorithms, and secure communication systems for global enterprises and research institutions.',
+              style: context.titleSmall.leadingRelaxed,
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

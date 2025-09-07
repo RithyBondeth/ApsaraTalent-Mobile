@@ -126,7 +126,7 @@ class CustomAvatarWidget extends StatelessWidget {
       case AvatarSize.extraLarge:
         return 64;
       case AvatarSize.veryLarge:
-        return 72;
+        return 96;
     }
   }
 

@@ -11,6 +11,22 @@
 part of 'app_route.dart';
 
 /// generated route for
+/// [CareerScopeScreen]
+class CareerScopeRoute extends PageRouteInfo<void> {
+  const CareerScopeRoute({List<PageRouteInfo>? children})
+      : super(CareerScopeRoute.name, initialChildren: children);
+
+  static const String name = 'CareerScopeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CareerScopeScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ChatScreen]
 class ChatRoute extends PageRouteInfo<void> {
   const ChatRoute({List<PageRouteInfo>? children})
@@ -22,6 +38,38 @@ class ChatRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const ChatScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [CompanySignupScreen]
+class CompanySignupRoute extends PageRouteInfo<void> {
+  const CompanySignupRoute({List<PageRouteInfo>? children})
+      : super(CompanySignupRoute.name, initialChildren: children);
+
+  static const String name = 'CompanySignupRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CompanySignupScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [EmployeeSignupScreen]
+class EmployeeSignupRoute extends PageRouteInfo<void> {
+  const EmployeeSignupRoute({List<PageRouteInfo>? children})
+      : super(EmployeeSignupRoute.name, initialChildren: children);
+
+  static const String name = 'EmployeeSignupRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const EmployeeSignupScreen();
     },
   );
 }

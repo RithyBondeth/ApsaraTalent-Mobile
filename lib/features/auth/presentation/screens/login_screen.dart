@@ -257,7 +257,7 @@ class LoginScreen extends ConsumerWidget {
           SizedBox(width: 5),
           InkWell(
             onTap: () {
-              context.router.pushPath(AuthRouteConstant.resetPasswordPath);
+              context.router.pushPath(AuthRouteConstant.employeeSignupPath);
             },
             child: Text('Create account', style: context.titleSmall),
           ),

@@ -1,5 +1,4 @@
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/shared/themes/tailwind_styles.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_avatar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

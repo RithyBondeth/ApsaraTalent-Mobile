@@ -4,6 +4,9 @@ class AuthRouteConstant {
   static String resetPasswordPath = '/reset-passowrd';
   static String phoneNumberLoginPath = '/phone-number';
   static String phoneOTPPath = '/phone-otp';
+  static String employeeSignupPath = '/employee-signup';
+  static String companySignupPath = '/company-signup';
+  static String careerScopePath = '/career-scopes';
 }
 
 class MainRouteConstant {
