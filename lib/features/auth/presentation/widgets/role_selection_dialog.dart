@@ -1,4 +1,8 @@
+import 'package:apsaratalent_mobile/shared/extensions/tailwind_widget_extensions.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../shared/extensions/color_extensions.dart';
 import '../../../../shared/extensions/text_extensions.dart';
@@ -7,7 +11,10 @@ import '../../../../shared/widgets/custom_dialog_widget.dart';
 
 enum UserRole { company, employee }
 
-class RoleSelectionDialog extends StatefulWidget {
+// Riverpod provider for selected role
+final selectedRoleProvider = StateProvider<UserRole?>((ref) => null);
+
+class RoleSelectionDialog extends ConsumerWidget {
   final Function(UserRole) onRoleSelected;
 
   const RoleSelectionDialog({
@@ -16,14 +23,8 @@ class RoleSelectionDialog extends StatefulWidget {
   });
 
   @override
-  State<RoleSelectionDialog> createState() => _RoleSelectionDialogState();
-}
-
-class _RoleSelectionDialogState extends State<RoleSelectionDialog> {
-  UserRole? selectedRole;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedRole = ref.watch(selectedRoleProvider);
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -41,131 +42,85 @@ class _RoleSelectionDialogState extends State<RoleSelectionDialog> {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: context.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(TW.roundedFull),
-                    ),
-                    child: Icon(
-                      LucideIcons.users,
-                      color: context.primary,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Choose Your Path',
-                    style: context.headlineMedium.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
+                  CustomLogoWidget(withoutTitle: true, height: 100),
+                  const SizedBox(height: 10),
+                  Text('Choose Your Path', style: context.headlineMedium.bold),
+                  const SizedBox(height: 10),
                   Text(
                     'Select how you want to use Apsara Talent',
-                    style: context.bodyMedium.copyWith(
-                      color: context.mutedForeground,
-                    ),
+                    style: context.bodyMedium.muted,
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-
             // Role Options
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Column(
-                children: [
-                  _buildRoleCard(
-                    context: context,
-                    role: UserRole.company,
-                    icon: LucideIcons.building2,
-                    title: 'I\'m a Company',
-                    description:
-                        'Post jobs, find talents, and manage hiring process',
-                    gradient: [
-                      context.primary.withValues(alpha: 0.1),
-                      context.primary.withValues(alpha: 0.05),
-                    ],
-                    isSelected: selectedRole == UserRole.company,
-                    onTap: () =>
-                        setState(() => selectedRole = UserRole.company),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildRoleCard(
-                    context: context,
-                    role: UserRole.employee,
-                    icon: LucideIcons.user,
-                    title: 'I\'m Looking for Work',
-                    description:
-                        'Find jobs, apply for positions, and build your career',
-                    gradient: [
-                      context.secondary.withValues(alpha: 0.1),
-                      context.secondary.withValues(alpha: 0.05),
-                    ],
-                    isSelected: selectedRole == UserRole.employee,
-                    onTap: () =>
-                        setState(() => selectedRole = UserRole.employee),
-                  ),
-                ],
-              ),
-            ),
-
+            Column(
+              children: [
+                _buildRoleCard(
+                  context: context,
+                  role: UserRole.company,
+                  icon: LucideIcons.building2,
+                  title: 'I\'m a Company',
+                  description:
+                      'Post jobs, find talents, and manage hiring process',
+                  gradient: [
+                    context.primary.withValues(alpha: 0.1),
+                    context.primary.withValues(alpha: 0.05),
+                  ],
+                  isSelected: selectedRole == UserRole.company,
+                  onTap: () => ref.read(selectedRoleProvider.notifier).state =
+                      UserRole.company,
+                ),
+                const SizedBox(height: 15),
+                _buildRoleCard(
+                  context: context,
+                  role: UserRole.employee,
+                  icon: LucideIcons.user,
+                  title: 'I\'m Looking for Work',
+                  description:
+                      'Find jobs, apply for positions, and build your career',
+                  gradient: [
+                    context.secondary.withValues(alpha: 0.1),
+                    context.secondary.withValues(alpha: 0.05),
+                  ],
+                  isSelected: selectedRole == UserRole.employee,
+                  onTap: () => ref.read(selectedRoleProvider.notifier).state =
+                      UserRole.employee,
+                ),
+              ],
+            ).px(20),
             // Actions
-            Padding(
-              padding: const EdgeInsets.all(32),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(TW.roundedLg),
-                        ),
-                      ),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: context.mutedForeground),
-                      ),
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButtonWidget(
+                    text: 'Cancel',
+                    onPressed: () {
+                      ref.read(selectedRoleProvider.notifier).state = null;
+                      Navigator.pop(context);
+                    },
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      onPressed: selectedRole != null
-                          ? () {
-                              Navigator.of(context).pop();
-                              widget.onRoleSelected(selectedRole!);
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: context.primary,
-                        foregroundColor: context.primaryForeground,
-                        disabledBackgroundColor: context.muted,
-                        disabledForegroundColor: context.mutedForeground,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(TW.roundedLg),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: const Text(
-                        'Continue',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: CustomButtonWidget(
+                    text: 'Continue',
+                    onPressed: selectedRole != null
+                        ? () {
+                            ref.read(selectedRoleProvider.notifier).state =
+                                null;
+                            Navigator.pop(context);
+                            onRoleSelected(selectedRole);
+                          }
+                        : null,
                   ),
-                ],
-              ),
-            ),
+                ),
+              ],
+            ).p(20),
           ],
         ),
       ),
