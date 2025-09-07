@@ -60,7 +60,7 @@ class RoleSelectionDialog extends ConsumerWidget {
                 _buildRoleCard(
                   context: context,
                   role: UserRole.company,
-                  icon: LucideIcons.building2,
+                  icon: LucideIcons.building,
                   title: 'I\'m a Company',
                   description:
                       'Post jobs, find talents, and manage hiring process',
@@ -96,6 +96,7 @@ class RoleSelectionDialog extends ConsumerWidget {
               children: [
                 Expanded(
                   child: CustomButtonWidget(
+                    icon: Icon(LucideIcons.arrowLeft),
                     text: 'Cancel',
                     onPressed: () {
                       ref.read(selectedRoleProvider.notifier).state = null;
@@ -106,6 +107,8 @@ class RoleSelectionDialog extends ConsumerWidget {
                 SizedBox(width: 10),
                 Expanded(
                   child: CustomButtonWidget(
+                    icon: Icon(LucideIcons.arrowRight),
+                    iconPosition: IconPosition.after,
                     text: 'Continue',
                     onPressed: selectedRole != null
                         ? () {
@@ -174,8 +177,8 @@ class RoleSelectionDialog extends ConsumerWidget {
               children: [
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  width: 56,
-                  height: 56,
+                  width: 55,
+                  height: 55,
                   decoration: BoxDecoration(
                     color: isSelected
                         ? context.primary.withValues(alpha: 0.15)
@@ -186,7 +189,7 @@ class RoleSelectionDialog extends ConsumerWidget {
                     icon,
                     color:
                         isSelected ? context.primary : context.mutedForeground,
-                    size: 28,
+                    size: 30,
                   ),
                 ),
                 const SizedBox(width: 15),
