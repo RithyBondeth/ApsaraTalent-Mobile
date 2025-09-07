@@ -41,22 +41,19 @@ class RoleSelectionDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Header
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                children: [
-                  CustomLogoWidget(withoutTitle: true, height: 100),
-                  const SizedBox(height: 10),
-                  Text('Choose Your Path', style: context.headlineMedium.bold),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Select how you want to use Apsara Talent',
-                    style: context.bodyMedium.muted,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            Column(
+              children: [
+                CustomLogoWidget(withoutTitle: true, height: 100),
+                const SizedBox(height: 10),
+                Text('Choose Your Path', style: context.headlineMedium.bold),
+                const SizedBox(height: 10),
+                Text(
+                  'Select how you want to use Apsara Talent',
+                  style: context.bodyMedium.muted,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ).p(30),
             // Role Options
             Column(
               children: [
@@ -94,6 +91,7 @@ class RoleSelectionDialog extends ConsumerWidget {
               ],
             ).px(20),
             // Actions
+            SizedBox(height: 15),
             Row(
               children: [
                 Expanded(
