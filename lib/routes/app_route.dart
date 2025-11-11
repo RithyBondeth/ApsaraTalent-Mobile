@@ -10,7 +10,7 @@ import 'package:apsaratalent_mobile/features/chat/presentation/screens/chat_scre
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/setting_page.dart';
-import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
+import 'package:apsaratalent_mobile/shared/constants/route_constant.dart';
 import 'package:auto_route/auto_route.dart';
 import '../features/navigation/presentation/screens/main_screen.dart';
 import '../features/resume_builder/presentation/screens/resume_builder_screen.dart';

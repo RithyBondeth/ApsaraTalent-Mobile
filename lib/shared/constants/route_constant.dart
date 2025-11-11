@@ -1,7 +1,7 @@
 class AuthRouteConstant {
   static String loginPath = '/login';
   static String forgotPasswordPath = '/forgot-password';
-  static String resetPasswordPath = '/reset-passowrd';
+  static String resetPasswordPath = '/reset-password';
   static String phoneNumberLoginPath = '/phone-number';
   static String phoneOTPPath = '/phone-otp';
   static String employeeSignupPath = '/employee-signup';

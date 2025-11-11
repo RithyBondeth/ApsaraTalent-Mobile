@@ -1,4 +1,3 @@
-import 'package:apsaratalent_mobile/shared/extensions/tailwind_widget_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
 import 'package:flutter/material.dart';
@@ -41,87 +40,96 @@ class RoleSelectionDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Header
-            Column(
-              children: [
-                CustomLogoWidget(withoutTitle: true, height: 100),
-                const SizedBox(height: 10),
-                Text('Choose Your Path', style: context.headlineMedium.bold),
-                const SizedBox(height: 10),
-                Text(
-                  'Select how you want to use Apsara Talent',
-                  style: context.bodyMedium.muted,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ).p(30),
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  CustomLogoWidget(withoutTitle: true, height: 100),
+                  const SizedBox(height: 10),
+                  Text('Choose Your Path', style: context.headlineMedium.bold),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Select how you want to use Apsara Talent',
+                    style: context.bodyMedium.muted,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
             // Role Options
-            Column(
-              children: [
-                _buildRoleCard(
-                  context: context,
-                  role: UserRole.company,
-                  icon: LucideIcons.building,
-                  title: 'I\'m a Company',
-                  description:
-                      'Post jobs, find talents, and manage hiring process',
-                  gradient: [
-                    context.primary.withValues(alpha: 0.1),
-                    context.primary.withValues(alpha: 0.05),
-                  ],
-                  isSelected: selectedRole == UserRole.company,
-                  onTap: () => ref.read(selectedRoleProvider.notifier).state =
-                      UserRole.company,
-                ),
-                const SizedBox(height: 15),
-                _buildRoleCard(
-                  context: context,
-                  role: UserRole.employee,
-                  icon: LucideIcons.user,
-                  title: 'I\'m Looking for Work',
-                  description:
-                      'Find jobs, apply for positions, and build your career',
-                  gradient: [
-                    context.secondary.withValues(alpha: 0.1),
-                    context.secondary.withValues(alpha: 0.05),
-                  ],
-                  isSelected: selectedRole == UserRole.employee,
-                  onTap: () => ref.read(selectedRoleProvider.notifier).state =
-                      UserRole.employee,
-                ),
-              ],
-            ).px(20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  _buildRoleCard(
+                    context: context,
+                    role: UserRole.company,
+                    icon: LucideIcons.building,
+                    title: 'I\'m a Company',
+                    description:
+                        'Post jobs, find talents, and manage hiring process',
+                    gradient: [
+                      context.primary.withValues(alpha: 0.1),
+                      context.primary.withValues(alpha: 0.05),
+                    ],
+                    isSelected: selectedRole == UserRole.company,
+                    onTap: () => ref.read(selectedRoleProvider.notifier).state =
+                        UserRole.company,
+                  ),
+                  const SizedBox(height: 15),
+                  _buildRoleCard(
+                    context: context,
+                    role: UserRole.employee,
+                    icon: LucideIcons.user,
+                    title: 'I\'m Looking for Work',
+                    description:
+                        'Find jobs, apply for positions, and build your career',
+                    gradient: [
+                      context.secondary.withValues(alpha: 0.1),
+                      context.secondary.withValues(alpha: 0.05),
+                    ],
+                    isSelected: selectedRole == UserRole.employee,
+                    onTap: () => ref.read(selectedRoleProvider.notifier).state =
+                        UserRole.employee,
+                  ),
+                ],
+              ),
+            ),
             // Actions
             SizedBox(height: 15),
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButtonWidget(
-                    icon: Icon(LucideIcons.arrowLeft),
-                    text: 'Cancel',
-                    onPressed: () {
-                      ref.read(selectedRoleProvider.notifier).state = null;
-                      Navigator.pop(context);
-                    },
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomButtonWidget(
+                      icon: Icon(LucideIcons.arrowLeft),
+                      text: 'Cancel',
+                      onPressed: () {
+                        ref.read(selectedRoleProvider.notifier).state = null;
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: CustomButtonWidget(
-                    icon: Icon(LucideIcons.arrowRight),
-                    iconPosition: IconPosition.after,
-                    text: 'Continue',
-                    onPressed: selectedRole != null
-                        ? () {
-                            ref.read(selectedRoleProvider.notifier).state =
-                                null;
-                            Navigator.pop(context);
-                            onRoleSelected(selectedRole);
-                          }
-                        : null,
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: CustomButtonWidget(
+                      icon: Icon(LucideIcons.arrowRight),
+                      iconPosition: IconPosition.after,
+                      text: 'Continue',
+                      onPressed: selectedRole != null
+                          ? () {
+                              ref.read(selectedRoleProvider.notifier).state =
+                                  null;
+                              Navigator.pop(context);
+                              onRoleSelected(selectedRole);
+                            }
+                          : null,
+                    ),
                   ),
-                ),
-              ],
-            ).p(20),
+                ],
+              ),
+            ),
           ],
         ),
       ),

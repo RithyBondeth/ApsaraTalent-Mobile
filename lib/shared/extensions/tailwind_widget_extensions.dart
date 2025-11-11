@@ -160,63 +160,63 @@ extension TailwindWidget on Widget {
     );
   }
 
-  // Padding utilities
-  Widget p(double padding) {
-    return tw(padding: EdgeInsets.all(padding));
-  }
+  // // Padding utilities
+  // Widget p(double padding) {
+  //   return tw(padding: EdgeInsets.all(padding));
+  // }
 
-  Widget px(double padding) {
-    return tw(padding: EdgeInsets.symmetric(horizontal: padding));
-  }
+  // Widget px(double padding) {
+  //   return tw(padding: EdgeInsets.symmetric(horizontal: padding));
+  // }
 
-  Widget py(double padding) {
-    return tw(padding: EdgeInsets.symmetric(vertical: padding));
-  }
+  // Widget py(double padding) {
+  //   return tw(padding: EdgeInsets.symmetric(vertical: padding));
+  // }
 
-  Widget pt(double padding) {
-    return tw(padding: EdgeInsets.only(top: padding));
-  }
+  // Widget pt(double padding) {
+  //   return tw(padding: EdgeInsets.only(top: padding));
+  // }
 
-  Widget pr(double padding) {
-    return tw(padding: EdgeInsets.only(right: padding));
-  }
+  // Widget pr(double padding) {
+  //   return tw(padding: EdgeInsets.only(right: padding));
+  // }
 
-  Widget pb(double padding) {
-    return tw(padding: EdgeInsets.only(bottom: padding));
-  }
+  // Widget pb(double padding) {
+  //   return tw(padding: EdgeInsets.only(bottom: padding));
+  // }
 
-  Widget pl(double padding) {
-    return tw(padding: EdgeInsets.only(left: padding));
-  }
+  // Widget pl(double padding) {
+  //   return tw(padding: EdgeInsets.only(left: padding));
+  // }
 
-  // Margin utilities
-  Widget m(double margin) {
-    return tw(margin: EdgeInsets.all(margin));
-  }
+  // // Margin utilities
+  // Widget m(double margin) {
+  //   return tw(margin: EdgeInsets.all(margin));
+  // }
 
-  Widget mx(double margin) {
-    return tw(margin: EdgeInsets.symmetric(horizontal: margin));
-  }
+  // Widget mx(double margin) {
+  //   return tw(margin: EdgeInsets.symmetric(horizontal: margin));
+  // }
 
-  Widget my(double margin) {
-    return tw(margin: EdgeInsets.symmetric(vertical: margin));
-  }
+  // Widget my(double margin) {
+  //   return tw(margin: EdgeInsets.symmetric(vertical: margin));
+  // }
 
-  Widget mt(double margin) {
-    return tw(margin: EdgeInsets.only(top: margin));
-  }
+  // Widget mt(double margin) {
+  //   return tw(margin: EdgeInsets.only(top: margin));
+  // }
 
-  Widget mr(double margin) {
-    return tw(margin: EdgeInsets.only(right: margin));
-  }
+  // Widget mr(double margin) {
+  //   return tw(margin: EdgeInsets.only(right: margin));
+  // }
 
-  Widget mb(double margin) {
-    return tw(margin: EdgeInsets.only(bottom: margin));
-  }
+  // Widget mb(double margin) {
+  //   return tw(margin: EdgeInsets.only(bottom: margin));
+  // }
 
-  Widget ml(double margin) {
-    return tw(margin: EdgeInsets.only(left: margin));
-  }
+  // Widget ml(double margin) {
+  //   return tw(margin: EdgeInsets.only(left: margin));
+  // }
 
   // Size utilities
   Widget w(double width) {

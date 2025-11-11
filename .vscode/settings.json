@@ -5,11 +5,14 @@
         "cupertino",
         "dotenv",
         "Lucide",
-        "shadcn"
+        "shadcn",
+        "webp"
     ],
     "java.project.sourcePaths": [
         "android"
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }

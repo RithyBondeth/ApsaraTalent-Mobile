@@ -17,8 +17,8 @@ class CustomLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       withoutTitle
-          ? AppAssetContant.logoWithoutTitle
-          : AppAssetContant.logoForWhiteBg,
+          ? AppAssetConstant.logoWithoutTitle
+          : AppAssetConstant.logoForWhiteBg,
       height: height,
       width: width,
     );

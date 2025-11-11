@@ -1,11 +1,11 @@
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
-import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
+import 'package:apsaratalent_mobile/shared/constants/route_constant.dart';
 import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
+import 'package:apsaratalent_mobile/shared/widgets/custom_input_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/widgets/role_selection_dialog.dart';
 import 'package:auto_route/auto_route.dart';
@@ -62,25 +62,25 @@ class LoginScreen extends ConsumerWidget {
                     children: [
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.googleIcon,
+                        image: AppAssetConstant.googleIcon,
                         label: 'Google',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.facebookIcon,
+                        image: AppAssetConstant.facebookIcon,
                         label: 'Facebook',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.linkedInIcon,
+                        image: AppAssetConstant.linkedInIcon,
                         label: 'LinkedIn',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.githubIcon,
+                        image: AppAssetConstant.githubIcon,
                         label: 'Github',
                         onClick: () {},
                       ),
@@ -199,7 +199,7 @@ class LoginScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Expanded(
               child: Text(
-                'or continute with',
+                'or continue with',
                 style: context.titleSmall.secondary,
               ),
             ),

@@ -13,7 +13,7 @@ class BannerWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(AppAssetContant.employeeFeedBannerIcon),
+            SvgPicture.asset(AppAssetConstant.employeeFeedBannerIcon),
           ],
         ),
       ),
