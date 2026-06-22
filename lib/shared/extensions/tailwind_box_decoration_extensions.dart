@@ -4,28 +4,38 @@ import '../themes/tailwind_styles.dart';
 // Extension methods for BoxDecoration styling
 extension TailwindBoxDecoration on BoxDecoration {
   // Border utilities
-  BoxDecoration border(BuildContext context,
-      {double width = TailwindBorder.sm}) {
+  BoxDecoration border(
+    BuildContext context, {
+    double width = TailwindBorder.sm,
+  }) {
     return copyWith(border: TailwindBorder.all(context, width: width));
   }
 
-  BoxDecoration borderTop(BuildContext context,
-      {double width = TailwindBorder.sm}) {
+  BoxDecoration borderTop(
+    BuildContext context, {
+    double width = TailwindBorder.sm,
+  }) {
     return copyWith(border: TailwindBorder.top(context, width: width));
   }
 
-  BoxDecoration borderRight(BuildContext context,
-      {double width = TailwindBorder.sm}) {
+  BoxDecoration borderRight(
+    BuildContext context, {
+    double width = TailwindBorder.sm,
+  }) {
     return copyWith(border: TailwindBorder.right(context, width: width));
   }
 
-  BoxDecoration borderBottom(BuildContext context,
-      {double width = TailwindBorder.sm}) {
+  BoxDecoration borderBottom(
+    BuildContext context, {
+    double width = TailwindBorder.sm,
+  }) {
     return copyWith(border: TailwindBorder.bottom(context, width: width));
   }
 
-  BoxDecoration borderLeft(BuildContext context,
-      {double width = TailwindBorder.sm}) {
+  BoxDecoration borderLeft(
+    BuildContext context, {
+    double width = TailwindBorder.sm,
+  }) {
     return copyWith(border: TailwindBorder.left(context, width: width));
   }
 

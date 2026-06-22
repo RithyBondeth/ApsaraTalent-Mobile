@@ -22,6 +22,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: LoginRoute.page,
           path: AuthRouteConstant.loginPath,
+          initial: true,
         ),
         AutoRoute(
           page: ForgotPasswordRoute.page,
@@ -43,7 +44,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: MainRoute.page,
           path: MainRouteConstant.homePath,
-          initial: true,
+          // initial: true,
           children: [
             AutoRoute(
               page: FeedRoute.page,
