@@ -4,6 +4,9 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 class ShadCnFlexScheme {
   ShadCnFlexScheme._();
 
+  /// ==================================================
+  // FLEXSCHEMA COLOR LIGHT THEME
+  // ===================================================
   static const FlexSchemeColor lightSchema = FlexSchemeColor(
     primary: ShadCnColors.lightPrimary,
     primaryContainer: ShadCnColors.lightMuted,
@@ -16,6 +19,9 @@ class ShadCnFlexScheme {
     errorContainer: ShadCnColors.lightMuted,
   );
 
+  /// ==================================================
+  // FLEXSCHEMA COLOR DARK THEME
+  // ===================================================
   static const FlexSchemeColor darkScheme = FlexSchemeColor(
     primary: ShadCnColors.darkPrimary,
     primaryContainer: ShadCnColors.darkMuted,

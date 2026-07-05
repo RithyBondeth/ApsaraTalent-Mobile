@@ -48,8 +48,8 @@ class CustomAppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
         CustomAvatarWidget(
           imageUrl: profile.isNotEmpty ? profile : null,
           name: title,
-          size: AvatarSize.extraLarge,
-          borderRadius: AvatarBorderRadius.md,
+          size: EAvatarSize.extraLarge,
+          borderRadius: EAvatarBorderRadius.md,
         ),
         SizedBox(width: 10),
         Column(

@@ -1,6 +1,8 @@
 import 'package:apsaratalent_mobile/core/enums/environment_enum.dart';
 
 class AppEnvironmentConfig {
+  AppEnvironmentConfig._();
+
   static EEnvironmentType _environment = EEnvironmentType.development;
   static EEnvironmentType get environment => _environment;
 
@@ -13,7 +15,7 @@ class AppEnvironmentConfig {
       case EEnvironmentType.staging:
         return '.env.staging';
       case EEnvironmentType.production:
-        return '.env.production';
+        return '.env';
     }
   }
 

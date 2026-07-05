@@ -1,1 +1,1 @@
-enum EThemeMode { light, dark, system }
+enum EThemeModeType { light, dark, system }

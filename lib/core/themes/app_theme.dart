@@ -2,11 +2,14 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'shadcn_flex_scheme.dart';
 import 'shadcn_colors.dart';
-import 'app_fonts.dart';
+import 'app_font.dart';
 
 class AppTheme {
   AppTheme._();
 
+  /// ==================================================
+  // LIGHT THEME
+  // =================================================
   static ThemeData get lightTheme {
     return FlexThemeData.light(
       colors: ShadCnFlexScheme.lightSchema,
@@ -94,33 +97,36 @@ class AppTheme {
       // Global font theme
       textTheme: TextTheme(
         headlineLarge:
-            AppFonts.headingLarge.copyWith(color: ShadCnColors.lightForeground),
-        headlineMedium: AppFonts.headingMedium
-            .copyWith(color: ShadCnColors.lightForeground),
+            AppFont.headingLarge.copyWith(color: ShadCnColors.lightForeground),
+        headlineMedium:
+            AppFont.headingMedium.copyWith(color: ShadCnColors.lightForeground),
         headlineSmall:
-            AppFonts.headingSmall.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.headingSmall.copyWith(color: ShadCnColors.lightForeground),
         titleLarge:
-            AppFonts.titleLarge.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.titleLarge.copyWith(color: ShadCnColors.lightForeground),
         titleMedium:
-            AppFonts.titleMedium.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.titleMedium.copyWith(color: ShadCnColors.lightForeground),
         titleSmall:
-            AppFonts.titleSmall.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.titleSmall.copyWith(color: ShadCnColors.lightForeground),
         bodyLarge:
-            AppFonts.bodyLarge.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.bodyLarge.copyWith(color: ShadCnColors.lightForeground),
         bodyMedium:
-            AppFonts.bodyMedium.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.bodyMedium.copyWith(color: ShadCnColors.lightForeground),
         bodySmall:
-            AppFonts.bodySmall.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.bodySmall.copyWith(color: ShadCnColors.lightForeground),
         labelLarge:
-            AppFonts.labelLarge.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.labelLarge.copyWith(color: ShadCnColors.lightForeground),
         labelMedium:
-            AppFonts.labelMedium.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.labelMedium.copyWith(color: ShadCnColors.lightForeground),
         labelSmall:
-            AppFonts.labelSmall.copyWith(color: ShadCnColors.lightForeground),
+            AppFont.labelSmall.copyWith(color: ShadCnColors.lightForeground),
       ),
     );
   }
 
+  // ==================================================
+  // DARK THEME
+  // ==================================================
   static ThemeData get darkTheme {
     return FlexThemeData.dark(
       colors: ShadCnFlexScheme.darkScheme,
@@ -200,29 +206,29 @@ class AppTheme {
       // Global font theme
       textTheme: TextTheme(
         headlineLarge:
-            AppFonts.headingLarge.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.headingLarge.copyWith(color: ShadCnColors.darkForeground),
         headlineMedium:
-            AppFonts.headingMedium.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.headingMedium.copyWith(color: ShadCnColors.darkForeground),
         headlineSmall:
-            AppFonts.headingSmall.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.headingSmall.copyWith(color: ShadCnColors.darkForeground),
         titleLarge:
-            AppFonts.titleLarge.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.titleLarge.copyWith(color: ShadCnColors.darkForeground),
         titleMedium:
-            AppFonts.titleMedium.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.titleMedium.copyWith(color: ShadCnColors.darkForeground),
         titleSmall:
-            AppFonts.titleSmall.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.titleSmall.copyWith(color: ShadCnColors.darkForeground),
         bodyLarge:
-            AppFonts.bodyLarge.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.bodyLarge.copyWith(color: ShadCnColors.darkForeground),
         bodyMedium:
-            AppFonts.bodyMedium.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.bodyMedium.copyWith(color: ShadCnColors.darkForeground),
         bodySmall:
-            AppFonts.bodySmall.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.bodySmall.copyWith(color: ShadCnColors.darkForeground),
         labelLarge:
-            AppFonts.labelLarge.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.labelLarge.copyWith(color: ShadCnColors.darkForeground),
         labelMedium:
-            AppFonts.labelMedium.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.labelMedium.copyWith(color: ShadCnColors.darkForeground),
         labelSmall:
-            AppFonts.labelSmall.copyWith(color: ShadCnColors.darkForeground),
+            AppFont.labelSmall.copyWith(color: ShadCnColors.darkForeground),
       ),
     );
   }

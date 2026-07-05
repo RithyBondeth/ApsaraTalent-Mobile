@@ -7,7 +7,7 @@ import 'package:apsaratalent_mobile/features/chat/presentation/screens/chat_scre
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/setting_page.dart';
-import 'package:apsaratalent_mobile/core/constants/routes_path_contant.dart';
+import 'package:apsaratalent_mobile/core/constants/route_path_contant.dart';
 import 'package:auto_route/auto_route.dart';
 import '../features/navigation/presentation/screens/main_screen.dart';
 import '../features/resume_builder/presentation/screens/resume_builder_screen.dart';
@@ -21,51 +21,51 @@ class AppRouter extends RootStackRouter {
         // Auth routes
         AutoRoute(
           page: LoginRoute.page,
-          path: AuthRoutesPathConstant.loginPath,
+          path: RoutePathConstant.loginPath,
           initial: true,
         ),
         AutoRoute(
           page: ForgotPasswordRoute.page,
-          path: AuthRoutesPathConstant.forgotPasswordPath,
+          path: RoutePathConstant.forgotPasswordPath,
         ),
         AutoRoute(
           page: ResetPasswordRoute.page,
-          path: AuthRoutesPathConstant.resetPasswordPath,
+          path: RoutePathConstant.resetPasswordPath,
         ),
         AutoRoute(
           page: PhoneNumberRoute.page,
-          path: AuthRoutesPathConstant.phoneNumberLoginPath,
+          path: RoutePathConstant.phoneNumberLoginPath,
         ),
         AutoRoute(
           page: OTPRoute.page,
-          path: AuthRoutesPathConstant.phoneOTPPath,
+          path: RoutePathConstant.phoneOTPPath,
         ),
         // Main app routes
         AutoRoute(
           page: MainRoute.page,
-          path: MainRoutesPathConstant.homePath,
+          path: RoutePathConstant.homePath,
           // initial: true,
           children: [
             AutoRoute(
               page: FeedRoute.page,
-              path: MainRoutesPathConstant.feedPath,
+              path: RoutePathConstant.feedPath,
               initial: true,
             ),
             AutoRoute(
               page: SearchRoute.page,
-              path: MainRoutesPathConstant.searchPath,
+              path: RoutePathConstant.searchPath,
             ),
             AutoRoute(
               page: ChatRoute.page,
-              path: MainRoutesPathConstant.chatPath,
+              path: RoutePathConstant.chatPath,
             ),
             AutoRoute(
               page: ResumeBuilderRoute.page,
-              path: MainRoutesPathConstant.resumeBuilderPath,
+              path: RoutePathConstant.resumeBuilderPath,
             ),
             AutoRoute(
               page: SettingRoute.page,
-              path: MainRoutesPathConstant.settingPath,
+              path: RoutePathConstant.settingPath,
             ),
           ],
         ),

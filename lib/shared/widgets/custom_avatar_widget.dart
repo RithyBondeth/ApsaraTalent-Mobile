@@ -1,18 +1,17 @@
 import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/core/themes/tailwind_styles.dart';
 import 'package:flutter/material.dart';
 
-enum AvatarSize { small, medium, large, extraLarge, veryLarge }
+enum EAvatarSize { small, medium, large, extraLarge, veryLarge }
 
-enum AvatarBorderRadius { none, sm, md, lg, xl, full }
+enum EAvatarBorderRadius { none, sm, md, lg, xl, full }
 
 class CustomAvatarWidget extends StatelessWidget {
   final String? imageUrl;
   final String? name;
   final String? fallbackText;
-  final AvatarSize size;
-  final AvatarBorderRadius borderRadius;
+  final EAvatarSize size;
+  final EAvatarBorderRadius borderRadius;
   final Color? backgroundColor;
   final Color? textColor;
   final VoidCallback? onTap;
@@ -22,8 +21,8 @@ class CustomAvatarWidget extends StatelessWidget {
     this.imageUrl,
     this.name,
     this.fallbackText,
-    this.size = AvatarSize.medium,
-    this.borderRadius = AvatarBorderRadius.full,
+    this.size = EAvatarSize.medium,
+    this.borderRadius = EAvatarBorderRadius.full,
     this.backgroundColor,
     this.textColor,
     this.onTap,
@@ -117,46 +116,46 @@ class CustomAvatarWidget extends StatelessWidget {
 
   double _getAvatarSize() {
     switch (size) {
-      case AvatarSize.small:
+      case EAvatarSize.small:
         return 32;
-      case AvatarSize.medium:
+      case EAvatarSize.medium:
         return 40;
-      case AvatarSize.large:
+      case EAvatarSize.large:
         return 48;
-      case AvatarSize.extraLarge:
+      case EAvatarSize.extraLarge:
         return 64;
-      case AvatarSize.veryLarge:
+      case EAvatarSize.veryLarge:
         return 72;
     }
   }
 
   double _getBorderRadius(double avatarSize) {
     switch (borderRadius) {
-      case AvatarBorderRadius.none:
-        return TailwindBorder.radiusNone;
-      case AvatarBorderRadius.sm:
-        return TailwindBorder.radiusSm;
-      case AvatarBorderRadius.md:
-        return TailwindBorder.radiusMd;
-      case AvatarBorderRadius.lg:
-        return TailwindBorder.radiusLg;
-      case AvatarBorderRadius.xl:
-        return TailwindBorder.radiusXl;
-      case AvatarBorderRadius.full:
-        return avatarSize / 2; // Full circle
+      case EAvatarBorderRadius.none:
+        return 0;
+      case EAvatarBorderRadius.sm:
+        return 4;
+      case EAvatarBorderRadius.md:
+        return 8;
+      case EAvatarBorderRadius.lg:
+        return 12;
+      case EAvatarBorderRadius.xl:
+        return 16;
+      case EAvatarBorderRadius.full:
+        return avatarSize / 2;
     }
   }
 
   TextStyle _getTextStyle(BuildContext context) {
     switch (size) {
-      case AvatarSize.small:
+      case EAvatarSize.small:
         return context.labelSmall;
-      case AvatarSize.medium:
+      case EAvatarSize.medium:
         return context.labelMedium;
-      case AvatarSize.large:
+      case EAvatarSize.large:
         return context.titleMedium;
-      case AvatarSize.extraLarge:
-      case AvatarSize.veryLarge:
+      case EAvatarSize.extraLarge:
+      case EAvatarSize.veryLarge:
         return context.titleLarge;
     }
   }

@@ -1,5 +1,5 @@
-import 'package:apsaratalent_mobile/core/utils/check_email_function.dart';
-import 'package:apsaratalent_mobile/core/utils/check_phonenumber_function.dart';
+import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
+import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -19,9 +19,9 @@ final forgotPasswordPrefixIconProvider = Provider<IconData?>((ref) {
 
   if (input.isEmpty) {
     return null;
-  } else if (isEmail(input)) {
+  } else if (EmailValidator.validate(input) != null) {
     return LucideIcons.mail;
-  } else if (isPhoneNumber(input)) {
+  } else if (PhoneValidator.validate(input) != null) {
     return LucideIcons.phone;
   } else {
     return null;
