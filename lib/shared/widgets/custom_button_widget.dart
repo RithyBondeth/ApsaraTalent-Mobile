@@ -1,5 +1,5 @@
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonVariant { primary, secondary, outline, ghost }

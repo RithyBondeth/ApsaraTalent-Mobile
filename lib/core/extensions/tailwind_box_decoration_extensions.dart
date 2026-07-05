@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/themes/tailwind_styles.dart';
+import '../themes/tailwind_styles.dart';
 
 // Extension methods for BoxDecoration styling
 extension TailwindBoxDecoration on BoxDecoration {

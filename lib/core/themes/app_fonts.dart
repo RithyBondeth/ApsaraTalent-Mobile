@@ -1,7 +1,9 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
-class AppFont {
+class AppFonts {
+  AppFonts._();
+
   // Ubuntu font variations
   static TextStyle ubuntu({
     double? fontSize,

@@ -1,5 +1,5 @@
 import 'package:apsaratalent_mobile/features/navigation/providers/bottom_navigation_provider.dart';
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

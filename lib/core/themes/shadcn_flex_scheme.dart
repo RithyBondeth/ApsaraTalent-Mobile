@@ -1,7 +1,9 @@
-import 'package:apsaratalent_mobile/shared/themes/shadcn_colors.dart';
+import 'package:apsaratalent_mobile/core/themes/shadcn_colors.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 class ShadCnFlexScheme {
+  ShadCnFlexScheme._();
+
   static const FlexSchemeColor lightSchema = FlexSchemeColor(
     primary: ShadCnColors.lightPrimary,
     primaryContainer: ShadCnColors.lightMuted,

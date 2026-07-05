@@ -1,5 +1,5 @@
-import 'package:apsaratalent_mobile/shared/functions/check_email_function.dart';
-import 'package:apsaratalent_mobile/shared/functions/check_phonenumber_function.dart';
+import 'package:apsaratalent_mobile/core/utils/check_email_function.dart';
+import 'package:apsaratalent_mobile/core/utils/check_phonenumber_function.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_providers.dart';
 

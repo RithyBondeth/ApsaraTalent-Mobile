@@ -1,4 +1,4 @@
-import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
+import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,7 +13,7 @@ class BannerWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(AppAssetContant.employeeFeedBannerIcon),
+            SvgPicture.asset(AppAssetPathContant.employeeFeedBannerIcon),
           ],
         ),
       ),

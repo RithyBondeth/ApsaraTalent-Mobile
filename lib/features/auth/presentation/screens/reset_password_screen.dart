@@ -1,4 +1,4 @@
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';

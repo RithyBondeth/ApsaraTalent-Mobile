@@ -1,9 +1,9 @@
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
-import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
-import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
+import 'package:apsaratalent_mobile/core/constants/routes_path_contant.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
@@ -61,25 +61,25 @@ class LoginScreen extends ConsumerWidget {
                     children: [
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.googleIcon,
+                        image: AppAssetPathContant.googleIcon,
                         label: 'Google',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.facebookIcon,
+                        image: AppAssetPathContant.facebookIcon,
                         label: 'Facebook',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.linkedInIcon,
+                        image: AppAssetPathContant.linkedInIcon,
                         label: 'LinkedIn',
                         onClick: () {},
                       ),
                       _buildSocialButton(
                         context: context,
-                        image: AppAssetContant.githubIcon,
+                        image: AppAssetPathContant.githubIcon,
                         label: 'Github',
                         onClick: () {},
                       ),
@@ -89,8 +89,8 @@ class LoginScreen extends ConsumerWidget {
                     context: context,
                     label: 'Phone Number',
                     onClick: () {
-                      context.router
-                          .pushPath(AuthRouteConstant.phoneNumberLoginPath);
+                      context.router.pushPath(
+                          AuthRoutesPathConstant.phoneNumberLoginPath);
                     },
                   ),
                   SizedBox(height: 10),
@@ -235,7 +235,8 @@ class LoginScreen extends ConsumerWidget {
           ),
           InkWell(
             onTap: () {
-              context.router.pushPath(AuthRouteConstant.forgotPasswordPath);
+              context.router
+                  .pushPath(AuthRoutesPathConstant.forgotPasswordPath);
             },
             child: Text('Forgot Password?', style: context.titleSmall),
           ),
@@ -257,7 +258,7 @@ class LoginScreen extends ConsumerWidget {
           SizedBox(width: 5),
           InkWell(
             onTap: () {
-              context.router.pushPath(AuthRouteConstant.resetPasswordPath);
+              context.router.pushPath(AuthRoutesPathConstant.resetPasswordPath);
             },
             child: Text('Create account', style: context.titleSmall),
           ),

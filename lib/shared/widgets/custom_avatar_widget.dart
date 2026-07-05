@@ -1,6 +1,6 @@
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/shared/themes/tailwind_styles.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
+import 'package:apsaratalent_mobile/core/themes/tailwind_styles.dart';
 import 'package:flutter/material.dart';
 
 enum AvatarSize { small, medium, large, extraLarge, veryLarge }

@@ -1,4 +1,4 @@
-class AuthRouteConstant {
+class AuthRoutesPathConstant {
   static String loginPath = '/login';
   static String forgotPasswordPath = '/forgot-password';
   static String resetPasswordPath = '/reset-passowrd';
@@ -6,7 +6,7 @@ class AuthRouteConstant {
   static String phoneOTPPath = '/phone-otp';
 }
 
-class MainRouteConstant {
+class MainRoutesPathConstant {
   static String homePath = '/home';
   static String feedPath = 'feed';
   static String searchPath = 'search';

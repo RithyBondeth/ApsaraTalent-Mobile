@@ -1,4 +1,4 @@
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 

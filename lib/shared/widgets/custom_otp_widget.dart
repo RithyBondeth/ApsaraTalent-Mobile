@@ -1,5 +1,5 @@
 import 'package:apsaratalent_mobile/features/auth/providers/otp_providers.dart';
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
+import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

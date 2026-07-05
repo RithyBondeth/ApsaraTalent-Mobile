@@ -1,4 +1,4 @@
-import 'package:apsaratalent_mobile/shared/themes/shadcn_colors.dart';
+import 'package:apsaratalent_mobile/core/themes/shadcn_colors.dart';
 import 'package:flutter/material.dart';
 
 extension ShadCnColorExtensions on BuildContext {
