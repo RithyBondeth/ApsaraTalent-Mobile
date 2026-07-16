@@ -1,21 +1,24 @@
-import 'user_model.dart';
+import 'user_auth_response.dart';
 
 class LoginResponse {
-  final String accessToken;
-  final String refreshToken;
-  final UserModel user;
+  final String message;
+  final UserAuthResponse? user;
+  final bool? requiresTwoFactor;
+  final String? userId;
 
   LoginResponse({
-    required this.accessToken,
-    required this.refreshToken,
-    required this.user,
+    required this.message,
+    this.user,
+    this.requiresTwoFactor,
+    this.userId,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      accessToken: json['accessToken'] ?? '',
-      refreshToken: json['refreshToken'] ?? '',
-      user: UserModel.fromJson(json['user'] ?? {}),
+      message: json['message'] ?? '',
+      user: json['user'] != null ? UserAuthResponse.fromJson(json['user']) : null,
+      requiresTwoFactor: json['requiresTwoFactor'],
+      userId: json['userId'],
     );
   }
 }

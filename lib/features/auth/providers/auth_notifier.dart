@@ -1,24 +1,42 @@
-import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:apsaratalent_mobile/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:apsaratalent_mobile/features/auth/domain/entities/auth_entity.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/entities/login_entity.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthState {
-  final AuthEntity? data;
+  final LoginSuccessEntity? loginSuccess;
+  final LoginTwoFactorEntity? twoFactorRequired;
   final bool isLoading;
   final String? error;
 
-  AuthState({this.data, this.isLoading = false, this.error});
+  AuthState({
+    this.loginSuccess,
+    this.twoFactorRequired,
+    this.isLoading = false,
+    this.error,
+  });
 
-  AuthState copyWith({AuthEntity? data, bool? isLoading, String? error}) {
+  bool get requiresTwoFactor => twoFactorRequired != null;
+  bool get isLoggedIn => loginSuccess != null;
+
+  AuthState copyWith({
+    LoginSuccessEntity? loginSuccess,
+    LoginTwoFactorEntity? twoFactorRequired,
+    bool? isLoading,
+    String? error,
+    bool clearTwoFactor = false,
+    bool clearLogin = false,
+    bool clearError = false,
+  }) {
     return AuthState(
-      data: data ?? this.data,
+      loginSuccess: clearLogin ? null : (loginSuccess ?? this.loginSuccess),
+      twoFactorRequired:
+          clearTwoFactor ? null : (twoFactorRequired ?? this.twoFactorRequired),
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: clearError ? null : (error ?? this.error),
     );
   }
 }
@@ -37,9 +55,14 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final auth = await _loginUseCase(email, password);
-      ApiClient().setToken(auth.accessToken);
-      return AuthState(data: auth);
+      final result = await _loginUseCase(email, password);
+
+      if (result is LoginTwoFactorEntity) {
+        return AuthState(twoFactorRequired: result);
+      }
+
+      final success = result as LoginSuccessEntity;
+      return AuthState(loginSuccess: success);
     });
 
     if (state.hasError) {
@@ -55,15 +78,16 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await _repository.logout();
-      ApiClient().setToken(null);
       return AuthState();
     });
   }
 
+  void clearTwoFactor() {
+    state = AsyncValue.data(state.value?.copyWith(clearTwoFactor: true) ?? AuthState());
+  }
+
   void clearError() {
-    if (state.hasValue) {
-      state = AsyncValue.data(state.value!.copyWith(error: null));
-    }
+    state = AsyncValue.data(state.value?.copyWith(clearError: true) ?? AuthState());
   }
 }
 
