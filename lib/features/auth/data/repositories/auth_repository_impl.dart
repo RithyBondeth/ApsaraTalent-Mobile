@@ -13,9 +13,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<dynamic> login(String email, String password) async {
     try {
+      // Call data source
       final result = await _remoteDataSource.login(email, password);
       final response = result.response;
 
+      // Check if 2FA required
       if (response.requiresTwoFactor == true) {
         return LoginTwoFactorEntity(
           message: response.message,
@@ -23,10 +25,12 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
 
+      // Check if user exists
       if (response.user == null) {
         throw ApiException(message: 'Invalid response from server');
       }
 
+      // Return success entity
       return LoginSuccessEntity(
         message: response.message,
         user: response.user!.toEntity(),

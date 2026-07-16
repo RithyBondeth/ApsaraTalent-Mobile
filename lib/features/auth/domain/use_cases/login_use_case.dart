@@ -1,3 +1,4 @@
+// Use case for login
 import '../repositories/auth_repository.dart';
 
 class LoginUseCase {
@@ -5,6 +6,7 @@ class LoginUseCase {
 
   LoginUseCase(this._repository);
 
+  // Execute login
   Future<dynamic> call(String email, String password) async {
     return await _repository.login(email, password);
   }

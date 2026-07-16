@@ -1,3 +1,4 @@
+// Auth state management with Riverpod
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:apsaratalent_mobile/features/auth/data/repositories/auth_repository_impl.dart';
@@ -6,11 +7,12 @@ import 'package:apsaratalent_mobile/features/auth/domain/repositories/auth_repos
 import 'package:apsaratalent_mobile/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Auth state with login result, 2FA flag, loading, and error
 class AuthState {
-  final LoginSuccessEntity? loginSuccess;
-  final LoginTwoFactorEntity? twoFactorRequired;
-  final bool isLoading;
-  final String? error;
+  final LoginSuccessEntity? loginSuccess; // Login success data
+  final LoginTwoFactorEntity? twoFactorRequired; // 2FA required data
+  final bool isLoading; // Loading state
+  final String? error; // Error message
 
   AuthState({
     this.loginSuccess,
@@ -41,6 +43,7 @@ class AuthState {
   }
 }
 
+// Auth notifier for managing auth state
 class AuthNotifier extends AsyncNotifier<AuthState> {
   late final LoginUseCase _loginUseCase;
 
@@ -51,6 +54,7 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     return AuthState();
   }
 
+  // Login with email and password
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -73,20 +77,24 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     }
   }
 
+  // Clear 2FA state
   void clearTwoFactor() {
     state = AsyncValue.data(state.value?.copyWith(clearTwoFactor: true) ?? AuthState());
   }
 
+  // Clear error state
   void clearError() {
     state = AsyncValue.data(state.value?.copyWith(clearError: true) ?? AuthState());
   }
 }
 
+// Repository provider
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
     remoteDataSource: AuthRemoteDataSourceImpl(),
   );
 });
 
+// Auth provider
 final authProvider =
     AsyncNotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
