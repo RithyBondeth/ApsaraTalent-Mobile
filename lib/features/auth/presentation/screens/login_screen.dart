@@ -107,7 +107,8 @@ class LoginScreen extends ConsumerWidget {
                     hintText: 'Email',
                     errorText: emailValidationError,
                     onChanged: (String value) {
-                      ref.read(emailInputProvider.notifier).state = value;
+                      ref.read(emailInputProvider.notifier).state =
+                          value.trim();
                     },
                   ),
                   SizedBox(height: 20),
@@ -116,22 +117,25 @@ class LoginScreen extends ConsumerWidget {
                     hintText: 'Password',
                     errorText: passwordValidationError,
                     onChanged: (String value) {
-                      ref.read(passwordInputProvider.notifier).state = value;
+                      ref.read(passwordInputProvider.notifier).state =
+                          value.trim();
                     },
                     isPassword: true,
                   ),
                   _buildRememberMeDivider(context, ref),
                   ...authState.whenOrNull(
-                    error: (error, _) => [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          error.toString(),
-                          style: context.titleSmall.copyWith(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ) ?? [],
+                        error: (error, _) => [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              error.toString(),
+                              style: context.titleSmall
+                                  .copyWith(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ) ??
+                      [],
                   CustomButtonWidget(
                     text: 'Login',
                     loading: authState.isLoading,

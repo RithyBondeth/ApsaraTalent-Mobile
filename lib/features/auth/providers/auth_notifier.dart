@@ -43,12 +43,11 @@ class AuthState {
 
 class AuthNotifier extends AsyncNotifier<AuthState> {
   late final LoginUseCase _loginUseCase;
-  late final AuthRepository _repository;
 
   @override
   Future<AuthState> build() async {
-    _repository = ref.watch(authRepositoryProvider);
-    _loginUseCase = LoginUseCase(_repository);
+    final repository = ref.watch(authRepositoryProvider);
+    _loginUseCase = LoginUseCase(repository);
     return AuthState();
   }
 
@@ -72,14 +71,6 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
           : 'Login failed. Please try again.';
       state = AsyncValue.data(AuthState(error: message));
     }
-  }
-
-  Future<void> logout() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await _repository.logout();
-      return AuthState();
-    });
   }
 
   void clearTwoFactor() {
