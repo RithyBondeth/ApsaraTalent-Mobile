@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/features/auth/providers/auth_notifier.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
@@ -21,6 +22,7 @@ class LoginScreen extends ConsumerWidget {
     final emailValidationError = ref.watch(emailValidationProvider);
     final passwordValidationError = ref.watch(passwordValidationProvider);
     final isValidLoginForm = ref.watch(loginFormValidProvider);
+    final authState = ref.watch(authProvider);
 
     return Scaffold(
       body: SizedBox(
@@ -110,7 +112,7 @@ class LoginScreen extends ConsumerWidget {
                   ),
                   SizedBox(height: 20),
                   CustomInputWidget(
-                    prefixIcon: LucideIcons.key,
+                    prefixIcon: LucideIcons.lock,
                     hintText: 'Password',
                     errorText: passwordValidationError,
                     onChanged: (String value) {
@@ -119,9 +121,29 @@ class LoginScreen extends ConsumerWidget {
                     isPassword: true,
                   ),
                   _buildRememberMeDivider(context, ref),
+                  ...authState.whenOrNull(
+                    error: (error, _) => [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          error.toString(),
+                          style: context.titleSmall.copyWith(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ) ?? [],
                   CustomButtonWidget(
                     text: 'Login',
-                    onPressed: isValidLoginForm ? () {} : null,
+                    loading: authState.isLoading,
+                    onPressed: isValidLoginForm
+                        ? () {
+                            final email = ref.read(emailInputProvider);
+                            final password = ref.read(passwordInputProvider);
+                            ref
+                                .read(authProvider.notifier)
+                                .login(email, password);
+                          }
+                        : null,
                   ),
                   _buildCreateNewAccountDivider(context),
                 ],
