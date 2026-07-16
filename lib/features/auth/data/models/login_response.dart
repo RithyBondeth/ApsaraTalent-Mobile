@@ -1,6 +1,6 @@
 import 'package:apsaratalent_mobile/features/auth/domain/enums/auth_login_method_enum.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
-import 'package:apsaratalent_mobile/features/auth/domain/entities/login_entity.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/entities/user_auth_entity.dart';
 
 // User data from API response
 class UserAuthResponse {
@@ -45,13 +45,13 @@ class UserAuthResponse {
 class LoginResponse {
   final String message; // Response message
   final UserAuthResponse? user; // User data (null if 2FA required)
-  final bool? requiresTwoFactor; // true if 2FA needed
+  final bool requiresTwoFactor; // true if 2FA needed
   final String? userId; // User ID (only when 2FA required)
 
   LoginResponse({
     required this.message,
     this.user,
-    this.requiresTwoFactor,
+    required this.requiresTwoFactor,
     this.userId,
   });
 
@@ -59,9 +59,8 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       message: json['message'] ?? '',
-      user:
-          json['user'] != null ? UserAuthResponse.fromJson(json['user']) : null,
-      requiresTwoFactor: json['requiresTwoFactor'],
+      user: json['user'] != null ? UserAuthResponse.fromJson(json['user']) : null,
+      requiresTwoFactor: json['requiresTwoFactor'] ?? false,
       userId: json['userId'],
     );
   }
