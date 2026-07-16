@@ -1,4 +1,4 @@
-import 'package:apsaratalent_mobile/features/auth/providers/otp_providers.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/otp/otp_notifier.dart';
 import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
 import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
@@ -15,8 +15,9 @@ class OTPScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final otpCode = ref.watch(combinedOTPProvider);
-    final isCompleted = ref.watch(otpCompletedProvider);
+    final otpState = ref.watch(otpProvider);
+    final otpCode = otpState.otp;
+    final isCompleted = otpState.isComplete;
     return Scaffold(
       body: SizedBox(
         width: double.infinity,
@@ -62,7 +63,7 @@ class OTPScreen extends ConsumerWidget {
               TextButton(
                 onPressed: () {
                   // Clear OTP and resend code
-                  ref.read(clearOTPProvider)();
+                  ref.read(otpProvider.notifier).clear();
                   debugPrint('Resend code');
                 },
                 child: Text(

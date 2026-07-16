@@ -59,7 +59,8 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       message: json['message'] ?? '',
-      user: json['user'] != null ? UserAuthResponse.fromJson(json['user']) : null,
+      user:
+          json['user'] != null ? UserAuthResponse.fromJson(json['user']) : null,
       requiresTwoFactor: json['requiresTwoFactor'] ?? false,
       userId: json['userId'],
     );

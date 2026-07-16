@@ -1,19 +1,22 @@
+// Shared provider definitions for auth
 import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
 import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
+import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
+import 'package:apsaratalent_mobile/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/repositories/auth_repository.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/login/login_notifier.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/login/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-// Remember me checkbox state provider
-final rememberMeProvider = StateProvider<bool>((ref) => false);
-
+// Input providers
 final emailInputProvider = StateProvider<String>((ref) => '');
 final passwordInputProvider = StateProvider<String>((ref) => '');
-
-// Forgot password input provider
+final rememberMeProvider = StateProvider<bool>((ref) => false);
 final forgotPasswordInputProvider = StateProvider<String>((ref) => '');
 
-// Prefix icon provider for forgot password screen
+// Forgot password prefix icon provider
 final forgotPasswordPrefixIconProvider = Provider<IconData?>((ref) {
   final input = ref.watch(forgotPasswordInputProvider);
 
@@ -27,3 +30,14 @@ final forgotPasswordPrefixIconProvider = Provider<IconData?>((ref) {
     return null;
   }
 });
+
+// Repository provider
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepositoryImpl(
+    remoteDataSource: AuthRemoteDataSourceImpl(),
+  );
+});
+
+// Login provider
+final loginProvider =
+    AsyncNotifierProvider<LoginNotifier, LoginState>(LoginNotifier.new);

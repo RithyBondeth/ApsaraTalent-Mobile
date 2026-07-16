@@ -1,4 +1,3 @@
-import 'package:apsaratalent_mobile/features/auth/providers/auth_notifier.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
@@ -22,7 +21,7 @@ class LoginScreen extends ConsumerWidget {
     final emailValidationError = ref.watch(emailValidationProvider);
     final passwordValidationError = ref.watch(passwordValidationProvider);
     final isValidLoginForm = ref.watch(loginFormValidProvider);
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(loginProvider);
 
     return Scaffold(
       body: SizedBox(
@@ -144,7 +143,7 @@ class LoginScreen extends ConsumerWidget {
                             final email = ref.read(emailInputProvider);
                             final password = ref.read(passwordInputProvider);
                             ref
-                                .read(authProvider.notifier)
+                                .read(loginProvider.notifier)
                                 .login(email, password);
                           }
                         : null,
