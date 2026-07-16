@@ -1,12 +1,12 @@
-import '../enums/auth_login_method.dart';
-import '../enums/user_role.dart';
+import '../enums/auth_login_method_enum.dart';
+import '../enums/user_role_enum.dart';
 
 class UserAuthEntity {
   final String id;
   final String phone;
-  final UserRole role;
+  final EUserRole role;
   final DateTime? lastLoginAt;
-  final AuthLoginMethod lastLoginMethod;
+  final EAuthLoginMethod lastLoginMethod;
 
   UserAuthEntity({
     required this.id,

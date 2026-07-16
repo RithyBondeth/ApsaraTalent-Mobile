@@ -1,4 +1,4 @@
-enum AuthLoginMethod {
+enum EAuthLoginMethod {
   emailPassword('email_password'),
   phoneOtp('phone_otp'),
   google('google'),
@@ -7,12 +7,12 @@ enum AuthLoginMethod {
   github('github');
 
   final String value;
-  const AuthLoginMethod(this.value);
+  const EAuthLoginMethod(this.value);
 
-  factory AuthLoginMethod.fromString(String value) {
-    return AuthLoginMethod.values.firstWhere(
+  factory EAuthLoginMethod.fromString(String value) {
+    return EAuthLoginMethod.values.firstWhere(
       (e) => e.value == value,
-      orElse: () => AuthLoginMethod.emailPassword,
+      orElse: () => EAuthLoginMethod.emailPassword,
     );
   }
 }

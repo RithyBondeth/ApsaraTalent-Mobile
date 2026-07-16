@@ -1,5 +1,5 @@
-import 'package:apsaratalent_mobile/features/auth/domain/enums/auth_login_method.dart';
-import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/auth_login_method_enum.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/entities/user_auth_entity.dart';
 
 class UserAuthResponse {
@@ -31,9 +31,9 @@ class UserAuthResponse {
     return UserAuthEntity(
       id: id,
       phone: phone,
-      role: UserRole.fromString(role),
+      role: EUserRole.fromString(role),
       lastLoginAt: lastLoginAt != null ? DateTime.tryParse(lastLoginAt!) : null,
-      lastLoginMethod: AuthLoginMethod.fromString(lastLoginMethod),
+      lastLoginMethod: EAuthLoginMethod.fromString(lastLoginMethod),
     );
   }
 }
