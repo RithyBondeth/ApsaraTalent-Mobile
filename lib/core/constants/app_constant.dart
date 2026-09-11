@@ -50,9 +50,12 @@ class AppConstants {
   // =========================
   // UI CONFIG
   // =========================
-  static const double defaultBorderRadius = 12;
+  // Shape, spacing and elevation live in core/themes (AppShape, AppElevation).
+  // The UI is square with hard offset shadows, so radius and Material
+  // elevation are both 0; these mirror that for anything reading them here.
+  static const double defaultBorderRadius = 0;
   static const double defaultPadding = 16;
-  static const double cardElevation = 2;
+  static const double cardElevation = 0;
 
   // =========================
   // FILE / MEDIA
