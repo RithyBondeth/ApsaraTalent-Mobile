@@ -2,6 +2,12 @@ class RoutePathConstant {
   RoutePathConstant._();
 
   // ==================================================
+  // LAUNCH
+  // Restores a remembered session, then routes to home or login.
+  // ==================================================
+  static String splashPath = '/';
+
+  // ==================================================
   // AUTH ROUTES
   // ==================================================
   static String loginPath = '/login';

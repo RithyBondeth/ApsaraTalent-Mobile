@@ -86,7 +86,7 @@ class _PhoneNumberScreenState extends ConsumerState<PhoneNumberScreen> {
           fullWidth: true,
           size: AppButtonSize.lg,
           onPressed:
-              _valid ? () => context.router.push(const OTPRoute()) : null,
+              _valid ? () => context.router.push(OTPRoute()) : null,
         ),
       ],
     );

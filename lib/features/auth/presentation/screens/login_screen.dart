@@ -59,7 +59,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final state = next.value;
       if (state == null) return;
       if (state.requiresTwoFactor) {
-        context.router.push(const OTPRoute());
+        final token = state.loginResponse?.twoFactorToken;
+        if (token != null) {
+          context.router.push(OTPRoute(twoFactorToken: token));
+        }
       } else if (state.isLoggedIn) {
         context.router.replaceAll([const MainRoute()]);
       }

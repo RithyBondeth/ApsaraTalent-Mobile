@@ -8,7 +8,11 @@ class LoginUseCase {
   LoginUseCase(this._repository);
 
   // Execute login
-  Future<LoginResponse> call(String email, String password) async {
-    return await _repository.login(email, password);
+  Future<LoginResponse> call(
+    String identifier,
+    String password, {
+    required bool remember,
+  }) {
+    return _repository.login(identifier, password, remember: remember);
   }
 }

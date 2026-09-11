@@ -40,6 +40,7 @@ dependencies:
   lucide_icons_flutter: ^3.0.9
   google_fonts: ^8.0.2
   dio: ^5.7.0
+  flutter_secure_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:

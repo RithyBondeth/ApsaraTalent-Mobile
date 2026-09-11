@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/company_card.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/job_card.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
@@ -23,14 +24,17 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viewer = SampleData.viewer;
+    // Who is signed in comes from the session; the feed content below is still
+    // SampleData until the feed has a data layer.
+    final user = ref.watch(authSessionProvider).value?.user;
     final unread =
         SampleData.notifications.where((n) => n.unread).length;
 
     return AppScreen(
       appBar: AppHeader(
-        name: viewer.name,
-        subtitle: viewer.headline,
+        name: user?.displayName ?? 'Your account',
+        subtitle: user?.headline ?? '',
+        avatarUrl: user?.avatarUrl,
         unreadCount: unread,
         onProfileTap: () => context.router.push(const ProfileRoute()),
         onNotificationsTap: () =>
