@@ -38,7 +38,6 @@ dependencies:
   flutter_riverpod: ^2.6.1
   auto_route: ^10.1.0+1
   lucide_icons_flutter: ^3.0.9
-  flutter_svg: ^2.0.10+1
   google_fonts: ^8.0.2
   dio: ^5.7.0
 
@@ -72,7 +71,6 @@ flutter:
     - .env.development
     - .env.staging
     - assets/logo/
-    - assets/svg/
     - assets/socials/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
