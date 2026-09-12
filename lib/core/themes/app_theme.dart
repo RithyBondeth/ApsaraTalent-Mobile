@@ -1,235 +1,232 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'shadcn_flex_scheme.dart';
-import 'shadcn_colors.dart';
-import 'app_font.dart';
 
+import 'package:apsaratalent_mobile/core/themes/app_elevation.dart';
+import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/core/themes/app_tokens.dart';
+import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+
+/// Builds [ThemeData] from [AppTokens].
+///
+/// This is assembled by hand rather than through a theme-generator package on
+/// purpose. Generators blend and derive their own surface ramps, which is
+/// exactly what must not happen here: the palette is contrast-solved upstream
+/// in the web app's `globals.css`, and a container tint computed on top of a
+/// token silently moves it off the value that cleared WCAG.
+///
+/// Material's own elevation is switched off throughout. Depth in this UI is the
+/// hard offset shadow in [AppElevation], drawn by the widget; a Material
+/// elevation on top of it would add a second, soft, differently-angled shadow.
 class AppTheme {
-  AppTheme._();
+  const AppTheme._();
 
-  /// ==================================================
-  // LIGHT THEME
-  // =================================================
-  static ThemeData get lightTheme {
-    return FlexThemeData.light(
-      colors: ShadCnFlexScheme.lightSchema,
-      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-      blendLevel: 0, // No blending to keep exact colors
-      appBarOpacity: 1.0,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      subThemesData: const FlexSubThemesData(
-        blendOnLevel: 0,
-        blendOnColors: false,
-        useM2StyleDividerInM3: false,
-        alignedDropdown: true,
-        useInputDecoratorThemeInDialogs: true,
+  static ThemeData light() => _build(AppTokens.light, Brightness.light);
+  static ThemeData dark() => _build(AppTokens.dark, Brightness.dark);
 
-        // Button styling (shadcn-like)
-        elevatedButtonRadius: 8.0, // 0.5rem = 8px
-        elevatedButtonElevation: 0,
-        elevatedButtonSchemeColor: SchemeColor.primary,
+  static ThemeData _build(AppTokens t, Brightness brightness) {
+    final isDark = brightness == Brightness.dark;
 
-        filledButtonRadius: 8.0,
-        filledButtonSchemeColor: SchemeColor.primary,
+    final colorScheme = ColorScheme(
+      brightness: brightness,
+      primary: t.primary,
+      onPrimary: t.primaryForeground,
+      secondary: t.secondary,
+      onSecondary: t.secondaryForeground,
+      error: t.destructive,
+      onError: t.destructiveForeground,
+      surface: t.card,
+      onSurface: t.cardForeground,
+      // Material's "container" roles are mapped onto the tokens that already
+      // mean the same thing rather than being left to derive themselves.
+      primaryContainer: t.accent,
+      onPrimaryContainer: t.accentForeground,
+      secondaryContainer: t.muted,
+      onSecondaryContainer: t.mutedForeground,
+      surfaceContainerHighest: t.muted,
+      onSurfaceVariant: t.mutedForeground,
+      outline: t.border,
+      outlineVariant: t.input,
+      scrim: t.scrim,
+      shadow: t.foreground,
+      inverseSurface: t.foreground,
+      onInverseSurface: t.background,
+    );
 
-        outlinedButtonRadius: 8.0,
-        outlinedButtonBorderWidth: 1.0,
-        outlinedButtonSchemeColor: SchemeColor.primary,
+    // Square, full stop. Declared once so no component theme below can quietly
+    // reintroduce a corner.
+    const square = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(AppShape.radius)),
+    );
 
-        textButtonRadius: 8.0,
+    final textTheme = TextTheme(
+      displayLarge: AppTypography.h1,
+      headlineLarge: AppTypography.h1,
+      headlineMedium: AppTypography.h2,
+      headlineSmall: AppTypography.h3,
+      titleLarge: AppTypography.h4,
+      titleMedium: AppTypography.label,
+      titleSmall: AppTypography.muted,
+      bodyLarge: AppTypography.p,
+      bodyMedium: AppTypography.small,
+      bodySmall: AppTypography.tiny,
+      labelLarge: AppTypography.button,
+      labelMedium: AppTypography.tag,
+      labelSmall: AppTypography.statLabel,
+    ).apply(
+      bodyColor: t.foreground,
+      displayColor: t.foreground,
+    );
 
-        // Card styling
-        cardRadius: 8.0,
-        cardElevation: 0,
-
-        // Input field styling
-        inputDecoratorRadius: 8.0,
-        inputDecoratorBorderType: FlexInputBorderType.outline,
-        inputDecoratorFocusedHasBorder: true,
-        inputDecoratorBorderSchemeColor: SchemeColor.outline,
-        inputDecoratorFocusedBorderWidth: 1.0,
-        inputDecoratorBorderWidth: 1.0,
-
-        // App Bar
-        appBarBackgroundSchemeColor: SchemeColor.surface,
-        appBarForegroundSchemeColor: SchemeColor.onSurface,
-        appBarCenterTitle: false,
-
-        // FAB
-        fabRadius: 8.0,
-        fabUseShape: true,
-        fabSchemeColor: SchemeColor.primary,
-
-        // Navigation Bar
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.primary,
-        bottomNavigationBarUnselectedLabelSchemeColor: SchemeColor.onSurface,
-        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.primary,
-        bottomNavigationBarUnselectedIconSchemeColor: SchemeColor.onSurface,
-
-        // Dialog
-        dialogRadius: 8.0,
-        dialogElevation: 0,
-
-        // Bottom Sheet
-        bottomSheetRadius: 8.0,
-        bottomSheetElevation: 0,
-
-        // Chip
-        chipRadius: 8.0,
-        chipBlendColors: false,
-      ),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    return ThemeData(
       useMaterial3: true,
-      swapLegacyOnMaterial3: true,
-    ).copyWith(
-      // Override specific colors to match Shadcn exactly
-      scaffoldBackgroundColor: ShadCnColors.lightBackground,
-      colorScheme: FlexColorScheme.light(
-        colors: ShadCnFlexScheme.lightSchema,
-        useMaterial3: true,
-      ).toScheme.copyWith(
-            surface: ShadCnColors.lightCard,
-            onSurface: ShadCnColors.lightCardForeground,
-            outline: ShadCnColors.lightBorder,
-            outlineVariant: ShadCnColors.lightInput,
-          ),
-      // Global font theme
-      textTheme: TextTheme(
-        headlineLarge:
-            AppFont.headingLarge.copyWith(color: ShadCnColors.lightForeground),
-        headlineMedium:
-            AppFont.headingMedium.copyWith(color: ShadCnColors.lightForeground),
-        headlineSmall:
-            AppFont.headingSmall.copyWith(color: ShadCnColors.lightForeground),
-        titleLarge:
-            AppFont.titleLarge.copyWith(color: ShadCnColors.lightForeground),
-        titleMedium:
-            AppFont.titleMedium.copyWith(color: ShadCnColors.lightForeground),
-        titleSmall:
-            AppFont.titleSmall.copyWith(color: ShadCnColors.lightForeground),
-        bodyLarge:
-            AppFont.bodyLarge.copyWith(color: ShadCnColors.lightForeground),
-        bodyMedium:
-            AppFont.bodyMedium.copyWith(color: ShadCnColors.lightForeground),
-        bodySmall:
-            AppFont.bodySmall.copyWith(color: ShadCnColors.lightForeground),
-        labelLarge:
-            AppFont.labelLarge.copyWith(color: ShadCnColors.lightForeground),
-        labelMedium:
-            AppFont.labelMedium.copyWith(color: ShadCnColors.lightForeground),
-        labelSmall:
-            AppFont.labelSmall.copyWith(color: ShadCnColors.lightForeground),
+      brightness: brightness,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: t.background,
+      canvasColor: t.background,
+      dividerColor: t.border,
+      textTheme: textTheme,
+      splashFactory: InkSparkle.splashFactory,
+      extensions: <ThemeExtension<dynamic>>[
+        t,
+        AppElevation.of(t, isDark: isDark),
+      ],
+      appBarTheme: AppBarTheme(
+        backgroundColor: t.background,
+        foregroundColor: t.foreground,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        titleTextStyle: AppTypography.h4.copyWith(color: t.foreground),
+      ),
+      cardTheme: CardThemeData(
+        color: t.card,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: square,
+      ),
+      dividerTheme: DividerThemeData(
+        color: t.border,
+        thickness: AppShape.hairline,
+        space: AppShape.hairline,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: t.card,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: square,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: t.card,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        modalElevation: 0,
+        shape: square,
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: t.popover,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: square,
+        textStyle: AppTypography.small.copyWith(color: t.popoverForeground),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: t.foreground,
+        contentTextStyle: AppTypography.small.copyWith(color: t.background),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        shape: square,
+      ),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(color: t.foreground),
+        textStyle: AppTypography.tiny.copyWith(color: t.background),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: t.background,
+        // `border` is decorative; a control's boundary uses `input`, which is
+        // deliberately darker so it holds the 3:1 of WCAG 1.4.11.
+        border: _fieldBorder(t.input),
+        enabledBorder: _fieldBorder(t.input),
+        focusedBorder: _fieldBorder(t.ring),
+        errorBorder: _fieldBorder(t.destructive),
+        focusedErrorBorder: _fieldBorder(t.destructive),
+        disabledBorder: _fieldBorder(t.border),
+        hintStyle: AppTypography.small.copyWith(
+          color: t.mutedForeground.withValues(alpha: 0.7),
+        ),
+        labelStyle: AppTypography.label.copyWith(color: t.mutedForeground),
+        errorStyle: AppTypography.tiny.copyWith(color: t.destructive),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppShape.space3,
+          vertical: AppShape.space3,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: square,
+        side: BorderSide(color: t.input, width: AppShape.hairline),
+        fillColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? t.primary
+              : Colors.transparent,
+        ),
+        checkColor: WidgetStatePropertyAll(t.primaryForeground),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? t.primary
+              : t.input,
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? t.primaryForeground
+              : t.background,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? t.primary
+              : t.muted,
+        ),
+        trackOutlineColor: WidgetStatePropertyAll(t.input),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: t.primary,
+        linearTrackColor: t.muted,
+        circularTrackColor: t.muted,
+      ),
+      iconTheme: IconThemeData(color: t.foreground, size: 20),
+      listTileTheme: ListTileThemeData(
+        shape: square,
+        iconColor: t.mutedForeground,
+        textColor: t.foreground,
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: t.muted,
+        side: BorderSide(color: t.border, width: AppShape.hairline),
+        shape: square,
+        labelStyle: AppTypography.tag.copyWith(color: t.foreground),
+      ),
+      tabBarTheme: TabBarThemeData(
+        labelColor: t.primary,
+        unselectedLabelColor: t.mutedForeground,
+        indicatorColor: t.primary,
+        dividerColor: t.border,
+        labelStyle: AppTypography.button,
+        unselectedLabelStyle: AppTypography.button,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: t.primary,
+        selectionColor: t.primary.withValues(alpha: 0.25),
+        selectionHandleColor: t.primary,
       ),
     );
   }
 
-  // ==================================================
-  // DARK THEME
-  // ==================================================
-  static ThemeData get darkTheme {
-    return FlexThemeData.dark(
-      colors: ShadCnFlexScheme.darkScheme,
-      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-      blendLevel: 0, // No blending to keep exact colors
-      appBarOpacity: 1.0,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      subThemesData: const FlexSubThemesData(
-        blendOnLevel: 0,
-        blendOnColors: false,
-        useM2StyleDividerInM3: false,
-        alignedDropdown: true,
-        useInputDecoratorThemeInDialogs: true,
-
-        // Same styling as light theme
-        elevatedButtonRadius: 8.0,
-        elevatedButtonElevation: 0,
-        elevatedButtonSchemeColor: SchemeColor.primary,
-
-        filledButtonRadius: 8.0,
-        filledButtonSchemeColor: SchemeColor.primary,
-
-        outlinedButtonRadius: 8.0,
-        outlinedButtonBorderWidth: 1.0,
-        outlinedButtonSchemeColor: SchemeColor.primary,
-
-        textButtonRadius: 8.0,
-
-        cardRadius: 8.0,
-        cardElevation: 0,
-
-        inputDecoratorRadius: 8.0,
-        inputDecoratorBorderType: FlexInputBorderType.outline,
-        inputDecoratorFocusedHasBorder: true,
-        inputDecoratorBorderSchemeColor: SchemeColor.outline,
-        inputDecoratorFocusedBorderWidth: 1.0,
-        inputDecoratorBorderWidth: 1.0,
-
-        appBarBackgroundSchemeColor: SchemeColor.surface,
-        appBarForegroundSchemeColor: SchemeColor.onSurface,
-        appBarCenterTitle: false,
-
-        fabRadius: 8.0,
-        fabUseShape: true,
-        fabSchemeColor: SchemeColor.primary,
-
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.primary,
-        bottomNavigationBarUnselectedLabelSchemeColor: SchemeColor.onSurface,
-        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.primary,
-        bottomNavigationBarUnselectedIconSchemeColor: SchemeColor.onSurface,
-
-        dialogRadius: 8.0,
-        dialogElevation: 0,
-
-        bottomSheetRadius: 8.0,
-        bottomSheetElevation: 0,
-
-        chipRadius: 8.0,
-        chipBlendColors: false,
-      ),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      useMaterial3: true,
-      swapLegacyOnMaterial3: true,
-    ).copyWith(
-      // Override specific colors to match Shadcn exactly
-      scaffoldBackgroundColor: ShadCnColors.darkBackground,
-      colorScheme: FlexColorScheme.dark(
-        colors: ShadCnFlexScheme.darkScheme,
-        useMaterial3: true,
-      ).toScheme.copyWith(
-            surface: ShadCnColors.darkCard,
-            onSurface: ShadCnColors.darkCardForeground,
-            outline: ShadCnColors.darkBorder,
-            outlineVariant: ShadCnColors.darkInput,
-          ),
-      // Global font theme
-      textTheme: TextTheme(
-        headlineLarge:
-            AppFont.headingLarge.copyWith(color: ShadCnColors.darkForeground),
-        headlineMedium:
-            AppFont.headingMedium.copyWith(color: ShadCnColors.darkForeground),
-        headlineSmall:
-            AppFont.headingSmall.copyWith(color: ShadCnColors.darkForeground),
-        titleLarge:
-            AppFont.titleLarge.copyWith(color: ShadCnColors.darkForeground),
-        titleMedium:
-            AppFont.titleMedium.copyWith(color: ShadCnColors.darkForeground),
-        titleSmall:
-            AppFont.titleSmall.copyWith(color: ShadCnColors.darkForeground),
-        bodyLarge:
-            AppFont.bodyLarge.copyWith(color: ShadCnColors.darkForeground),
-        bodyMedium:
-            AppFont.bodyMedium.copyWith(color: ShadCnColors.darkForeground),
-        bodySmall:
-            AppFont.bodySmall.copyWith(color: ShadCnColors.darkForeground),
-        labelLarge:
-            AppFont.labelLarge.copyWith(color: ShadCnColors.darkForeground),
-        labelMedium:
-            AppFont.labelMedium.copyWith(color: ShadCnColors.darkForeground),
-        labelSmall:
-            AppFont.labelSmall.copyWith(color: ShadCnColors.darkForeground),
-      ),
-    );
-  }
+  static OutlineInputBorder _fieldBorder(Color color) => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppShape.radius),
+        borderSide: BorderSide(color: color, width: AppShape.hairline),
+      );
 }

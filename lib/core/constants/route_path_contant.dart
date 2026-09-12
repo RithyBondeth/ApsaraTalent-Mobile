@@ -19,4 +19,15 @@ class RoutePathConstant {
   static String chatPath = 'chat';
   static String resumeBuilderPath = 'resume-builder';
   static String settingPath = 'setting';
+
+  // ==================================================
+  // DETAIL ROUTES
+  // Pushed over the tabs rather than into them, so a pinned footer (the job
+  // detail's Apply button) never stacks on top of the tab bar.
+  // ==================================================
+  static String notificationPath = '/notification';
+  static String profilePath = '/profile';
+  static String applicationPath = '/application';
+  static String favoritePath = '/favorite';
+  static String jobDetailPath = '/job';
 }

@@ -1,9 +1,11 @@
+import 'package:apsaratalent_mobile/core/constants/app_constant.dart';
+import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_scaffold.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/otp_field.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/otp/otp_notifier.dart';
-import 'package:apsaratalent_mobile/core/extensions/color_extensions.dart';
-import 'package:apsaratalent_mobile/core/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_otp_widget.dart';
+import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,95 +17,62 @@ class OTPScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final t = context.tokens;
     final otpState = ref.watch(otpProvider);
-    final otpCode = otpState.otp;
-    final isCompleted = otpState.isComplete;
-    return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+
+    return AuthScaffold(
+      showBack: true,
+      showLogo: false,
+      title: 'Verification code',
+      subtitle:
+          'Enter the ${AppConstants.otpLength}-digit code sent to your phone '
+          'number.',
+      children: [
+        const OtpField(length: AppConstants.otpLength),
+        if (otpState.error != null) ...[
+          const SizedBox(height: AppShape.space2),
+          Text(
+            otpState.error!,
+            style: AppTypography.tiny.copyWith(color: t.destructive),
+          ),
+        ],
+        const SizedBox(height: AppShape.space5),
+        AppButton(
+          label: 'Verify',
+          trailingIcon: LucideIcons.check,
+          fullWidth: true,
+          size: AppButtonSize.lg,
+          loading: otpState.isLoading,
+          // Verification has no endpoint wired yet — OtpNotifier only holds
+          // the digits. This enables on a complete code so the flow can be
+          // exercised, and deliberately does not log the code it would send.
+          onPressed: otpState.isComplete ? () {} : null,
+        ),
+        const SizedBox(height: AppShape.space4),
+        Center(
+          child: GestureDetector(
+            onTap: () => ref.read(otpProvider.notifier).clear(),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.all(AppShape.space2),
+              child: Text.rich(
+                TextSpan(
+                  text: "Didn't receive a code? ",
+                  style: AppTypography.small.copyWith(
+                    color: t.mutedForeground,
+                  ),
                   children: [
-                    CustomLogoWidget(
-                      withoutTitle: true,
+                    TextSpan(
+                      text: 'Resend',
+                      style: AppTypography.button.copyWith(color: t.primary),
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Verification Code',
-                      style: context.headlineMedium.bold,
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'Enter the 6-digit code sent to your phone number.',
-                      style: context.titleSmall.secondary,
-                    )
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-              CustomOTPWidget(
-                length: 6,
-                onChanged: (value) {
-                  // State is managed by Riverpod providers
-                  debugPrint('OTP Changed: $value');
-                },
-                onCompleted: (value) {
-                  debugPrint('OTP Completed: $value');
-                  // Handle OTP completion
-                },
-              ),
-              TextButton(
-                onPressed: () {
-                  // Clear OTP and resend code
-                  ref.read(otpProvider.notifier).clear();
-                  debugPrint('Resend code');
-                },
-                child: Text(
-                  'Didn\'t receive code? Resend',
-                  style: context.labelMedium.copyWith(
-                    color: context.primary,
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButtonWidget(
-                      text: 'Back',
-                      icon: Icon(LucideIcons.arrowLeft),
-                      iconPosition: IconPosition.before,
-                      variant: ButtonVariant.outline,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: CustomButtonWidget(
-                      text: 'Verify',
-                      icon: Icon(LucideIcons.check),
-                      iconPosition: IconPosition.after,
-                      onPressed: isCompleted
-                          ? () {
-                              // Handle verification
-                              debugPrint('Verify OTP: $otpCode');
-                            }
-                          : null,
-                    ),
-                  ),
-                ],
-              )
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
