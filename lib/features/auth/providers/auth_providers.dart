@@ -1,4 +1,5 @@
 // Shared provider definitions for auth
+import 'package:apsaratalent_mobile/core/network/network_providers.dart';
 import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
 import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
 import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
@@ -34,7 +35,8 @@ final forgotPasswordPrefixIconProvider = Provider<IconData?>((ref) {
 // Repository provider
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
-    remoteDataSource: AuthRemoteDataSourceImpl(),
+    remoteDataSource: AuthRemoteDataSourceImpl(ref.watch(apiClientProvider)),
+    sessionStore: ref.watch(sessionStoreProvider),
   );
 });
 

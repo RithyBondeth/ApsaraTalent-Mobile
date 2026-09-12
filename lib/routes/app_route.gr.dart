@@ -187,18 +187,48 @@ class NotificationRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [OTPScreen]
-class OTPRoute extends PageRouteInfo<void> {
-  const OTPRoute({List<PageRouteInfo>? children})
-    : super(OTPRoute.name, initialChildren: children);
+class OTPRoute extends PageRouteInfo<OTPRouteArgs> {
+  OTPRoute({Key? key, String? twoFactorToken, List<PageRouteInfo>? children})
+    : super(
+        OTPRoute.name,
+        args: OTPRouteArgs(key: key, twoFactorToken: twoFactorToken),
+        initialChildren: children,
+      );
 
   static const String name = 'OTPRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const OTPScreen();
+      final args = data.argsAs<OTPRouteArgs>(
+        orElse: () => const OTPRouteArgs(),
+      );
+      return OTPScreen(key: args.key, twoFactorToken: args.twoFactorToken);
     },
   );
+}
+
+class OTPRouteArgs {
+  const OTPRouteArgs({this.key, this.twoFactorToken});
+
+  final Key? key;
+
+  final String? twoFactorToken;
+
+  @override
+  String toString() {
+    return 'OTPRouteArgs{key: $key, twoFactorToken: $twoFactorToken}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! OTPRouteArgs) return false;
+    return key == other.key && twoFactorToken == other.twoFactorToken;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ twoFactorToken.hashCode;
 }
 
 /// generated route for
@@ -293,6 +323,22 @@ class SettingRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SettingScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SplashScreen]
+class SplashRoute extends PageRouteInfo<void> {
+  const SplashRoute({List<PageRouteInfo>? children})
+    : super(SplashRoute.name, initialChildren: children);
+
+  static const String name = 'SplashRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SplashScreen();
     },
   );
 }

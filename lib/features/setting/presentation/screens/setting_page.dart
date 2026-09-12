@@ -10,6 +10,7 @@ import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:apsaratalent_mobile/core/enums/theme_enum.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/features/theme/providers/theme_provider.dart';
 
 @RoutePage()
@@ -19,7 +20,8 @@ class SettingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.tokens;
-    final viewer = SampleData.viewer;
+    final user = ref.watch(authSessionProvider).value?.user;
+    final name = user?.displayName ?? 'Your account';
     final themeMode = ref.watch(themeModeProvider);
 
     return AppScreen(
@@ -37,14 +39,18 @@ class SettingScreen extends ConsumerWidget {
           onTap: () => context.router.push(const ProfileRoute()),
           child: Row(
             children: [
-              AppAvatar(name: viewer.name, size: AppAvatarSize.lg),
+              AppAvatar(
+                name: name,
+                imageUrl: user?.avatarUrl,
+                size: AppAvatarSize.lg,
+              ),
               const SizedBox(width: AppShape.space3),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      viewer.name,
+                      name,
                       style: AppTypography.label.copyWith(
                         color: t.foreground,
                         fontWeight: FontWeight.w700,
@@ -53,7 +59,7 @@ class SettingScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      viewer.headline,
+                      user?.headline ?? user?.email ?? '',
                       style: AppTypography.tiny.copyWith(
                         color: t.mutedForeground,
                       ),
@@ -145,7 +151,8 @@ class SettingScreen extends ConsumerWidget {
           icon: LucideIcons.logOut,
           variant: AppButtonVariant.outline,
           fullWidth: true,
-          onPressed: () => context.router.replaceAll([const LoginRoute()]),
+          // The app-level session listener routes to login once this lands.
+          onPressed: () => ref.read(authSessionProvider.notifier).signOut(),
         ),
         const SizedBox(height: AppShape.space6),
       ],
