@@ -1,267 +1,311 @@
+import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
+import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_scaffold.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
-import 'package:apsaratalent_mobile/shared/constants/asset_constant.dart';
-import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
-import 'package:apsaratalent_mobile/shared/extensions/color_extensions.dart';
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/login/login_state.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
+import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 @RoutePage()
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final emailValidationError = ref.watch(emailValidationProvider);
-    final passwordValidationError = ref.watch(passwordValidationProvider);
-    final isValidLoginForm = ref.watch(loginFormValidProvider);
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
 
-    return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomLogoWidget(),
-                      Text(
-                        'Login to your account',
-                        style: context.headlineMedium.bold,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Welcome to Apsara Talent! Select method to log in',
-                        style: context.titleSmall.secondary,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  GridView.count(
-                    padding: EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 3,
-                    children: [
-                      _buildSocialButton(
-                        context: context,
-                        image: AppAssetContant.googleIcon,
-                        label: 'Google',
-                        onClick: () {},
-                      ),
-                      _buildSocialButton(
-                        context: context,
-                        image: AppAssetContant.facebookIcon,
-                        label: 'Facebook',
-                        onClick: () {},
-                      ),
-                      _buildSocialButton(
-                        context: context,
-                        image: AppAssetContant.linkedInIcon,
-                        label: 'LinkedIn',
-                        onClick: () {},
-                      ),
-                      _buildSocialButton(
-                        context: context,
-                        image: AppAssetContant.githubIcon,
-                        label: 'Github',
-                        onClick: () {},
-                      ),
-                    ],
-                  ),
-                  _buildPhoneNumberButton(
-                    context: context,
-                    label: 'Phone Number',
-                    onClick: () {
-                      context.router
-                          .pushPath(AuthRouteConstant.phoneNumberLoginPath);
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  _buildDividerBar(context),
-                ],
-              ),
-              SizedBox(height: 20),
-              Column(
-                children: [
-                  CustomInputWidget(
-                    prefixIcon: LucideIcons.mail,
-                    hintText: 'Email',
-                    errorText: emailValidationError,
-                    onChanged: (String value) {
-                      ref.read(emailInputProvider.notifier).state = value;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  CustomInputWidget(
-                    prefixIcon: LucideIcons.key,
-                    hintText: 'Password',
-                    errorText: passwordValidationError,
-                    onChanged: (String value) {
-                      ref.read(passwordInputProvider.notifier).state = value;
-                    },
-                    isPassword: true,
-                  ),
-                  _buildRememberMeDivider(context, ref),
-                  CustomButtonWidget(
-                    text: 'Login',
-                    onPressed: isValidLoginForm ? () {} : null,
-                  ),
-                  _buildCreateNewAccountDivider(context),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  bool _obscurePassword = true;
+
+  void _onInputChanged(StateProvider<String> provider, String value) {
+    ref.read(provider.notifier).state = value.trim();
+    // A stale "wrong password" under a field the user is already correcting
+    // reads as a second failure. Clear it on the first keystroke.
+    if (ref.read(loginProvider).value?.error != null) {
+      ref.read(loginProvider.notifier).clearError();
+    }
   }
 
-  Widget _buildSocialButton({
-    required BuildContext context,
-    required String image,
-    required String label,
-    required VoidCallback onClick,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: context.primaryForeground,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(image, height: 35, width: 35),
-          ),
-          SizedBox(width: 10),
-          Text(label, style: context.titleSmall),
-        ],
-      ),
-    );
+  void _submit() {
+    ref.read(loginProvider.notifier).login(
+          ref.read(emailInputProvider),
+          ref.read(passwordInputProvider),
+        );
   }
 
-  Widget _buildPhoneNumberButton({
-    required BuildContext context,
-    required String label,
-    required VoidCallback onClick,
-  }) {
-    return InkWell(
-      onTap: onClick,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.primaryForeground,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(LucideIcons.phone),
-                SizedBox(width: 10),
-                Text(label, style: context.titleSmall),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDividerBar(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Row(
-        children: [
-          Expanded(child: Divider()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Expanded(
-              child: Text(
-                'or continute with',
-                style: context.titleSmall.secondary,
-              ),
-            ),
-          ),
-          Expanded(child: Divider()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRememberMeDivider(BuildContext context, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+    final emailError = ref.watch(emailValidationProvider);
+    final passwordError = ref.watch(passwordValidationProvider);
+    final formValid = ref.watch(loginFormValidProvider);
     final rememberMe = ref.watch(rememberMeProvider);
+    final authState = ref.watch(loginProvider);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Transform.scale(
-                scale: 0.8,
-                child: Checkbox(
-                  value: rememberMe,
-                  onChanged: (val) {
-                    ref.read(rememberMeProvider.notifier).state = val ?? false;
-                  },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                ),
-              ),
-              Text('Remember Me', style: context.titleSmall.secondary),
-            ],
-          ),
-          InkWell(
-            onTap: () {
-              context.router.pushPath(AuthRouteConstant.forgotPasswordPath);
-            },
-            child: Text('Forgot Password?', style: context.titleSmall),
-          ),
-        ],
-      ),
-    );
-  }
+    // LoginNotifier folds a failure back into `AsyncValue.data` carrying
+    // `LoginState.error`, so the message lives on the value — an
+    // `authState.whenOrNull(error: …)` branch never fires and the user would
+    // see nothing at all.
+    final loginError = authState.value?.error;
 
-  Widget _buildCreateNewAccountDivider(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
+    ref.listen<AsyncValue<LoginState>>(loginProvider, (_, next) {
+      final state = next.value;
+      if (state == null) return;
+      if (state.requiresTwoFactor) {
+        final token = state.loginResponse?.twoFactorToken;
+        if (token != null) {
+          context.router.push(OTPRoute(twoFactorToken: token));
+        }
+      } else if (state.isLoggedIn) {
+        context.router.replaceAll([const MainRoute()]);
+      }
+    });
+
+    return AuthScaffold(
+      title: 'Log in to your account',
+      subtitle: 'Welcome back to Apsara Talent. Choose how you want to sign in.',
+      footer: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Do not have account yet?',
-            style: context.titleSmall.secondary,
+            "Don't have an account yet? ",
+            style: AppTypography.small.copyWith(color: t.mutedForeground),
           ),
-          SizedBox(width: 5),
-          InkWell(
-            onTap: () {
-              context.router.pushPath(AuthRouteConstant.resetPasswordPath);
-            },
-            child: Text('Create account', style: context.titleSmall),
+          GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: Text(
+              'Create account',
+              style: AppTypography.button.copyWith(
+                color: t.primary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
         ],
+      ),
+      children: [
+        // Social Section
+        //
+        // The full-colour raster marks stay on these buttons: Google's branding
+        // terms require their own logo rather than a monochrome glyph.
+        Row(
+          children: [
+            Expanded(
+              child: _SocialButton(
+                asset: AppAssetPathContant.googleIcon,
+                label: 'Google',
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(width: AppShape.space2),
+            Expanded(
+              child: _SocialButton(
+                asset: AppAssetPathContant.facebookIcon,
+                label: 'Facebook',
+                onTap: () {},
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppShape.space2),
+        Row(
+          children: [
+            Expanded(
+              child: _SocialButton(
+                asset: AppAssetPathContant.linkedInIcon,
+                label: 'LinkedIn',
+                onTap: () {},
+              ),
+            ),
+            const SizedBox(width: AppShape.space2),
+            Expanded(
+              child: _SocialButton(
+                asset: AppAssetPathContant.githubIcon,
+                label: 'GitHub',
+                onTap: () {},
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppShape.space2),
+        AppButton(
+          label: 'Phone number',
+          icon: LucideIcons.phone,
+          variant: AppButtonVariant.outline,
+          fullWidth: true,
+          onPressed: () => context.router.push(const PhoneNumberRoute()),
+        ),
+
+        const SizedBox(height: AppShape.space5),
+        const AuthDivider(label: 'or continue with'),
+        const SizedBox(height: AppShape.space5),
+
+        // Credentials Section
+        AppInput(
+          hintText: 'Email',
+          prefixIcon: LucideIcons.mail,
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
+          autofillHints: const [AutofillHints.email],
+          errorText: emailError,
+          onChanged: (value) => _onInputChanged(emailInputProvider, value),
+        ),
+        const SizedBox(height: AppShape.space3),
+        AppInput(
+          hintText: 'Password',
+          prefixIcon: LucideIcons.lockKeyhole,
+          suffixIcon: _obscurePassword ? LucideIcons.eye : LucideIcons.eyeOff,
+          onSuffixTap: () =>
+              setState(() => _obscurePassword = !_obscurePassword),
+          obscureText: _obscurePassword,
+          textInputAction: TextInputAction.done,
+          autofillHints: const [AutofillHints.password],
+          errorText: passwordError,
+          onChanged: (value) => _onInputChanged(passwordInputProvider, value),
+          onSubmitted: (_) {
+            if (formValid && !authState.isLoading) _submit();
+          },
+        ),
+
+        const SizedBox(height: AppShape.space3),
+        Row(
+          children: [
+            SizedBox(
+              height: 22,
+              width: 22,
+              child: Checkbox(
+                value: rememberMe,
+                onChanged: (value) => ref
+                    .read(rememberMeProvider.notifier)
+                    .state = value ?? false,
+              ),
+            ),
+            const SizedBox(width: AppShape.space2),
+            Expanded(
+              child: Text(
+                'Remember me',
+                style: AppTypography.small.copyWith(color: t.mutedForeground),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => context.router.push(const ForgotPasswordRoute()),
+              behavior: HitTestBehavior.opaque,
+              child: Text(
+                'Forgot password?',
+                style: AppTypography.button.copyWith(color: t.primary),
+              ),
+            ),
+          ],
+        ),
+
+        if (loginError != null) ...[
+          const SizedBox(height: AppShape.space4),
+          _LoginError(message: loginError),
+        ],
+
+        const SizedBox(height: AppShape.space5),
+        AppButton(
+          label: 'Log in',
+          fullWidth: true,
+          size: AppButtonSize.lg,
+          loading: authState.isLoading,
+          onPressed: formValid ? _submit : null,
+        ),
+      ],
+    );
+  }
+}
+
+/// A failed login. Drawn on the destructive status tokens — this is a state,
+/// and the status family is the one that carries severity.
+class _LoginError extends StatelessWidget {
+  const _LoginError({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+
+    return Semantics(
+      liveRegion: true,
+      child: Container(
+        padding: const EdgeInsets.all(AppShape.space3),
+        decoration: BoxDecoration(
+          color: t.destructiveSubtle,
+          border: Border.all(
+            color: t.destructiveBorder,
+            width: AppShape.hairline,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(LucideIcons.triangleAlert, size: 16, color: t.destructiveAccent),
+            const SizedBox(width: AppShape.space2),
+            Expanded(
+              child: Text(
+                message,
+                style: AppTypography.small.copyWith(
+                  color: t.destructiveAccent,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SocialButton extends StatelessWidget {
+  const _SocialButton({
+    required this.asset,
+    required this.label,
+    required this.onTap,
+  });
+
+  final String asset;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: AppShape.controlHeightMd,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: t.background,
+          border: Border.all(color: t.input, width: AppShape.hairline),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(asset, height: 18, width: 18),
+            const SizedBox(width: AppShape.space2),
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.button.copyWith(color: t.foreground),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

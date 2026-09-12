@@ -1,0 +1,18 @@
+import 'package:apsaratalent_mobile/core/configs/environment.dart';
+import 'package:apsaratalent_mobile/core/enums/environment_enum.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class AppConfigService {
+  AppConfigService._();
+
+  static Future<void> initialize(EEnvironmentType env) async {
+    AppEnvironmentConfig.setEnvironment(env);
+    await dotenv.load(fileName: AppEnvironmentConfig.envFileName);
+  }
+
+  static String get appName =>
+      dotenv.get('APP_NAME', fallback: 'Apsara Talent');
+  static String get apiBaseUrl => dotenv.get('API_BASE_URL', fallback: '');
+  static bool get debugMode =>
+      dotenv.get('DEBUG_MODE', fallback: 'false').toLowerCase() == 'true';
+}

@@ -1,5 +1,6 @@
-import 'package:apsaratalent_mobile/shared/functions/check_email_function.dart';
-import 'package:apsaratalent_mobile/shared/functions/check_phonenumber_function.dart';
+// Validation providers for auth
+import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
+import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_providers.dart';
 
@@ -9,12 +10,12 @@ final forgotPasswordValidationProvider = Provider<String?>((ref) {
 
   if (input.isEmpty) return null;
 
-  if (isEmail(input)) {
+  if (EmailValidator.validate(input) != null) {
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(input)) {
       return 'Please enter a valid email address';
     }
-  } else if (isPhoneNumber(input)) {
+  } else if (PhoneValidator.validate(input) != null) {
     // Validate phone format
     final cleanPhone = input.replaceAll(RegExp(r'[\s\-\(\)]'), '');
     if (cleanPhone.length < 8) {
