@@ -8,6 +8,8 @@ library;
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_avatar.dart';
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_button.dart';
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_input.dart';
+export 'package:apsaratalent_mobile/shared/widgets/ui/app_picker_field.dart';
+export 'package:apsaratalent_mobile/shared/widgets/ui/app_tag_input.dart';
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_screen.dart';
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_skeleton.dart';
 export 'package:apsaratalent_mobile/shared/widgets/ui/app_status_pill.dart';

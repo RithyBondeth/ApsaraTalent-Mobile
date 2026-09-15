@@ -125,6 +125,12 @@ class SettingScreen extends ConsumerWidget {
         _SettingGroup(
           children: [
             _SettingRow(
+              icon: LucideIcons.shieldCheck,
+              label: 'Two-step verification',
+              value: (user?.isTwoFactorEnabled ?? false) ? 'On' : 'Off',
+              onTap: () => context.router.push(const TwoFactorSettingsRoute()),
+            ),
+            _SettingRow(
               icon: LucideIcons.shield,
               label: 'Privacy',
               value: 'Who can see your profile',

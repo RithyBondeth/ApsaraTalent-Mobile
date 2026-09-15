@@ -1,7 +1,6 @@
 // Shared provider definitions for auth
 import 'package:apsaratalent_mobile/core/network/network_providers.dart';
-import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
-import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
+import 'package:apsaratalent_mobile/core/validators/identifier_validator.dart';
 import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source_impl.dart';
 import 'package:apsaratalent_mobile/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/repositories/auth_repository.dart';
@@ -17,19 +16,15 @@ final passwordInputProvider = StateProvider<String>((ref) => '');
 final rememberMeProvider = StateProvider<bool>((ref) => false);
 final forgotPasswordInputProvider = StateProvider<String>((ref) => '');
 
-// Forgot password prefix icon provider
+// Forgot password prefix icon provider: a mail glyph for an address, a handset
+// for a number, nothing until the input is one or the other.
 final forgotPasswordPrefixIconProvider = Provider<IconData?>((ref) {
   final input = ref.watch(forgotPasswordInputProvider);
-
-  if (input.isEmpty) {
-    return null;
-  } else if (EmailValidator.validate(input) != null) {
-    return LucideIcons.mail;
-  } else if (PhoneValidator.validate(input) != null) {
-    return LucideIcons.phone;
-  } else {
-    return null;
-  }
+  return switch (IdentifierValidator.kindOf(input)) {
+    EIdentifierKind.email => LucideIcons.mail,
+    EIdentifierKind.phone => LucideIcons.phone,
+    null => null,
+  };
 });
 
 // Repository provider

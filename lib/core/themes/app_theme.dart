@@ -116,6 +116,24 @@ class AppTheme {
         elevation: 0,
         shape: square,
       ),
+      // Material 3's picker brings its own 28px dialog and circular day chips;
+      // neither reads dialogTheme, so both are squared here.
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: t.card,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: square,
+        headerBackgroundColor: t.card,
+        headerForegroundColor: t.foreground,
+        dividerColor: t.border,
+        dayShape: const WidgetStatePropertyAll(square),
+        yearShape: const WidgetStatePropertyAll(square),
+        todayBorder: BorderSide(color: t.ring, width: AppShape.hairline),
+        rangePickerShape: square,
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
+        ),
+      ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: t.card,
         surfaceTintColor: Colors.transparent,

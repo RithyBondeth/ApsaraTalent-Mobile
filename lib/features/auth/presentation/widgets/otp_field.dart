@@ -9,14 +9,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A six-box one-time-code field, writing through [otpProvider].
 ///
-/// Each box is square with an `input`-token boundary that turns `ring` on
-/// focus, so it agrees with `AppInput` rather than inventing its own resting
-/// state.
+/// The boxes are drawn, not typed into. One invisible [TextField] underneath
+/// owns focus and the whole code. Six fields that hand focus to each other
+/// lose keystrokes on iOS: every hand-off closes and reopens the platform
+/// input connection, and a digit that arrives in between is dropped — which
+/// is exactly how fast typing, paste and one-time-code autofill deliver.
 ///
-/// Entry is kept strictly left to right. [OtpNotifier.updateDigit] appends
-/// when the index is past the current end, so typing into box 4 of an empty
-/// code would land the digit in position 0. Tapping any box therefore focuses
-/// the first empty one instead.
+/// Each box is square with an `input`-token boundary; the box the next digit
+/// lands in turns `ring` while the field has focus, so it agrees with
+/// `AppInput` rather than inventing its own resting state.
 class OtpField extends ConsumerStatefulWidget {
   const OtpField({super.key, this.length = 6, this.onCompleted});
 
@@ -28,155 +29,132 @@ class OtpField extends ConsumerStatefulWidget {
 }
 
 class _OtpFieldState extends ConsumerState<OtpField> {
-  late final List<FocusNode> _focusNodes =
-      List.generate(widget.length, (_) => FocusNode());
-  late final List<TextEditingController> _controllers =
-      List.generate(widget.length, (_) => TextEditingController());
+  late final TextEditingController _controller =
+      TextEditingController(text: ref.read(otpProvider).otp);
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChange);
+  }
 
   @override
   void dispose() {
-    for (final node in _focusNodes) {
-      node.dispose();
-    }
-    for (final controller in _controllers) {
-      controller.dispose();
-    }
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
-  void _focusFirstEmpty() {
-    final filled = ref.read(otpProvider).otp.length;
-    _focusNodes[filled.clamp(0, widget.length - 1)].requestFocus();
-  }
+  void _onFocusChange() => setState(() {});
 
-  void _onChanged(int index, String value) {
-    final notifier = ref.read(otpProvider.notifier);
-    final digits = value.replaceAll(RegExp(r'\D'), '');
-
-    if (digits.length <= 1) {
-      notifier.updateDigit(index, digits);
-      if (digits.isNotEmpty && index < widget.length - 1) {
-        _focusNodes[index + 1].requestFocus();
-      }
-    } else {
-      // SMS autofill and paste both deliver the whole code into the focused
-      // box in one go. Spread it forward rather than truncating to the first
-      // digit, which is what a `maxLength: 1` box would do.
-      var i = index;
-      for (final digit in digits.split('')) {
-        if (i >= widget.length) break;
-        _controllers[i].value = TextEditingValue(
-          text: digit,
-          selection: const TextSelection.collapsed(offset: 1),
-        );
-        notifier.updateDigit(i, digit);
-        i++;
-      }
-      _focusNodes[i.clamp(0, widget.length - 1)].requestFocus();
+  void _onChanged(String value) {
+    // Keep the caret at the end: the code is entered and erased from the
+    // right, never edited in the middle of a box the user cannot see into.
+    if (_controller.selection.baseOffset != value.length) {
+      _controller.selection = TextSelection.collapsed(offset: value.length);
     }
+    ref.read(otpProvider.notifier).setCode(value);
 
-    final state = ref.read(otpProvider);
-    if (state.isComplete) {
-      FocusScope.of(context).unfocus();
-      widget.onCompleted?.call(state.otp);
+    if (value.length == widget.length) {
+      _focusNode.unfocus();
+      widget.onCompleted?.call(value);
     }
-  }
-
-  /// Backspace in an already-empty box steps back and clears the previous one.
-  /// The soft keyboard sends no change event for an empty field, so this is
-  /// caught as a key event instead.
-  KeyEventResult _onKey(int index, KeyEvent event) {
-    if (event is KeyDownEvent &&
-        event.logicalKey == LogicalKeyboardKey.backspace &&
-        _controllers[index].text.isEmpty &&
-        index > 0) {
-      _controllers[index - 1].clear();
-      ref.read(otpProvider.notifier).updateDigit(index - 1, '');
-      _focusNodes[index - 1].requestFocus();
-      return KeyEventResult.handled;
-    }
-    return KeyEventResult.ignored;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Resend clears the notifier; the boxes hold their own controllers, so
-    // they have to be emptied to match or the old code stays on screen.
+    // Resend and a rejected code clear the notifier; the controller has to
+    // follow or the old code stays on screen.
     ref.listen<OtpState>(otpProvider, (previous, next) {
-      if (next.otp.isEmpty && (previous?.otp.isNotEmpty ?? false)) {
-        for (final controller in _controllers) {
-          controller.clear();
-        }
-        _focusNodes.first.requestFocus();
+      if (next.otp != _controller.text) {
+        _controller.value = TextEditingValue(
+          text: next.otp,
+          selection: TextSelection.collapsed(offset: next.otp.length),
+        );
+        if (next.otp.isEmpty) _focusNode.requestFocus();
       }
     });
 
-    return Row(
+    final code = ref.watch(otpProvider.select((s) => s.otp));
+    final active = _focusNode.hasFocus
+        ? code.length.clamp(0, widget.length - 1)
+        : -1;
+
+    return Stack(
       children: [
-        for (var i = 0; i < widget.length; i++)
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                right: i == widget.length - 1 ? 0 : AppShape.space2,
-              ),
-              child: Focus(
-                canRequestFocus: false,
-                skipTraversal: true,
-                onKeyEvent: (_, event) => _onKey(i, event),
-                child: _OtpBox(
-                  controller: _controllers[i],
-                  focusNode: _focusNodes[i],
-                  autofocus: i == 0,
-                  onTap: _focusFirstEmpty,
-                  onChanged: (value) => _onChanged(i, value),
+        Row(
+          children: [
+            for (var i = 0; i < widget.length; i++)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    right: i == widget.length - 1 ? 0 : AppShape.space2,
+                  ),
+                  child: _OtpBox(
+                    digit: i < code.length ? code[i] : '',
+                    active: i == active,
+                    showCaret: i == active && code.length < widget.length,
+                  ),
                 ),
               ),
+          ],
+        ),
+        Positioned.fill(
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              textSelectionTheme: const TextSelectionThemeData(
+                selectionColor: Colors.transparent,
+              ),
+            ),
+            child: TextField(
+              controller: _controller,
+              focusNode: _focusNode,
+              autofocus: true,
+              maxLength: widget.length,
+              keyboardType: TextInputType.number,
+              autofillHints: const [AutofillHints.oneTimeCode],
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(widget.length),
+              ],
+              showCursor: false,
+              // Transparent, not hidden: an offstage field cannot take focus,
+              // autofill, or the paste menu.
+              style: const TextStyle(color: Colors.transparent, fontSize: 1),
+              // `filled: false` matters: the app theme fills every input, and
+              // this one sits on top of the boxes it would otherwise paint over.
+              decoration: const InputDecoration(
+                filled: false,
+                counterText: '',
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+                isCollapsed: true,
+              ),
+              expands: true,
+              maxLines: null,
+              onChanged: _onChanged,
             ),
           ),
+        ),
       ],
     );
   }
 }
 
-class _OtpBox extends StatefulWidget {
+class _OtpBox extends StatelessWidget {
   const _OtpBox({
-    required this.controller,
-    required this.focusNode,
-    required this.autofocus,
-    required this.onTap,
-    required this.onChanged,
+    required this.digit,
+    required this.active,
+    required this.showCaret,
   });
 
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final bool autofocus;
-  final VoidCallback onTap;
-  final ValueChanged<String> onChanged;
-
-  @override
-  State<_OtpBox> createState() => _OtpBoxState();
-}
-
-class _OtpBoxState extends State<_OtpBox> {
-  bool _focused = false;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.focusNode.addListener(_onFocusChange);
-  }
-
-  void _onFocusChange() {
-    if (_focused != widget.focusNode.hasFocus) {
-      setState(() => _focused = widget.focusNode.hasFocus);
-    }
-  }
-
-  @override
-  void dispose() {
-    widget.focusNode.removeListener(_onFocusChange);
-    super.dispose();
-  }
+  final String digit;
+  final bool active;
+  final bool showCaret;
 
   @override
   Widget build(BuildContext context) {
@@ -185,32 +163,17 @@ class _OtpBoxState extends State<_OtpBox> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       height: 56,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: t.background,
         border: Border.all(
-          color: _focused ? t.ring : t.input,
+          color: active ? t.ring : t.input,
           width: AppShape.hairline,
         ),
       ),
-      child: TextField(
-        controller: widget.controller,
-        focusNode: widget.focusNode,
-        autofocus: widget.autofocus,
-        onTap: widget.onTap,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        autofillHints: const [AutofillHints.oneTimeCode],
-        cursorColor: t.primary,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        style: AppTypography.h4.copyWith(color: t.foreground),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          contentPadding: EdgeInsets.zero,
-        ),
-        onChanged: widget.onChanged,
-      ),
+      child: showCaret
+          ? Container(width: 2, height: 24, color: t.primary)
+          : Text(digit, style: AppTypography.h4.copyWith(color: t.foreground)),
     );
   }
 }

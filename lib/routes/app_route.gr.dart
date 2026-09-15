@@ -43,6 +43,78 @@ class ChatRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [EmailVerificationScreen]
+class EmailVerificationRoute extends PageRouteInfo<EmailVerificationRouteArgs> {
+  EmailVerificationRoute({
+    Key? key,
+    required String email,
+    bool fromSignup = false,
+    bool sendCode = false,
+    List<PageRouteInfo>? children,
+  }) : super(
+         EmailVerificationRoute.name,
+         args: EmailVerificationRouteArgs(
+           key: key,
+           email: email,
+           fromSignup: fromSignup,
+           sendCode: sendCode,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'EmailVerificationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EmailVerificationRouteArgs>();
+      return EmailVerificationScreen(
+        key: args.key,
+        email: args.email,
+        fromSignup: args.fromSignup,
+        sendCode: args.sendCode,
+      );
+    },
+  );
+}
+
+class EmailVerificationRouteArgs {
+  const EmailVerificationRouteArgs({
+    this.key,
+    required this.email,
+    this.fromSignup = false,
+    this.sendCode = false,
+  });
+
+  final Key? key;
+
+  final String email;
+
+  final bool fromSignup;
+
+  final bool sendCode;
+
+  @override
+  String toString() {
+    return 'EmailVerificationRouteArgs{key: $key, email: $email, fromSignup: $fromSignup, sendCode: $sendCode}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EmailVerificationRouteArgs) return false;
+    return key == other.key &&
+        email == other.email &&
+        fromSignup == other.fromSignup &&
+        sendCode == other.sendCode;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^ email.hashCode ^ fromSignup.hashCode ^ sendCode.hashCode;
+}
+
+/// generated route for
 /// [FavoriteScreen]
 class FavoriteRoute extends PageRouteInfo<void> {
   const FavoriteRoute({List<PageRouteInfo>? children})
@@ -188,12 +260,20 @@ class NotificationRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [OTPScreen]
 class OTPRoute extends PageRouteInfo<OTPRouteArgs> {
-  OTPRoute({Key? key, String? twoFactorToken, List<PageRouteInfo>? children})
-    : super(
-        OTPRoute.name,
-        args: OTPRouteArgs(key: key, twoFactorToken: twoFactorToken),
-        initialChildren: children,
-      );
+  OTPRoute({
+    Key? key,
+    String? twoFactorToken,
+    String? phone,
+    List<PageRouteInfo>? children,
+  }) : super(
+         OTPRoute.name,
+         args: OTPRouteArgs(
+           key: key,
+           twoFactorToken: twoFactorToken,
+           phone: phone,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'OTPRoute';
 
@@ -203,32 +283,40 @@ class OTPRoute extends PageRouteInfo<OTPRouteArgs> {
       final args = data.argsAs<OTPRouteArgs>(
         orElse: () => const OTPRouteArgs(),
       );
-      return OTPScreen(key: args.key, twoFactorToken: args.twoFactorToken);
+      return OTPScreen(
+        key: args.key,
+        twoFactorToken: args.twoFactorToken,
+        phone: args.phone,
+      );
     },
   );
 }
 
 class OTPRouteArgs {
-  const OTPRouteArgs({this.key, this.twoFactorToken});
+  const OTPRouteArgs({this.key, this.twoFactorToken, this.phone});
 
   final Key? key;
 
   final String? twoFactorToken;
 
+  final String? phone;
+
   @override
   String toString() {
-    return 'OTPRouteArgs{key: $key, twoFactorToken: $twoFactorToken}';
+    return 'OTPRouteArgs{key: $key, twoFactorToken: $twoFactorToken, phone: $phone}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! OTPRouteArgs) return false;
-    return key == other.key && twoFactorToken == other.twoFactorToken;
+    return key == other.key &&
+        twoFactorToken == other.twoFactorToken &&
+        phone == other.phone;
   }
 
   @override
-  int get hashCode => key.hashCode ^ twoFactorToken.hashCode;
+  int get hashCode => key.hashCode ^ twoFactorToken.hashCode ^ phone.hashCode;
 }
 
 /// generated route for
@@ -265,18 +353,64 @@ class ProfileRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ResetPasswordScreen]
-class ResetPasswordRoute extends PageRouteInfo<void> {
-  const ResetPasswordRoute({List<PageRouteInfo>? children})
-    : super(ResetPasswordRoute.name, initialChildren: children);
+class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
+  ResetPasswordRoute({
+    Key? key,
+    String? sentTo,
+    bool viaPhone = false,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ResetPasswordRoute.name,
+         args: ResetPasswordRouteArgs(
+           key: key,
+           sentTo: sentTo,
+           viaPhone: viaPhone,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'ResetPasswordRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ResetPasswordScreen();
+      final args = data.argsAs<ResetPasswordRouteArgs>(
+        orElse: () => const ResetPasswordRouteArgs(),
+      );
+      return ResetPasswordScreen(
+        key: args.key,
+        sentTo: args.sentTo,
+        viaPhone: args.viaPhone,
+      );
     },
   );
+}
+
+class ResetPasswordRouteArgs {
+  const ResetPasswordRouteArgs({this.key, this.sentTo, this.viaPhone = false});
+
+  final Key? key;
+
+  final String? sentTo;
+
+  final bool viaPhone;
+
+  @override
+  String toString() {
+    return 'ResetPasswordRouteArgs{key: $key, sentTo: $sentTo, viaPhone: $viaPhone}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ResetPasswordRouteArgs) return false;
+    return key == other.key &&
+        sentTo == other.sentTo &&
+        viaPhone == other.viaPhone;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ sentTo.hashCode ^ viaPhone.hashCode;
 }
 
 /// generated route for
@@ -328,6 +462,54 @@ class SettingRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SignupAccountScreen]
+class SignupAccountRoute extends PageRouteInfo<void> {
+  const SignupAccountRoute({List<PageRouteInfo>? children})
+    : super(SignupAccountRoute.name, initialChildren: children);
+
+  static const String name = 'SignupAccountRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SignupAccountScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SignupProfileScreen]
+class SignupProfileRoute extends PageRouteInfo<void> {
+  const SignupProfileRoute({List<PageRouteInfo>? children})
+    : super(SignupProfileRoute.name, initialChildren: children);
+
+  static const String name = 'SignupProfileRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SignupProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [SignupRoleScreen]
+class SignupRoleRoute extends PageRouteInfo<void> {
+  const SignupRoleRoute({List<PageRouteInfo>? children})
+    : super(SignupRoleRoute.name, initialChildren: children);
+
+  static const String name = 'SignupRoleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SignupRoleScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [SplashScreen]
 class SplashRoute extends PageRouteInfo<void> {
   const SplashRoute({List<PageRouteInfo>? children})
@@ -339,6 +521,22 @@ class SplashRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SplashScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [TwoFactorSettingsScreen]
+class TwoFactorSettingsRoute extends PageRouteInfo<void> {
+  const TwoFactorSettingsRoute({List<PageRouteInfo>? children})
+    : super(TwoFactorSettingsRoute.name, initialChildren: children);
+
+  static const String name = 'TwoFactorSettingsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const TwoFactorSettingsScreen();
     },
   );
 }

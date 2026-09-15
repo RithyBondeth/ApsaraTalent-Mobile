@@ -2,7 +2,9 @@ import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_message.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_scaffold.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/signup/signup_notifier.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/auth_validation_providers.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/login/login_state.dart';
@@ -23,6 +25,17 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _obscurePassword = true;
+
+  // Held so the field can be emptied from outside: a password reset clears
+  // [passwordInputProvider], and the old password must not stay in the box
+  // looking like it will still work.
+  final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _password.dispose();
+    super.dispose();
+  }
 
   void _onInputChanged(StateProvider<String> provider, String value) {
     ref.read(provider.notifier).state = value.trim();
@@ -55,6 +68,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     // see nothing at all.
     final loginError = authState.value?.error;
 
+    ref.listen<String>(passwordInputProvider, (_, next) {
+      if (next.isEmpty && _password.text.isNotEmpty) _password.clear();
+    });
+
     ref.listen<AsyncValue<LoginState>>(loginProvider, (_, next) {
       final state = next.value;
       if (state == null) return;
@@ -63,6 +80,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (token != null) {
           context.router.push(OTPRoute(twoFactorToken: token));
         }
+      } else if (state.unverifiedEmail != null) {
+        final email = state.unverifiedEmail!;
+        // Consume it, or returning to this screen would route again.
+        ref.read(loginProvider.notifier).clearError();
+        context.router.push(EmailVerificationRoute(email: email, sendCode: true));
       } else if (state.isLoggedIn) {
         context.router.replaceAll([const MainRoute()]);
       }
@@ -79,7 +101,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             style: AppTypography.small.copyWith(color: t.mutedForeground),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              ref.read(signupProvider.notifier).reset();
+              context.router.push(const SignupRoleRoute());
+            },
             behavior: HitTestBehavior.opaque,
             child: Text(
               'Create account',
@@ -160,6 +185,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
         const SizedBox(height: AppShape.space3),
         AppInput(
+          controller: _password,
           hintText: 'Password',
           prefixIcon: LucideIcons.lockKeyhole,
           suffixIcon: _obscurePassword ? LucideIcons.eye : LucideIcons.eyeOff,
@@ -208,7 +234,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         if (loginError != null) ...[
           const SizedBox(height: AppShape.space4),
-          _LoginError(message: loginError),
+          AuthMessage.error(loginError),
         ],
 
         const SizedBox(height: AppShape.space5),
@@ -220,49 +246,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           onPressed: formValid ? _submit : null,
         ),
       ],
-    );
-  }
-}
-
-/// A failed login. Drawn on the destructive status tokens — this is a state,
-/// and the status family is the one that carries severity.
-class _LoginError extends StatelessWidget {
-  const _LoginError({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = context.tokens;
-
-    return Semantics(
-      liveRegion: true,
-      child: Container(
-        padding: const EdgeInsets.all(AppShape.space3),
-        decoration: BoxDecoration(
-          color: t.destructiveSubtle,
-          border: Border.all(
-            color: t.destructiveBorder,
-            width: AppShape.hairline,
-          ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(LucideIcons.triangleAlert, size: 16, color: t.destructiveAccent),
-            const SizedBox(width: AppShape.space2),
-            Expanded(
-              child: Text(
-                message,
-                style: AppTypography.small.copyWith(
-                  color: t.destructiveAccent,
-                  height: 1.4,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

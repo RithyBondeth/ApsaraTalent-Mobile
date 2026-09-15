@@ -47,6 +47,8 @@ class CurrentUserResponse {
       headline: headline,
       email: email,
       avatarUrl: avatar,
+      isEmailVerified: _json['isEmailVerified'] != false,
+      isTwoFactorEnabled: _json['isTwoFactorEnabled'] == true,
     );
   }
 

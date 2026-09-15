@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/verify_email_notice.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/company_card.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/job_card.dart';
@@ -46,6 +47,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         await Future<void>.delayed(const Duration(milliseconds: 600));
       },
       children: [
+        const VerifyEmailNotice(),
+
         // The banner's stats are the counts this page has already loaded.
         // Nothing here is awaiting a fetch, so they can be passed on first
         // paint; a page that fetches must withhold them until the data lands

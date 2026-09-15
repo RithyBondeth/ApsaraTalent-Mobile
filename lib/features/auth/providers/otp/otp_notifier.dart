@@ -22,6 +22,13 @@ class OtpNotifier extends StateNotifier<OtpState> {
     state = state.copyWith(otp: otp.join(), clearError: true);
   }
 
+  /// Replaces the whole code at once — typing, paste and one-time-code
+  /// autofill all arrive through the same single input.
+  void setCode(String code) {
+    if (code == state.otp) return;
+    state = state.copyWith(otp: code, clearError: true);
+  }
+
   // Clear all digits
   void clear() {
     state = state.copyWith(clearOtp: true);

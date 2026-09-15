@@ -34,6 +34,14 @@ class LoginNotifier extends AsyncNotifier<LoginState> {
 
     if (state.hasError) {
       final error = state.error;
+      // The API answers 403 "Please verify your email first" for an unverified
+      // account. 403 alone isn't enough — a suspended account gets one too.
+      if (error is ApiException &&
+          error.statusCode == 403 &&
+          error.message.toLowerCase().contains('verify your email')) {
+        state = AsyncValue.data(LoginState(unverifiedEmail: identifier));
+        return;
+      }
       final message = error is ApiException
           ? error.message
           : 'Login failed. Please try again.';
@@ -47,9 +55,10 @@ class LoginNotifier extends AsyncNotifier<LoginState> {
         state.value?.copyWith(clearResponse: true) ?? LoginState());
   }
 
-  // Clear error state
+  // Clear error state, including a pending unverified-email redirect.
   void clearError() {
-    state = AsyncValue.data(
-        state.value?.copyWith(clearError: true) ?? LoginState());
+    state = AsyncValue.data(LoginState(
+      loginResponse: state.value?.loginResponse,
+    ));
   }
 }

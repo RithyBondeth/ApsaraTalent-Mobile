@@ -1,6 +1,10 @@
 import 'package:apsaratalent_mobile/core/constants/route_path_contant.dart';
 import 'package:apsaratalent_mobile/features/application/presentation/screens/application_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/email_verification_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/signup/signup_account_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/signup/signup_profile_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/screens/signup/signup_role_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/login_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/otp_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/phone_number_screen.dart';
@@ -15,6 +19,7 @@ import 'package:apsaratalent_mobile/features/profile/presentation/screens/profil
 import 'package:apsaratalent_mobile/features/resume_builder/presentation/screens/resume_builder_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/setting_page.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/two_factor_settings_screen.dart';
 import 'package:apsaratalent_mobile/features/splash/presentation/screens/splash_screen.dart';
 import 'package:apsaratalent_mobile/routes/auth_guard.dart';
 import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
@@ -57,6 +62,24 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: OTPRoute.page,
           path: RoutePathConstant.phoneOTPPath,
+        ),
+        AutoRoute(
+          page: EmailVerificationRoute.page,
+          path: RoutePathConstant.emailVerificationPath,
+        ),
+
+        // Signup routes — open, like login: nobody has a session yet.
+        AutoRoute(
+          page: SignupRoleRoute.page,
+          path: RoutePathConstant.signupRolePath,
+        ),
+        AutoRoute(
+          page: SignupAccountRoute.page,
+          path: RoutePathConstant.signupAccountPath,
+        ),
+        AutoRoute(
+          page: SignupProfileRoute.page,
+          path: RoutePathConstant.signupProfilePath,
         ),
 
         // Main app routes
@@ -113,6 +136,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: JobDetailRoute.page,
           path: RoutePathConstant.jobDetailPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: TwoFactorSettingsRoute.page,
+          path: RoutePathConstant.twoFactorSettingsPath,
           guards: [_authGuard],
         ),
       ];
