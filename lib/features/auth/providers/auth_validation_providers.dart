@@ -1,31 +1,14 @@
 // Validation providers for auth
-import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
-import 'package:apsaratalent_mobile/core/validators/phone_validator.dart';
+import 'package:apsaratalent_mobile/core/validators/identifier_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'auth_providers.dart';
 
 // Validation provider for forgot password
 final forgotPasswordValidationProvider = Provider<String?>((ref) {
   final input = ref.watch(forgotPasswordInputProvider);
-
-  if (input.isEmpty) return null;
-
-  if (EmailValidator.validate(input) != null) {
-    // Validate email format
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(input)) {
-      return 'Please enter a valid email address';
-    }
-  } else if (PhoneValidator.validate(input) != null) {
-    // Validate phone format
-    final cleanPhone = input.replaceAll(RegExp(r'[\s\-\(\)]'), '');
-    if (cleanPhone.length < 8) {
-      return 'Phone number must be at least 8 digits';
-    }
-  } else {
-    return 'Please enter a valid email or phone number';
-  }
-
-  return null;
+  // No error while the field is still empty; the button stays disabled instead.
+  if (input.trim().isEmpty) return null;
+  return IdentifierValidator.validate(input);
 });
 
 // Provider to check if forgot password form is valid

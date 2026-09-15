@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/session/jwt_expiry.dart';
 import 'package:apsaratalent_mobile/core/session/session_store.dart';
 import 'package:apsaratalent_mobile/core/session/token_refresher.dart';
 import 'package:dio/dio.dart';
@@ -39,6 +40,17 @@ class SessionInterceptor extends Interceptor {
   /// that exchanges credentials rather than using a session.
   static const Map<String, dynamic> publicRequest = {_publicKey: true};
 
+  static const _businessKey = 'session.business401';
+
+  /// For an authenticated request whose endpoint also answers 401 for an
+  /// ordinary rejection — the 2FA enable and disable endpoints say "Invalid
+  /// code" that way. A 401 there is only treated as a lapsed session when the
+  /// access token really has expired; otherwise it goes straight to the caller.
+  ///
+  /// Without this, a mistyped code spent a refresh (rotating the user's one
+  /// refresh token) and then replayed the same wrong code.
+  static const Map<String, dynamic> businessRejections = {_businessKey: true};
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final token = _store.accessToken;
@@ -61,6 +73,10 @@ class SessionInterceptor extends Interceptor {
         options.extra[_publicKey] == true ||
         options.extra[_retriedKey] == true ||
         usedToken == null) {
+      return handler.next(err);
+    }
+
+    if (options.extra[_businessKey] == true && !isJwtExpired(usedToken)) {
       return handler.next(err);
     }
 

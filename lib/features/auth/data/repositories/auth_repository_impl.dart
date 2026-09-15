@@ -4,6 +4,8 @@ import 'package:apsaratalent_mobile/core/session/auth_tokens.dart';
 import 'package:apsaratalent_mobile/core/session/session_store.dart';
 import 'package:apsaratalent_mobile/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:apsaratalent_mobile/features/auth/data/models/login_response.dart';
+import 'package:apsaratalent_mobile/features/auth/data/models/registration_request.dart';
+import 'package:apsaratalent_mobile/features/auth/data/models/two_factor_setup.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/entities/current_user_entity.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/repositories/auth_repository.dart';
 
@@ -47,6 +49,94 @@ class AuthRepositoryImpl implements AuthRepository {
       return result.response;
     });
   }
+
+  @override
+  Future<String> requestPhoneOtp(String phone) => _guard(
+        'Could not send a code. Please try again.',
+        () => _remoteDataSource.requestPhoneOtp(phone),
+      );
+
+  @override
+  Future<LoginResponse> verifyPhoneOtp(
+    String phone,
+    String otp, {
+    required bool remember,
+  }) {
+    return _guard('Verification failed. Please try again.', () async {
+      final result = await _remoteDataSource.verifyPhoneOtp(phone, otp);
+      await _keep(result.tokens, remember: remember);
+      return result.response;
+    });
+  }
+
+  @override
+  Future<LoginResponse> registerEmployee(EmployeeRegistration request) {
+    return _guard('Could not create your account. Please try again.', () async {
+      final result = await _remoteDataSource.registerEmployee(request);
+      await _keep(result.tokens, remember: true);
+      return result.response;
+    });
+  }
+
+  @override
+  Future<LoginResponse> registerCompany(CompanyRegistration request) {
+    return _guard('Could not create your account. Please try again.', () async {
+      final result = await _remoteDataSource.registerCompany(request);
+      await _keep(result.tokens, remember: true);
+      return result.response;
+    });
+  }
+
+  @override
+  Future<String> verifyEmail(String email, String otp) => _guard(
+        'Could not verify your email. Please try again.',
+        () => _remoteDataSource.verifyEmail(email, otp),
+      );
+
+  @override
+  Future<String> resendEmailOtp(String email) => _guard(
+        'Could not send a new code. Please try again.',
+        () => _remoteDataSource.resendEmailOtp(email),
+      );
+
+  @override
+  Future<String> forgotPassword(String identifier) => _guard(
+        'Could not start the reset. Please try again.',
+        () => _remoteDataSource.forgotPassword(identifier),
+      );
+
+  @override
+  Future<String> resetPassword({
+    required String token,
+    required String newPassword,
+    required String confirmPassword,
+  }) =>
+      _guard(
+        'Could not reset your password. Please try again.',
+        () => _remoteDataSource.resetPassword(
+          token: token,
+          newPassword: newPassword,
+          confirmPassword: confirmPassword,
+        ),
+      );
+
+  @override
+  Future<TwoFactorSetup> setupTwoFactor() => _guard(
+        'Could not start two-step verification setup.',
+        _remoteDataSource.setupTwoFactor,
+      );
+
+  @override
+  Future<String> enableTwoFactor(String otp) => _guard(
+        'Could not turn on two-step verification.',
+        () => _remoteDataSource.enableTwoFactor(otp),
+      );
+
+  @override
+  Future<String> disableTwoFactor(String otp) => _guard(
+        'Could not turn off two-step verification.',
+        () => _remoteDataSource.disableTwoFactor(otp),
+      );
 
   @override
   Future<bool> restoreSession() async =>

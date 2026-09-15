@@ -15,6 +15,15 @@ class RoutePathConstant {
   static String resetPasswordPath = '/reset-passowrd';
   static String phoneNumberLoginPath = '/phone-number';
   static String phoneOTPPath = '/phone-otp';
+  static String emailVerificationPath = '/verify-email';
+
+  // ==================================================
+  // SIGNUP ROUTES
+  // Role, then sign-in details, then profile — the web app's order.
+  // ==================================================
+  static String signupRolePath = '/signup';
+  static String signupAccountPath = '/signup/account';
+  static String signupProfilePath = '/signup/profile';
 
   // ==================================================
   // MAIN ROUTES
@@ -36,4 +45,5 @@ class RoutePathConstant {
   static String applicationPath = '/application';
   static String favoritePath = '/favorite';
   static String jobDetailPath = '/job';
+  static String twoFactorSettingsPath = '/settings/two-factor';
 }

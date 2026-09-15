@@ -14,6 +14,8 @@ class CurrentUserEntity {
     this.headline,
     this.email,
     this.avatarUrl,
+    this.isEmailVerified = true,
+    this.isTwoFactorEnabled = false,
   });
 
   final String id;
@@ -27,4 +29,14 @@ class CurrentUserEntity {
 
   final String? email;
   final String? avatarUrl;
+
+  /// False for an email account whose verification code hasn't been entered.
+  /// Such an account can use an existing session but cannot sign in again.
+  final bool isEmailVerified;
+
+  final bool isTwoFactorEnabled;
+
+  /// A phone-OTP login for a number with no account yet produces a user with
+  /// no role and no profile.
+  bool get hasAccount => role != EUserRole.none;
 }

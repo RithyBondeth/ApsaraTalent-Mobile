@@ -40,6 +40,13 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSessionState> {
     state = AsyncData(await _loadUser());
   }
 
+  /// Reload who is signed in, after something changed their account — an email
+  /// verified, two-step verification switched on or off.
+  Future<void> refreshUser() async {
+    if (state.value?.isAuthenticated != true) return;
+    state = AsyncData(await _loadUser());
+  }
+
   Future<void> signOut() async {
     await LogoutUseCase(_repository)();
 
