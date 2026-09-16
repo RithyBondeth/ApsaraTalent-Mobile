@@ -20,6 +20,7 @@ class CurrentUserResponse {
     final company = _json['company'];
 
     String? name;
+    String? profileId;
     String? headline;
     String? avatar;
 
@@ -28,10 +29,12 @@ class CurrentUserResponse {
           .map(_nonEmpty)
           .whereType<String>()
           .join(' ');
+      profileId = _nonEmpty(employee['id']);
       headline = _nonEmpty(employee['job']);
       avatar = _nonEmpty(employee['avatar']);
     } else if (company is Map) {
       name = _nonEmpty(company['name']);
+      profileId = _nonEmpty(company['id']);
       headline = _nonEmpty(company['industry']);
       avatar = _nonEmpty(company['avatar']);
     }
@@ -44,6 +47,7 @@ class CurrentUserResponse {
       displayName: (name == null || name.isEmpty)
           ? (email ?? _nonEmpty(_json['phone']) ?? 'Your account')
           : name,
+      profileId: profileId,
       headline: headline,
       email: email,
       avatarUrl: avatar,
