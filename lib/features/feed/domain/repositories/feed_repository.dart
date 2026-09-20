@@ -38,7 +38,15 @@ abstract class FeedRepository {
   /// Ids of profiles the viewer has already liked.
   Future<Set<String>> fetchLikedIds(FeedViewer viewer);
 
+  /// The viewer's saved profiles, in the order the API returns them.
+  ///
+  /// The list response carries each saved profile in full, so the favourites
+  /// screen needs no second request to render its cards.
+  Future<List<FavoriteProfile>> fetchFavoriteProfiles(FeedViewer viewer);
+
   /// Profile id → favourite id. Unfavouriting needs the favourite's own id.
+  /// A projection of [fetchFavoriteProfiles], for callers that only need to
+  /// know what is saved — the feed, which shows a bookmark on every card.
   Future<Map<String, String>> fetchFavorites(FeedViewer viewer);
 
   /// Profile ids hidden by a block in either direction.

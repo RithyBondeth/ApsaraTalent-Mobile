@@ -148,6 +148,17 @@ class FeedEmployee extends FeedProfile {
   String get displayName => fullName;
 }
 
+/// A saved profile, paired with the favourite row that saved it.
+///
+/// Unfavouriting takes the favourite's own id, not the profile's, so the two
+/// have to travel together.
+class FavoriteProfile {
+  const FavoriteProfile({required this.profile, required this.favoriteId});
+
+  final FeedProfile profile;
+  final String favoriteId;
+}
+
 /// `full_time` → `Full time`, `available` → `Available`. Values the API
 /// already stores as prose ("Full Time") keep their own casing.
 String humanize(String value) {

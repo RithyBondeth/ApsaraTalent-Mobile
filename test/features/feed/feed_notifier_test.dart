@@ -44,6 +44,16 @@ class FakeFeedRepository implements FeedRepository {
   Future<Set<String>> fetchLikedIds(FeedViewer viewer) async => {...liked};
 
   @override
+  Future<List<FavoriteProfile>> fetchFavoriteProfiles(FeedViewer viewer) async {
+    final byId = {for (final p in all) p.id: p};
+    return [
+      for (final entry in favorites.entries)
+        if (byId[entry.key] case final profile?)
+          FavoriteProfile(profile: profile, favoriteId: entry.value),
+    ];
+  }
+
+  @override
   Future<Map<String, String>> fetchFavorites(FeedViewer viewer) async =>
       {...favorites};
 

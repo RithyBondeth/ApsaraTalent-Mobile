@@ -109,6 +109,36 @@ void main() {
     expect(favorites, {'c9': 'fav1'});
   });
 
+  test('saved profiles come back parsed, not just their ids', () async {
+    final http = FakeHttp((_) async => jsonResponse(200, [
+          {'id': 'fav1', 'company': companyJson},
+          {'id': 'fav2', 'company': null},
+        ]));
+
+    final saved = await repositoryFor(http).fetchFavoriteProfiles(employee);
+
+    // The list response carries the whole record, so the favourites screen
+    // renders from this one request.
+    expect(saved, hasLength(1));
+    expect(saved.single.favoriteId, 'fav1');
+    final profile = saved.single.profile as FeedCompany;
+    expect(profile.id, 'c9');
+    expect(profile.name, 'Sabay Digital');
+    expect(profile.benefits, ['Annual Bonus']);
+  });
+
+  test('a company sees its saved employees parsed as employees', () async {
+    final http = FakeHttp((_) async => jsonResponse(200, [
+          {'id': 'fav9', 'employee': employeeJson},
+        ]));
+
+    final saved = await repositoryFor(http).fetchFavoriteProfiles(company);
+
+    expect(http.requests.single.path, '/user/company/all-favorites/c1');
+    expect(saved.single.profile, isA<FeedEmployee>());
+    expect(saved.single.profile.displayName, 'Sophea Chan');
+  });
+
   test('a like reports whether it completed a match', () async {
     final http = FakeHttp((_) async => jsonResponse(201, {'isMatched': true}));
 
