@@ -1,3 +1,5 @@
+import 'package:apsaratalent_mobile/core/utils/json_parse.dart';
+
 /// A card in the feed: a company when an employee is looking, an employee when
 /// a company is.
 ///
@@ -34,20 +36,20 @@ class FeedCompany extends FeedProfile {
 
   factory FeedCompany.fromJson(Map<String, dynamic> json) => FeedCompany(
         id: '${json['id']}',
-        name: _text(json['name']) ?? 'Company',
-        avatarUrl: _text(json['avatar']),
-        location: _text(json['location']),
-        industry: _text(json['industry']),
-        description: _text(json['description']),
-        companySize: _integer(json['companySize']),
-        foundedYear: _integer(json['foundedYear']),
-        openPositions: _maps(json['openPositions'])
+        name: jsonText(json['name']) ?? 'Company',
+        avatarUrl: jsonText(json['avatar']),
+        location: jsonText(json['location']),
+        industry: jsonText(json['industry']),
+        description: jsonText(json['description']),
+        companySize: jsonInt(json['companySize']),
+        foundedYear: jsonInt(json['foundedYear']),
+        openPositions: jsonMaps(json['openPositions'])
             .map(FeedOpenPosition.fromJson)
             .where((p) => p.title.isNotEmpty)
             .toList(),
-        benefits: _labels(json['benefits'], 'label'),
-        values: _labels(json['values'], 'label'),
-        careerScopes: _labels(json['careerScopes'], 'name'),
+        benefits: jsonLabels(json['benefits'], 'label'),
+        values: jsonLabels(json['values'], 'label'),
+        careerScopes: jsonLabels(json['careerScopes'], 'name'),
       );
 
   final String name;
@@ -69,9 +71,9 @@ class FeedOpenPosition {
 
   factory FeedOpenPosition.fromJson(Map<String, dynamic> json) =>
       FeedOpenPosition(
-        title: _text(json['title']) ?? '',
-        type: _text(json['type']),
-        salary: _text(json['salary']),
+        title: jsonText(json['title']) ?? '',
+        type: jsonText(json['type']),
+        salary: jsonText(json['salary']),
       );
 
   final String title;
@@ -99,28 +101,28 @@ class FeedEmployee extends FeedProfile {
 
   factory FeedEmployee.fromJson(Map<String, dynamic> json) {
     final name = [json['firstname'], json['lastname']]
-        .map(_text)
+        .map(jsonText)
         .whereType<String>()
         .join(' ');
     return FeedEmployee(
       id: '${json['id']}',
-      fullName: name.isNotEmpty ? name : (_text(json['username']) ?? 'Talent'),
-      avatarUrl: _text(json['avatar']),
-      location: _text(json['location']),
-      job: _text(json['job']),
-      description: _text(json['description']),
-      yearsOfExperience: _text(json['yearsOfExperience']),
-      availability: _text(json['availability']),
-      skills: _labels(json['skills'], 'name'),
-      careerScopes: _labels(json['careerScopes'], 'name'),
-      experiences: _maps(json['experiences'])
-          .map((e) => [_text(e['title']), _text(e['company'])]
+      fullName: name.isNotEmpty ? name : (jsonText(json['username']) ?? 'Talent'),
+      avatarUrl: jsonText(json['avatar']),
+      location: jsonText(json['location']),
+      job: jsonText(json['job']),
+      description: jsonText(json['description']),
+      yearsOfExperience: jsonText(json['yearsOfExperience']),
+      availability: jsonText(json['availability']),
+      skills: jsonLabels(json['skills'], 'name'),
+      careerScopes: jsonLabels(json['careerScopes'], 'name'),
+      experiences: jsonMaps(json['experiences'])
+          .map((e) => [jsonText(e['title']), jsonText(e['company'])]
               .whereType<String>()
               .join(' · '))
           .where((e) => e.isNotEmpty)
           .toList(),
-      educations: _maps(json['educations'])
-          .map((e) => [_text(e['degree']), _text(e['school'])]
+      educations: jsonMaps(json['educations'])
+          .map((e) => [jsonText(e['degree']), jsonText(e['school'])]
               .whereType<String>()
               .join(' · '))
           .where((e) => e.isNotEmpty)
@@ -167,19 +169,3 @@ String humanize(String value) {
       value.contains('_') ? value.replaceAll('_', ' ').toLowerCase() : value;
   return spaced[0].toUpperCase() + spaced.substring(1);
 }
-
-String? _text(dynamic value) {
-  if (value is! String) return null;
-  final trimmed = value.trim();
-  return trimmed.isEmpty ? null : trimmed;
-}
-
-int? _integer(dynamic value) =>
-    value is int ? value : (value is String ? int.tryParse(value) : null);
-
-Iterable<Map<String, dynamic>> _maps(dynamic value) => value is List
-    ? value.whereType<Map>().map((m) => m.cast<String, dynamic>())
-    : const [];
-
-List<String> _labels(dynamic value, String key) =>
-    _maps(value).map((m) => _text(m[key])).whereType<String>().toList();
