@@ -11,6 +11,7 @@ class CurrentUserEntity {
     required this.id,
     required this.role,
     required this.displayName,
+    this.profileId,
     this.headline,
     this.email,
     this.avatarUrl,
@@ -20,6 +21,10 @@ class CurrentUserEntity {
 
   final String id;
   final EUserRole role;
+
+  /// The employee's or company's own id — not [id], which is the user row.
+  /// Every profile-scoped endpoint (feed, matching, favourites) takes this.
+  final String? profileId;
 
   /// An employee's full name, or a company's name.
   final String displayName;
