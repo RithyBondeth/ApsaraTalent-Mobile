@@ -170,6 +170,13 @@ class FeedScreen extends ConsumerWidget {
           onTap: () => showFeedProfileSheet(
             context,
             profile: profile,
+            actionState: (ref) {
+              final feed = ref.watch(feedProvider).value;
+              return (
+                saved: feed?.isSaved(profile.id) ?? false,
+                busy: feed?.isPending(profile.id) ?? false,
+              );
+            },
             onSave: () => _save(context, ref, profile),
             onLike: () => _like(context, ref, profile),
           ),
