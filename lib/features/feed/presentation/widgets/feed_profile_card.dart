@@ -19,7 +19,7 @@ class FeedProfileCard extends StatelessWidget {
     required this.busy,
     required this.onTap,
     required this.onSave,
-    required this.onLike,
+    this.onLike,
     required this.onView,
     this.recommended = false,
   });
@@ -32,7 +32,10 @@ class FeedProfileCard extends StatelessWidget {
   final bool recommended;
   final VoidCallback onTap;
   final VoidCallback onSave;
-  final VoidCallback onLike;
+
+  /// Null on the favourites screen, which offers no like — as the web's
+  /// favourite card does not. The button is left out rather than disabled.
+  final VoidCallback? onLike;
   final VoidCallback onView;
 
   @override
@@ -93,18 +96,20 @@ class FeedProfileCard extends StatelessWidget {
                       onPressed: busy ? null : onSave,
                     ),
                   ),
-                  const SizedBox(width: AppShape.space2),
-                  Expanded(
-                    child: AppButton(
-                      label: 'Like',
-                      variant: AppButtonVariant.outline,
-                      icon: LucideIcons.heart,
-                      size: AppButtonSize.sm,
-                      fullWidth: true,
-                      loading: busy,
-                      onPressed: busy ? null : onLike,
+                  if (onLike case final onLike?) ...[
+                    const SizedBox(width: AppShape.space2),
+                    Expanded(
+                      child: AppButton(
+                        label: 'Like',
+                        variant: AppButtonVariant.outline,
+                        icon: LucideIcons.heart,
+                        size: AppButtonSize.sm,
+                        fullWidth: true,
+                        loading: busy,
+                        onPressed: busy ? null : onLike,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
               const SizedBox(height: AppShape.space2),

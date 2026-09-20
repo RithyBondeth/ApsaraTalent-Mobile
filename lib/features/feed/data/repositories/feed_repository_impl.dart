@@ -48,19 +48,32 @@ class FeedRepositoryImpl implements FeedRepository {
       });
 
   @override
-  Future<Map<String, String>> fetchFavorites(FeedViewer viewer) =>
+  Future<List<FavoriteProfile>> fetchFavoriteProfiles(FeedViewer viewer) =>
       _guard('Could not load your saved profiles.', () async {
         final response = await _client.get(_isEmployee(viewer)
             ? apiEmployeeFavorites(viewer.profileId)
             : apiCompanyFavorites(viewer.profileId));
-        // Each entry is `{ id: favoriteId, company | employee: { id, ... } }`.
+        // Each entry is `{ id: favoriteId, company | employee: { id, ... } }`,
+        // where the nested record is the same shape the feed list returns.
         final key = _isEmployee(viewer) ? 'company' : 'employee';
-        return {
+        return [
           for (final entry in _list(response.data))
             if (entry[key] is Map && entry['id'] != null)
-              '${(entry[key] as Map)['id']}': '${entry['id']}',
-        };
+              FavoriteProfile(
+                profile: _parse(
+                  viewer,
+                  (entry[key] as Map).cast<String, dynamic>(),
+                ),
+                favoriteId: '${entry['id']}',
+              ),
+        ];
       });
+
+  @override
+  Future<Map<String, String>> fetchFavorites(FeedViewer viewer) async => {
+        for (final favorite in await fetchFavoriteProfiles(viewer))
+          favorite.profile.id: favorite.favoriteId,
+      };
 
   @override
   Future<Set<String>> fetchHiddenIds() =>

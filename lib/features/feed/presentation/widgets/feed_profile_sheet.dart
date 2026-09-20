@@ -2,22 +2,31 @@ import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart';
-import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-/// Everything the feed already loaded about a profile, without leaving it.
+/// Whether the profile is saved, and whether an action on it is in flight.
+typedef ProfileActionState = ({bool saved, bool busy});
+
+/// Everything the screen already loaded about a profile, without leaving it.
 ///
 /// There is no profile detail route on mobile yet, and the list response
-/// already carries the full record, so this costs no request. The actions
-/// read the live feed state, so a save made here shows on the card beneath.
+/// already carries the full record, so this costs no request.
+///
+/// [actionState] is read with the sheet's own ref, so a save made here shows
+/// on the card beneath. It is a callback rather than a provider because the
+/// feed and the favourites screen keep this state in different notifiers —
+/// reading one from the other would build a whole feed to show a bookmark.
+///
+/// [onLike] is null where liking is not offered, and its button is left out.
 Future<void> showFeedProfileSheet(
   BuildContext context, {
   required FeedProfile profile,
+  required ProfileActionState Function(WidgetRef ref) actionState,
   required Future<void> Function() onSave,
-  required Future<void> Function() onLike,
+  Future<void> Function()? onLike,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -30,6 +39,7 @@ Future<void> showFeedProfileSheet(
       builder: (context, controller) => _Sheet(
         profile: profile,
         controller: controller,
+        actionState: actionState,
         onSave: onSave,
         onLike: onLike,
       ),
@@ -41,22 +51,22 @@ class _Sheet extends ConsumerWidget {
   const _Sheet({
     required this.profile,
     required this.controller,
+    required this.actionState,
     required this.onSave,
-    required this.onLike,
+    this.onLike,
   });
 
   final FeedProfile profile;
   final ScrollController controller;
+  final ProfileActionState Function(WidgetRef ref) actionState;
   final Future<void> Function() onSave;
-  final Future<void> Function() onLike;
+  final Future<void> Function()? onLike;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.tokens;
     final profile = this.profile;
-    final feed = ref.watch(feedProvider).value;
-    final saved = feed?.isSaved(profile.id) ?? false;
-    final busy = feed?.isPending(profile.id) ?? false;
+    final (:saved, :busy) = actionState(ref);
 
     return Column(
       children: [
@@ -129,22 +139,25 @@ class _Sheet extends ConsumerWidget {
                     onPressed: busy ? null : onSave,
                   ),
                 ),
-                const SizedBox(width: AppShape.space2),
-                Expanded(
-                  child: AppButton(
-                    label: 'Like',
-                    icon: LucideIcons.heart,
-                    fullWidth: true,
-                    loading: busy,
-                    onPressed: busy
-                        ? null
-                        : () async {
-                            // A liked profile leaves the feed; so does its sheet.
-                            Navigator.of(context).pop();
-                            await onLike();
-                          },
+                if (onLike case final onLike?) ...[
+                  const SizedBox(width: AppShape.space2),
+                  Expanded(
+                    child: AppButton(
+                      label: 'Like',
+                      icon: LucideIcons.heart,
+                      fullWidth: true,
+                      loading: busy,
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              // A liked profile leaves the feed; so does its
+                              // sheet.
+                              Navigator.of(context).pop();
+                              await onLike();
+                            },
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
