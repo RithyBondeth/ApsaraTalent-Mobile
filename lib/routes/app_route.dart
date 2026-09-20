@@ -13,6 +13,7 @@ import 'package:apsaratalent_mobile/features/chat/presentation/screens/chat_scre
 import 'package:apsaratalent_mobile/features/favorite/presentation/screens/favorite_screen.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
 import 'package:apsaratalent_mobile/features/job/presentation/screens/job_detail_screen.dart';
+import 'package:apsaratalent_mobile/features/match/presentation/screens/match_screen.dart';
 import 'package:apsaratalent_mobile/features/navigation/presentation/screens/main_screen.dart';
 import 'package:apsaratalent_mobile/features/notification/presentation/screens/notification_screen.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/screens/profile_screen.dart';
@@ -147,6 +148,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: NotificationPreferencesRoute.page,
           path: RoutePathConstant.notificationPreferencesPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: MatchRoute.page,
+          path: RoutePathConstant.matchPath,
           guards: [_authGuard],
         ),
       ];
