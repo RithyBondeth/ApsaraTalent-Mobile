@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:apsaratalent_mobile/routes/app_route.dart';
-import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:apsaratalent_mobile/core/enums/theme_enum.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
+import 'package:apsaratalent_mobile/features/setting/providers/activity_counts_notifier.dart';
 import 'package:apsaratalent_mobile/features/theme/providers/theme_provider.dart';
 
 @RoutePage()
@@ -23,6 +23,7 @@ class SettingScreen extends ConsumerWidget {
     final user = ref.watch(authSessionProvider).value?.user;
     final name = user?.displayName ?? 'Your account';
     final themeMode = ref.watch(themeModeProvider);
+    final counts = ref.watch(activityCountsProvider).value;
 
     return AppScreen(
       children: [
@@ -101,20 +102,23 @@ class SettingScreen extends ConsumerWidget {
             _SettingRow(
               icon: LucideIcons.send,
               label: 'Applications',
-              value: '${SampleData.applications.length} in flight',
+              value: _plural(counts?.applications, 'in flight'),
               onTap: () => context.router.push(const ApplicationRoute()),
             ),
             _SettingRow(
               icon: LucideIcons.bookmark,
-              label: 'Saved jobs',
-              value: 'Roles you bookmarked',
+              // Not "Saved jobs": favourites are companies and talent, which
+              // is what the feed's bookmark saves and what the screen shows.
+              label: 'Saved',
+              value: counts?.saved == null
+                  ? 'Companies and talent you saved'
+                  : _plural(counts?.saved, 'saved'),
               onTap: () => context.router.push(const FavoriteRoute()),
             ),
             _SettingRow(
               icon: LucideIcons.bell,
               label: 'Notifications',
-              value:
-                  '${SampleData.notifications.where((n) => n.unread).length} unread',
+              value: _plural(counts?.unread, 'unread'),
               onTap: () => context.router.push(const NotificationRoute()),
             ),
           ],
@@ -177,6 +181,16 @@ class SettingScreen extends ConsumerWidget {
 /// row being its own card. Five stacked cards on the web settings page is what
 /// turned the surface accent into texture; the same over-articulation on a
 /// phone costs a whole screen of vertical space to say nothing.
+/// "3 unread", or just "Unread" while the count is unknown — a zero here
+/// would claim there are none, which is a different statement from not
+/// knowing yet.
+String _plural(int? count, String suffix) {
+  if (count == null) {
+    return suffix[0].toUpperCase() + suffix.substring(1);
+  }
+  return '$count $suffix';
+}
+
 class _SettingGroup extends StatelessWidget {
   const _SettingGroup({required this.children});
 
