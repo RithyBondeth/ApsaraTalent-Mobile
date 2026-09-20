@@ -1,0 +1,49 @@
+# Runs the two checks that gate a merge here: the analyzer and the test suite.
+#
+# Both run on every pull request into develop and main, and again on the merge
+# commit those PRs produce — a merge result is not the branch that was
+# reviewed, and nothing else checks it.
+#
+# Not gated on `dart format`: 48 of 140 files do not match it today, so it
+# would fail every PR until the repo is reformatted. That is worth doing as
+# its own change, not as a side effect of turning CI on.
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+# A new push supersedes the run in flight for the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: analyze and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Pinned to the version this project is developed against. Bump it here
+      # when you bump Flutter locally, so CI and your machine agree.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.8
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      # The suite is pure Dart and widget tests, so it needs no simulator or
+      # emulator and runs on Linux.
+      - name: Test
+        run: flutter test
