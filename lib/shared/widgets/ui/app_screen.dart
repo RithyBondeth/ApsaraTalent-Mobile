@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -87,16 +88,22 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
     required this.subtitle,
     this.avatarUrl,
     this.unreadCount = 0,
+    this.matchCount = 0,
     this.onProfileTap,
     this.onNotificationsTap,
+    this.onMatchesTap,
   });
 
   final String name;
   final String subtitle;
   final String? avatarUrl;
   final int unreadCount;
+
+  /// Matches the viewer has not looked at yet.
+  final int matchCount;
   final VoidCallback? onProfileTap;
   final VoidCallback? onNotificationsTap;
+  final VoidCallback? onMatchesTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(68);
@@ -148,7 +155,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        _NotificationBell(
+        if (onMatchesTap != null)
+          _BadgedAction(
+            icon: LucideIcons.sparkles,
+            count: matchCount,
+            onTap: onMatchesTap,
+          ),
+        _BadgedAction(
+          icon: Icons.notifications_none_rounded,
           count: unreadCount,
           onTap: onNotificationsTap,
         ),
@@ -158,9 +172,16 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _NotificationBell extends StatelessWidget {
-  const _NotificationBell({required this.count, this.onTap});
+/// A header icon with an optional count on it. Used for both the notification
+/// bell and the match badge, so the two cannot drift apart visually.
+class _BadgedAction extends StatelessWidget {
+  const _BadgedAction({
+    required this.icon,
+    required this.count,
+    this.onTap,
+  });
 
+  final IconData icon;
   final int count;
   final VoidCallback? onTap;
 
@@ -177,7 +198,7 @@ class _NotificationBell extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Icon(Icons.notifications_none_rounded, color: t.foreground),
+            Icon(icon, color: t.foreground),
             if (count > 0)
               Positioned(
                 top: 10,

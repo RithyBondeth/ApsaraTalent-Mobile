@@ -14,6 +14,7 @@ import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repos
 import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_card.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_sheet.dart';
 import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
+import 'package:apsaratalent_mobile/features/match/providers/match_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
@@ -33,6 +34,7 @@ class FeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authSessionProvider).value?.user;
+    final matchCount = ref.watch(matchCountProvider).value;
     final feed = ref.watch(feedProvider);
     final state = feed.value;
     final notifier = ref.read(feedProvider.notifier);
@@ -54,7 +56,9 @@ class FeedScreen extends ConsumerWidget {
           subtitle: user?.headline ?? '',
           avatarUrl: user?.avatarUrl,
           unreadCount: state?.unreadCount ?? 0,
+          matchCount: matchCount?.unseen ?? 0,
           onProfileTap: () => context.router.push(const ProfileRoute()),
+          onMatchesTap: () => context.router.push(const MatchRoute()),
           onNotificationsTap: () =>
               context.router.push(const NotificationRoute()),
         ),
@@ -252,12 +256,24 @@ class FeedScreen extends ConsumerWidget {
     try {
       final outcome = await ref.read(feedProvider.notifier).like(profile);
       if (!context.mounted) return;
+      if (outcome == FeedLikeOutcome.matched) {
+        // This used to be a dead end: the app announced a match and had
+        // nowhere to send anyone.
+        ref.invalidate(matchCountProvider);
+        _snack(
+          context,
+          "It's a match! You and ${profile.displayName} liked each other.",
+          action: SnackBarAction(
+            label: 'View',
+            onPressed: () => context.router.push(const MatchRoute()),
+          ),
+        );
+        return;
+      }
       _snack(
         context,
-        outcome == FeedLikeOutcome.matched
-            ? "It's a match! You and ${profile.displayName} liked each other."
-            : 'You liked ${profile.displayName}. '
-                "You'll match if they like you back.",
+        'You liked ${profile.displayName}. '
+            "You'll match if they like you back.",
       );
     } on ApiException catch (e) {
       if (context.mounted) _snack(context, e.message);
@@ -283,10 +299,14 @@ class FeedScreen extends ConsumerWidget {
     }
   }
 
-  static void _snack(BuildContext context, String message) {
+  static void _snack(
+    BuildContext context,
+    String message, {
+    SnackBarAction? action,
+  }) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
+      ..showSnackBar(SnackBar(content: Text(message), action: action));
   }
 }
 

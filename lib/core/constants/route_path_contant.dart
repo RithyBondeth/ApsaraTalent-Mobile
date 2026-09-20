@@ -41,6 +41,7 @@ class RoutePathConstant {
   // detail's Apply button) never stacks on top of the tab bar.
   // ==================================================
   static String notificationPath = '/notification';
+  static String matchPath = '/match';
   static String profilePath = '/profile';
   static String applicationPath = '/application';
   static String favoritePath = '/favorite';

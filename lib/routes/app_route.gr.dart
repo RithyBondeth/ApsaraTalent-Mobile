@@ -242,6 +242,22 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [MatchScreen]
+class MatchRoute extends PageRouteInfo<void> {
+  const MatchRoute({List<PageRouteInfo>? children})
+    : super(MatchRoute.name, initialChildren: children);
+
+  static const String name = 'MatchRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const MatchScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [NotificationPreferencesScreen]
 class NotificationPreferencesRoute extends PageRouteInfo<void> {
   const NotificationPreferencesRoute({List<PageRouteInfo>? children})

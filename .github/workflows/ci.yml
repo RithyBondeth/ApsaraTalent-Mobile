@@ -1,8 +1,13 @@
 # Runs the two checks that gate a merge here: the analyzer and the test suite.
 #
-# Both run on every pull request into develop and main, and again on the merge
-# commit those PRs produce — a merge result is not the branch that was
-# reviewed, and nothing else checks it.
+# Both run on every pull request, whatever it targets, and again on the merge
+# commit a PR into develop or main produces — a merge result is not the branch
+# that was reviewed, and nothing else checks it.
+#
+# `pull_request` is deliberately unfiltered. It was once limited to PRs into
+# develop and main, which silently skipped stacked PRs: a branch based on
+# another feature branch got no check at all, and the absence looked like a
+# pending run rather than a gap.
 #
 # Not gated on `dart format`: 48 of 140 files do not match it today, so it
 # would fail every PR until the repo is reformatted. That is worth doing as
@@ -10,8 +15,8 @@
 name: CI
 
 on:
+  # Every PR, including one based on another feature branch.
   pull_request:
-    branches: [develop, main]
   push:
     branches: [develop, main]
 
