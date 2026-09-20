@@ -18,6 +18,7 @@ import 'package:apsaratalent_mobile/features/notification/presentation/screens/n
 import 'package:apsaratalent_mobile/features/profile/presentation/screens/profile_screen.dart';
 import 'package:apsaratalent_mobile/features/resume_builder/presentation/screens/resume_builder_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/notification_preferences_screen.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/setting_page.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/two_factor_settings_screen.dart';
 import 'package:apsaratalent_mobile/features/splash/presentation/screens/splash_screen.dart';
@@ -141,6 +142,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: TwoFactorSettingsRoute.page,
           path: RoutePathConstant.twoFactorSettingsPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: NotificationPreferencesRoute.page,
+          path: RoutePathConstant.notificationPreferencesPath,
           guards: [_authGuard],
         ),
       ];

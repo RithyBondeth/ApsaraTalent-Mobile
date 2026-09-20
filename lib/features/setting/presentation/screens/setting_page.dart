@@ -131,6 +131,13 @@ class SettingScreen extends ConsumerWidget {
               onTap: () => context.router.push(const TwoFactorSettingsRoute()),
             ),
             _SettingRow(
+              icon: LucideIcons.bellRing,
+              label: 'Notifications',
+              value: 'Email and push, by category',
+              onTap: () =>
+                  context.router.push(const NotificationPreferencesRoute()),
+            ),
+            _SettingRow(
               icon: LucideIcons.shield,
               label: 'Privacy',
               value: 'Who can see your profile',
