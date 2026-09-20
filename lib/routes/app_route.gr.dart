@@ -242,6 +242,22 @@ class MainRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NotificationPreferencesScreen]
+class NotificationPreferencesRoute extends PageRouteInfo<void> {
+  const NotificationPreferencesRoute({List<PageRouteInfo>? children})
+    : super(NotificationPreferencesRoute.name, initialChildren: children);
+
+  static const String name = 'NotificationPreferencesRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const NotificationPreferencesScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [NotificationScreen]
 class NotificationRoute extends PageRouteInfo<void> {
   const NotificationRoute({List<PageRouteInfo>? children})
