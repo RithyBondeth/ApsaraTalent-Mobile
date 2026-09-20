@@ -24,7 +24,6 @@ import 'package:apsaratalent_mobile/features/setting/presentation/screens/settin
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/two_factor_settings_screen.dart';
 import 'package:apsaratalent_mobile/features/splash/presentation/screens/splash_screen.dart';
 import 'package:apsaratalent_mobile/routes/auth_guard.dart';
-import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
