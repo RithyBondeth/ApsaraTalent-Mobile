@@ -37,10 +37,10 @@ dependencies:
   flutter_dotenv: ^6.0.0
   flutter_riverpod: ^2.6.1
   auto_route: ^10.1.0+1
-  flex_color_scheme: ^8.4.0
   lucide_icons_flutter: ^3.0.9
-  flutter_svg: ^2.0.10+1
   google_fonts: ^8.0.2
+  dio: ^5.7.0
+  flutter_secure_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:
@@ -68,10 +68,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - .env.development
-    - .env.production
     - .env.staging
-    - assets/svg/
+    - assets/logo/
     - assets/socials/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

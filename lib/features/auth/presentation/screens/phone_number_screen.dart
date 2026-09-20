@@ -1,99 +1,115 @@
-import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart';
-import 'package:apsaratalent_mobile/shared/constants/route_contant.dart';
-import 'package:apsaratalent_mobile/shared/extensions/text_extensions.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_button_widget.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_input_wideth.dart';
-import 'package:apsaratalent_mobile/shared/widgets/custom_logo_widget.dart';
+import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
+import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_message.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/phone_login/phone_login_notifier.dart';
+import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_scaffold.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
+import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 @RoutePage()
-class PhoneNumberScreen extends ConsumerWidget {
+class PhoneNumberScreen extends ConsumerStatefulWidget {
   const PhoneNumberScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final rememberMe = ref.watch(rememberMeProvider);
-    return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomLogoWidget(
-                    withoutTitle: true,
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    'Phone Number',
-                    style: context.headlineMedium.bold,
-                  ),
-                  SizedBox(height: 5),
-                  Text(
-                    'Enter your phone number. We will send you a verification code.',
-                    style: context.titleSmall.secondary,
-                  )
-                ],
+  ConsumerState<PhoneNumberScreen> createState() => _PhoneNumberScreenState();
+}
+
+class _PhoneNumberScreenState extends ConsumerState<PhoneNumberScreen> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  /// Local digits without the leading trunk zero: 012 345 678 and 12 345 678
+  /// are the same number.
+  String get _local => _controller.text.replaceAll(RegExp(r'\D'), '').replaceFirst(RegExp('^0'), '');
+
+  /// Cambodian mobile numbers are 8 or 9 digits after the country code.
+  bool get _valid => RegExp(r'^[0-9]{8,9}$').hasMatch(_local);
+
+  /// In the form the API stores phone numbers: +855 then the local digits.
+  String get _e164 => '+855$_local';
+
+  Future<void> _send() async {
+    if (!_valid) return;
+    final sent = await ref.read(phoneLoginProvider.notifier).requestCode(_e164);
+    if (sent && mounted) context.router.push(OTPRoute(phone: _e164));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+    final flow = ref.watch(phoneLoginProvider);
+
+    return AuthScaffold(
+      showBack: true,
+      title: 'Log in with your phone',
+      subtitle: 'We will text you a six-digit code to confirm the number.',
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // The dial code is fixed for now. It sits in its own box rather
+            // than as a prefix inside the field so it reads as a distinct part
+            // of the number, not as placeholder text.
+            Container(
+              height: AppShape.fieldHeight,
+              padding: const EdgeInsets.symmetric(horizontal: AppShape.space3),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: t.muted,
+                border: Border.all(color: t.input, width: AppShape.hairline),
               ),
-              SizedBox(height: 20),
-              CustomInputWidget(
+              child: Text(
+                '+855',
+                style: AppTypography.field.copyWith(
+                  color: t.foreground,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: AppShape.space2),
+            Expanded(
+              child: AppInput(
+                controller: _controller,
+                hintText: 'Phone number',
                 prefixIcon: LucideIcons.phone,
-                hintText: 'Phone Number',
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Transform.scale(
-                    scale: 0.8,
-                    child: Checkbox(
-                      value: rememberMe,
-                      onChanged: (val) {
-                        ref.read(rememberMeProvider.notifier).state =
-                            val ?? false;
-                      },
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ),
-                  Text('Remember Me', style: context.titleSmall.secondary),
+                keyboardType: TextInputType.phone,
+                textInputAction: TextInputAction.done,
+                autofillHints: const [AutofillHints.telephoneNumber],
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
                 ],
+                onChanged: (_) => setState(() {}),
+                onSubmitted: (_) => _send(),
               ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButtonWidget(
-                      text: 'Back',
-                      icon: Icon(LucideIcons.arrowLeft),
-                      iconPosition: IconPosition.before,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: CustomButtonWidget(
-                      text: 'Send Code',
-                      icon: Icon(LucideIcons.arrowRight),
-                      iconPosition: IconPosition.after,
-                      onPressed: () {
-                        context.router.pushPath(AuthRouteConstant.phoneOTPPath);
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
+        if (flow.error != null) ...[
+          const SizedBox(height: AppShape.space4),
+          AuthMessage.error(flow.error!),
+        ],
+        const SizedBox(height: AppShape.space5),
+        AppButton(
+          label: 'Send code',
+          trailingIcon: LucideIcons.arrowRight,
+          fullWidth: true,
+          size: AppButtonSize.lg,
+          loading: flow.isLoading,
+          onPressed: _valid && !flow.isLoading ? _send : null,
+        ),
+      ],
     );
   }
 }
