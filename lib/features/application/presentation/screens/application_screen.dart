@@ -107,8 +107,9 @@ class ApplicationScreen extends ConsumerWidget {
         title: const Text('Withdraw this application?'),
         content: Text(
           'You are telling the company you are no longer interested in '
-          '$role. The application stays in this list, marked withdrawn, and '
-          'applying again is a new application.',
+          '\$role. The application stays in this list, marked withdrawn. '
+          'Applying again revives this same application rather than starting '
+          'a second one.',
         ),
         actions: [
           TextButton(
