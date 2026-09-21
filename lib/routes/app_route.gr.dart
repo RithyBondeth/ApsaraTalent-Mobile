@@ -167,11 +167,11 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
 class JobDetailRoute extends PageRouteInfo<JobDetailRouteArgs> {
   JobDetailRoute({
     Key? key,
-    required SampleJob job,
+    required String jobId,
     List<PageRouteInfo>? children,
   }) : super(
          JobDetailRoute.name,
-         args: JobDetailRouteArgs(key: key, job: job),
+         args: JobDetailRouteArgs(key: key, jobId: jobId),
          initialChildren: children,
        );
 
@@ -181,32 +181,32 @@ class JobDetailRoute extends PageRouteInfo<JobDetailRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<JobDetailRouteArgs>();
-      return JobDetailScreen(key: args.key, job: args.job);
+      return JobDetailScreen(key: args.key, jobId: args.jobId);
     },
   );
 }
 
 class JobDetailRouteArgs {
-  const JobDetailRouteArgs({this.key, required this.job});
+  const JobDetailRouteArgs({this.key, required this.jobId});
 
   final Key? key;
 
-  final SampleJob job;
+  final String jobId;
 
   @override
   String toString() {
-    return 'JobDetailRouteArgs{key: $key, job: $job}';
+    return 'JobDetailRouteArgs{key: $key, jobId: $jobId}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! JobDetailRouteArgs) return false;
-    return key == other.key && job == other.job;
+    return key == other.key && jobId == other.jobId;
   }
 
   @override
-  int get hashCode => key.hashCode ^ job.hashCode;
+  int get hashCode => key.hashCode ^ jobId.hashCode;
 }
 
 /// generated route for

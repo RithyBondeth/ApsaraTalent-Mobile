@@ -30,66 +30,6 @@ class SampleData {
     completion: 0.72,
   );
 
-  static const companies = <SampleCompany>[
-    SampleCompany(
-      name: 'Quantum Edge',
-      industry: 'Quantum & Cloud Computing',
-      location: 'Phnom Penh',
-      openRoles: 6,
-      size: '120–200',
-      benefits: ['Health cover', 'Remote friendly', 'Learning budget'],
-      matchScore: 92,
-    ),
-    SampleCompany(
-      name: 'Mekong Data Works',
-      industry: 'Data Infrastructure',
-      location: 'Siem Reap',
-      openRoles: 3,
-      size: '40–80',
-      benefits: ['Hybrid', 'Stock options'],
-      matchScore: 84,
-    ),
-    SampleCompany(
-      name: 'Angkor Fintech',
-      industry: 'Payments & Banking',
-      location: 'Phnom Penh',
-      openRoles: 11,
-      size: '300+',
-      benefits: ['Health cover', 'Annual bonus', 'Gym'],
-      matchScore: 77,
-    ),
-  ];
-
-  static const jobs = <SampleJob>[
-    SampleJob(
-      title: 'Senior Flutter Engineer',
-      company: 'Quantum Edge',
-      location: 'Phnom Penh · Hybrid',
-      employmentType: 'Full time',
-      postedAgo: '2 days ago',
-      matchScore: 92,
-      skills: ['Flutter', 'Dart', 'Riverpod', 'CI/CD'],
-    ),
-    SampleJob(
-      title: 'Backend Engineer (NestJS)',
-      company: 'Mekong Data Works',
-      location: 'Remote',
-      employmentType: 'Contract',
-      postedAgo: '5 days ago',
-      matchScore: 81,
-      skills: ['NestJS', 'PostgreSQL', 'Redis'],
-    ),
-    SampleJob(
-      title: 'Product Designer',
-      company: 'Angkor Fintech',
-      location: 'Phnom Penh · On site',
-      employmentType: 'Full time',
-      postedAgo: '1 week ago',
-      matchScore: 64,
-      skills: ['Figma', 'Design systems'],
-    ),
-  ];
-
   static const applications = <SampleApplication>[
     SampleApplication(
       role: 'Senior Flutter Engineer',
@@ -217,46 +157,6 @@ class SampleProfile {
 
   /// 0–1. Drives the profile completion meter.
   final double completion;
-}
-
-class SampleCompany {
-  const SampleCompany({
-    required this.name,
-    required this.industry,
-    required this.location,
-    required this.openRoles,
-    required this.size,
-    required this.benefits,
-    required this.matchScore,
-  });
-
-  final String name;
-  final String industry;
-  final String location;
-  final int openRoles;
-  final String size;
-  final List<String> benefits;
-  final int matchScore;
-}
-
-class SampleJob {
-  const SampleJob({
-    required this.title,
-    required this.company,
-    required this.location,
-    required this.employmentType,
-    required this.postedAgo,
-    required this.matchScore,
-    required this.skills,
-  });
-
-  final String title;
-  final String company;
-  final String location;
-  final String employmentType;
-  final String postedAgo;
-  final int matchScore;
-  final List<String> skills;
 }
 
 class SampleApplication {

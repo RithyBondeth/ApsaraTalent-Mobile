@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:apsaratalent_mobile/routes/app_route.dart';
-import 'package:apsaratalent_mobile/shared/data/sample_data.dart';
+import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
-import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
-import 'package:apsaratalent_mobile/shared/widgets/cards/company_card.dart';
+import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_card.dart';
+import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/job_card.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
-enum SearchMode { jobs, companies }
-
+/// Search, which side depends on the viewer: an employee looks for jobs, a
+/// company looks for talent.
+///
+/// There is no company search in the gateway — `/user/company/all` takes
+/// pagination only — so browsing companies stays the feed's job.
 @RoutePage()
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -24,14 +27,8 @@ class SearchScreen extends ConsumerStatefulWidget {
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final TextEditingController _controller = TextEditingController();
-  SearchMode _mode = SearchMode.jobs;
-  String _query = '';
 
-  /// Narrowing results to the viewer's career scope is **opt-in**, and it
-  /// defaults off on purpose. The scope embeddings are unbackfilled, so scoped
-  /// matching is really exact-string matching — switching it on by default
-  /// silently hides results that a reader would expect to see.
-  bool _scopeNarrowing = false;
+  static const _loadMoreThreshold = 400.0;
 
   @override
   void dispose() {
@@ -39,206 +36,240 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
-  List<SampleJob> get _jobs => SampleData.jobs
-      .where((j) => _matches('${j.title} ${j.company} ${j.skills.join(' ')}'))
-      .toList();
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(searchProvider);
+    final notifier = ref.read(searchProvider.notifier);
 
-  List<SampleCompany> get _companies => SampleData.companies
-      .where((c) => _matches('${c.name} ${c.industry} ${c.location}'))
-      .toList();
+    if (state == null) {
+      return AppScreen(
+        children: const [
+          PageState(
+            variant: PageStateVariant.empty,
+            icon: LucideIcons.search,
+            title: 'No search on this account',
+            description: 'Search is for talent and companies. Finish signing '
+                'up to use it.',
+          ),
+        ],
+      );
+    }
 
-  bool _matches(String haystack) =>
-      _query.isEmpty ||
-      haystack.toLowerCase().contains(_query.trim().toLowerCase());
+    final jobs = state.mode == SearchMode.jobs;
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (state.error == null &&
+            notification.metrics.axis == Axis.vertical &&
+            notification.metrics.extentAfter < _loadMoreThreshold) {
+          notifier.loadMore();
+        }
+        return false;
+      },
+      child: AppScreen(
+        children: [
+          PageBanner(
+            eyebrow: 'Search',
+            title: jobs ? 'Find a role' : 'Find talent',
+            subtitle: jobs
+                ? 'Titles, descriptions and skills across every open posting.'
+                : 'Names, roles and skills across every candidate.',
+          ),
+          AppInput(
+            controller: _controller,
+            hintText: jobs ? 'Role, skill or keyword' : 'Name, role or skill',
+            prefixIcon: LucideIcons.search,
+            suffixIcon: state.keyword.isEmpty ? null : LucideIcons.x,
+            onSuffixTap: () {
+              _controller.clear();
+              notifier.onKeyword('');
+            },
+            textInputAction: TextInputAction.search,
+            onChanged: notifier.onKeyword,
+            onSubmitted: (_) => notifier.run(),
+          ),
+          _ScopeToggle(state: state, onChanged: notifier.setNarrowing),
+          ..._results(context, state),
+          const SizedBox(height: AppShape.space6),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _results(BuildContext context, SearchState state) {
+    if (state.keyword.trim().isEmpty) {
+      return [
+        PageState(
+          variant: PageStateVariant.empty,
+          icon: LucideIcons.search,
+          compact: true,
+          title: state.mode == SearchMode.jobs
+              ? 'Search for a role'
+              : 'Search for talent',
+          description: 'Results appear as you type.',
+        ),
+      ];
+    }
+
+    if (state.error case final error?) {
+      return [
+        PageState(
+          variant: PageStateVariant.error,
+          title: 'That search could not run',
+          description: error,
+          actionLabel: 'Try again',
+          onAction: () => ref.read(searchProvider.notifier).run(),
+        ),
+      ];
+    }
+
+    if (state.isSearching && state.isEmpty) {
+      return [for (var i = 0; i < 3; i++) const FeedProfileCardSkeleton()];
+    }
+
+    if (state.isEmpty) {
+      return [
+        PageState(
+          variant: PageStateVariant.empty,
+          icon: LucideIcons.searchX,
+          compact: true,
+          title: 'Nothing matched',
+          description: 'Try a different word, or fewer of them.',
+        ),
+      ];
+    }
+
+    return [
+      if (state.usedFallback) const _FallbackNotice(),
+      _ResultCount(state: state),
+      if (state.mode == SearchMode.jobs)
+        for (final job in state.jobs)
+          JobCard(
+            key: ValueKey('job-${job.id}'),
+            job: job,
+            onTap: () => context.router.push(JobDetailRoute(jobId: job.id)),
+          )
+      else
+        for (final person in state.talent)
+          FeedProfileCard(
+            key: ValueKey('talent-${person.id}'),
+            profile: person,
+            saved: false,
+            busy: false,
+            onTap: () {},
+            onSave: () {},
+            onView: () {},
+          ),
+      if (state.isLoadingMore) const FeedProfileCardSkeleton(),
+    ];
+  }
+}
+
+/// Narrowing is opt-in, and the label says what it actually does.
+class _ScopeToggle extends StatelessWidget {
+  const _ScopeToggle({required this.state, required this.onChanged});
+
+  final SearchState state;
+  final ValueChanged<bool> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    final showingJobs = _mode == SearchMode.jobs;
-    final resultCount = showingJobs ? _jobs.length : _companies.length;
 
-    return AppScreen(
-      children: [
-        PageBanner(
-          eyebrow: 'Search',
-          title: showingJobs ? 'Find a role' : 'Find a company',
-          subtitle:
-              'Search across titles, skills and industries. Results are ranked '
-              'by match, not by recency.',
-        ),
-
-        AppInput(
-          controller: _controller,
-          hintText: showingJobs
-              ? 'Role, skill or company'
-              : 'Company or industry',
-          prefixIcon: LucideIcons.search,
-          suffixIcon: _query.isEmpty ? null : LucideIcons.x,
-          onSuffixTap: () {
-            _controller.clear();
-            setState(() => _query = '');
-          },
-          textInputAction: TextInputAction.search,
-          onChanged: (value) => setState(() => _query = value),
-        ),
-
-        // Mode Section
-        Row(
-          children: [
-            Expanded(
-              child: _ModeTab(
-                label: 'Jobs',
-                icon: LucideIcons.briefcase,
-                selected: showingJobs,
-                onTap: () => setState(() => _mode = SearchMode.jobs),
-              ),
-            ),
-            const SizedBox(width: AppShape.space2),
-            Expanded(
-              child: _ModeTab(
-                label: 'Companies',
-                icon: LucideIcons.building2,
-                selected: !showingJobs,
-                onTap: () => setState(() => _mode = SearchMode.companies),
-              ),
-            ),
-          ],
-        ),
-
-        // Scope Section
-        AppSurface(
-          elevation: SurfaceElevation.xs,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppShape.space3,
-            vertical: AppShape.space2,
-          ),
-          child: Row(
-            children: [
-              Icon(LucideIcons.filter, size: 16, color: t.mutedForeground),
-              const SizedBox(width: AppShape.space2),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Narrow to my career scope',
-                      style: AppTypography.tag.copyWith(
-                        color: t.foreground,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      'Off by default — narrowing can hide near matches',
-                      style: AppTypography.tiny.copyWith(
-                        color: t.mutedForeground,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
+    return AppSurface(
+      elevation: SurfaceElevation.xs,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Only my career scopes',
+                  style: AppTypography.label.copyWith(color: t.foreground),
                 ),
-              ),
-              Switch(
-                value: _scopeNarrowing,
-                onChanged: (value) => setState(() => _scopeNarrowing = value),
-              ),
-            ],
+                const SizedBox(height: 2),
+                Text(
+                  // Not "semantically similar scopes": none of the career
+                  // scopes carry embeddings, so the API's similarity branch
+                  // never matches and only an identical name does. Promising
+                  // more than exact matching would be a lie the results then
+                  // quietly contradict.
+                  'Matches scope names exactly',
+                  style: AppTypography.tiny.copyWith(
+                    color: t.mutedForeground,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-
-        Row(
-          children: [
-            Text(
-              resultCount == 1 ? '1 result' : '$resultCount results',
-              style: AppTypography.tiny.copyWith(color: t.mutedForeground),
-            ),
-          ],
-        ),
-
-        if (resultCount == 0)
-          PageState(
-            variant: PageStateVariant.empty,
-            // A glyph that names *this* absence. Every empty state sharing one
-            // inbox icon is how "no messages", "no interviews" and "no results"
-            // become indistinguishable at a glance.
-            icon: LucideIcons.searchX,
-            title: 'Nothing matched "$_query"',
-            description: showingJobs
-                ? 'Try a broader term, or search by a skill rather than a job '
-                    'title.'
-                : 'Try an industry rather than a company name.',
-            actionLabel: 'Clear search',
-            onAction: () {
-              _controller.clear();
-              setState(() => _query = '');
-            },
-          )
-        else if (showingJobs)
-          for (final job in _jobs)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppShape.space3),
-              child: JobCard(
-                job: job,
-                onTap: () => context.router.push(JobDetailRoute(job: job)),
-              ),
-            )
-        else
-          for (final company in _companies)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppShape.space3),
-              child: CompanyCard(company: company),
-            ),
-      ],
+          Switch(value: state.narrowToMyScopes, onChanged: onChanged),
+        ],
+      ),
     );
   }
 }
 
-/// A segmented control. Square, and the selected half is a filled-primary tile
-/// casting its own hue — the same treatment as the active nav item.
-class _ModeTab extends StatelessWidget {
-  const _ModeTab({
-    required this.label,
-    required this.icon,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final IconData icon;
-  final bool selected;
-  final VoidCallback onTap;
+/// The API narrowed, found nothing, and retried without the filter. Saying so
+/// is the whole point: results that look narrowed but are not would be acted
+/// on as if they were.
+class _FallbackNotice extends StatelessWidget {
+  const _FallbackNotice();
 
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    final foreground = selected ? t.primaryForeground : t.foreground;
-
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        height: AppShape.controlHeightSm,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: selected ? t.primary : t.background,
-          border: Border.all(
-            color: selected ? t.primary : t.input,
-            width: AppShape.hairline,
-          ),
-          boxShadow: selected ? context.elevation.primaryXs : const [],
-        ),
+    // Not a PageState: those are for an empty or failed page, and this sits
+    // above results that did arrive.
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppShape.space3),
+      child: AppSurface(
+        elevation: SurfaceElevation.xs,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 16, color: foreground),
-            const SizedBox(width: AppShape.space2),
-            Text(
-              label,
-              style: AppTypography.button.copyWith(color: foreground),
+            Icon(LucideIcons.info, size: 16, color: t.mutedForeground),
+            const SizedBox(width: AppShape.space3),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Nothing in your career scopes',
+                    style: AppTypography.label.copyWith(color: t.foreground),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Showing every match instead, so these are not narrowed.',
+                    style: AppTypography.tiny.copyWith(
+                      color: t.mutedForeground,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ResultCount extends StatelessWidget {
+  const _ResultCount({required this.state});
+
+  final SearchState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+    final noun = state.mode == SearchMode.jobs ? 'role' : 'candidate';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppShape.space2),
+      child: Text(
+        state.total == 1 ? '1 $noun' : '${state.total} ${noun}s',
+        style: AppTypography.tiny.copyWith(color: t.mutedForeground),
       ),
     );
   }
