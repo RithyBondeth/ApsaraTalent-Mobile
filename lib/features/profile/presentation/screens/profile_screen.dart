@@ -13,6 +13,7 @@ import 'package:apsaratalent_mobile/features/profile/domain/entities/profile_com
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/widgets/profile_skeleton.dart';
 import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
 /// The signed-in user's own profile: an employee record or a company record,
@@ -73,25 +74,11 @@ class ProfileScreen extends ConsumerWidget {
           CompanyProfile() => _company(profile),
         },
         const SizedBox(height: AppShape.space2),
-        // Editing is not wired yet: update-info, the avatar, résumé and cover
-        // letter uploads, and the education and experience routes are all
-        // untouched. The button stays, disabled, rather than silently doing
-        // nothing when tapped.
-        const AppButton(
+        AppButton(
           label: 'Edit profile',
           icon: LucideIcons.pencil,
           fullWidth: true,
-          onPressed: null,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: AppShape.space2),
-          child: Text(
-            'Editing your profile is on the web for now.',
-            textAlign: TextAlign.center,
-            style: AppTypography.tiny.copyWith(
-              color: context.tokens.mutedForeground,
-            ),
-          ),
+          onPressed: () => context.router.push(const ProfileEditRoute()),
         ),
         const SizedBox(height: AppShape.space6),
       ];

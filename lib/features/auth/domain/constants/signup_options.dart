@@ -175,6 +175,22 @@ class SignupOptions {
     SignupOption("Prefer not to say", "other"),
   ];
 
+  /// How someone wants to work. Editing a profile offers these; signup does
+  /// not ask, so the field starts empty.
+  static const List<SignupOption> workModes = [
+    SignupOption("Remote", "remote"),
+    SignupOption("On-site", "on_site"),
+    SignupOption("Hybrid", "hybrid"),
+    SignupOption("Flexible", "flexible"),
+  ];
+
+  /// How soon someone could start.
+  static const List<SignupOption> noticePeriods = [
+    SignupOption("Immediate", "immediate"),
+    SignupOption("2 Weeks", "2_weeks"),
+    SignupOption("1 Month", "1_month"),
+  ];
+
   /// The API rejects a founding year before this (`FOUNDED_YEAR_MIN` on web).
   static const int foundedYearMin = 1900;
 }

@@ -21,6 +21,23 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
     return ref.read(profileRepositoryProvider).fetchProfile(viewer);
   }
 
+  /// Saves [changes] and replaces the profile with what came back.
+  ///
+  /// Only changed keys are sent. The API `Object.assign`s whatever it
+  /// receives, so restating an unchanged field is harmless but sending a key
+  /// nobody edited is a write nobody asked for — and for `job` it would
+  /// re-trigger the server's embedding work for no reason.
+  ///
+  /// Does nothing when [changes] is empty. Throws [ApiException].
+  Future<void> save(Map<String, dynamic> changes) async {
+    if (changes.isEmpty) return;
+    final viewer = ref.read(feedViewerProvider);
+    if (viewer == null) return;
+    final saved =
+        await ref.read(profileRepositoryProvider).updateProfile(viewer, changes);
+    state = AsyncData(saved);
+  }
+
   /// Pull-to-refresh. The current profile stays up while it runs, and stays up
   /// if it fails — the ApiException is rethrown for the screen to report.
   Future<void> refresh() async {

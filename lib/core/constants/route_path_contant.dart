@@ -42,6 +42,7 @@ class RoutePathConstant {
   // ==================================================
   static String notificationPath = '/notification';
   static String matchPath = '/match';
+  static String profileEditPath = '/profile/edit';
   static String profilePath = '/profile';
   static String applicationPath = '/application';
   static String favoritePath = '/favorite';

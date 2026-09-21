@@ -6,4 +6,12 @@ import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profil
 /// by profile id.
 abstract class ProfileRepository {
   Future<UserProfile> fetchProfile(FeedViewer viewer);
+
+  /// Sends only [changes] — the API applies the keys it receives and leaves
+  /// the rest alone, so this must never restate unchanged fields. Answers with
+  /// the profile as saved.
+  Future<UserProfile> updateProfile(
+    FeedViewer viewer,
+    Map<String, dynamic> changes,
+  );
 }
