@@ -27,6 +27,22 @@ class ApplicationRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [BlockedAccountsScreen]
+class BlockedAccountsRoute extends PageRouteInfo<void> {
+  const BlockedAccountsRoute({List<PageRouteInfo>? children})
+    : super(BlockedAccountsRoute.name, initialChildren: children);
+
+  static const String name = 'BlockedAccountsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const BlockedAccountsScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ChatScreen]
 class ChatRoute extends PageRouteInfo<void> {
   const ChatRoute({List<PageRouteInfo>? children})

@@ -14,6 +14,7 @@ import 'package:apsaratalent_mobile/features/favorite/presentation/screens/favor
 import 'package:apsaratalent_mobile/features/feed/presentation/screens/feed_screen.dart';
 import 'package:apsaratalent_mobile/features/job/presentation/screens/job_detail_screen.dart';
 import 'package:apsaratalent_mobile/features/match/presentation/screens/match_screen.dart';
+import 'package:apsaratalent_mobile/features/moderation/presentation/screens/blocked_accounts_screen.dart';
 import 'package:apsaratalent_mobile/features/navigation/presentation/screens/main_screen.dart';
 import 'package:apsaratalent_mobile/features/notification/presentation/screens/notification_screen.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/screens/profile_edit_screen.dart';
@@ -158,6 +159,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: ProfileEditRoute.page,
           path: RoutePathConstant.profileEditPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: BlockedAccountsRoute.page,
+          path: RoutePathConstant.blockedAccountsPath,
           guards: [_authGuard],
         ),
       ];
