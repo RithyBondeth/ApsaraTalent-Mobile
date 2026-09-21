@@ -27,6 +27,22 @@ class ApplicationRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [BlockedAccountsScreen]
+class BlockedAccountsRoute extends PageRouteInfo<void> {
+  const BlockedAccountsRoute({List<PageRouteInfo>? children})
+    : super(BlockedAccountsRoute.name, initialChildren: children);
+
+  static const String name = 'BlockedAccountsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const BlockedAccountsScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ChatScreen]
 class ChatRoute extends PageRouteInfo<void> {
   const ChatRoute({List<PageRouteInfo>? children})
@@ -363,6 +379,22 @@ class PhoneNumberRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const PhoneNumberScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [ProfileEditScreen]
+class ProfileEditRoute extends PageRouteInfo<void> {
+  const ProfileEditRoute({List<PageRouteInfo>? children})
+    : super(ProfileEditRoute.name, initialChildren: children);
+
+  static const String name = 'ProfileEditRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProfileEditScreen();
     },
   );
 }

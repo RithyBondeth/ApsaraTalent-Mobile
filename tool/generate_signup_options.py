@@ -94,8 +94,23 @@ class SignupOptions {{
     SignupOption("Prefer not to say", "other"),
   ];
 
+  /// How someone wants to work. Editing a profile offers these; signup does
+  /// not ask, so the field starts empty.
+  static const List<SignupOption> workModes = [
+{dpairs(pairs('workModeConstant'))}
+  ];
+
+  /// How soon someone could start.
+  static const List<SignupOption> noticePeriods = [
+{dpairs(pairs('noticePeriodConstant'))}
+  ];
+
   /// The API rejects a founding year before this (`FOUNDED_YEAR_MIN` on web).
   static const int foundedYearMin = 1900;
 }}
 ''')
-print(f'wrote {OUT.relative_to(ROOT)}: {len(scopes)} career scopes, {len(locations)} locations')
+print(
+    f'wrote {OUT.relative_to(ROOT)}: {len(scopes)} career scopes, '
+    f'{len(locations)} locations, {len(pairs("workModeConstant"))} work modes, '
+    f'{len(pairs("noticePeriodConstant"))} notice periods'
+)
