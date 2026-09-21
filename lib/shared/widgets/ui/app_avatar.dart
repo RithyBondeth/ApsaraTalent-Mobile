@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/utils/media_url.dart';
 import 'package:flutter/material.dart';
 
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -62,6 +63,10 @@ class AppAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.tokens;
     final radius = squared ? AppShape.radius : AppShape.pill;
+    // Resolved rather than used raw: some payloads answer a server-relative
+    // path, which Image.network cannot load — the errorBuilder below would
+    // then show initials forever and nothing would say why.
+    final url = resolveMediaUrl(imageUrl);
 
     Widget avatar = Container(
       height: _dimension,
@@ -73,9 +78,9 @@ class AppAvatar extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       alignment: Alignment.center,
-      child: imageUrl != null && imageUrl!.isNotEmpty
+      child: url != null
           ? Image.network(
-              imageUrl!,
+              url,
               fit: BoxFit.cover,
               width: _dimension,
               height: _dimension,

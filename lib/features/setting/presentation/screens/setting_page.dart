@@ -142,6 +142,13 @@ class SettingScreen extends ConsumerWidget {
                   context.router.push(const NotificationPreferencesRoute()),
             ),
             _SettingRow(
+              icon: LucideIcons.userX,
+              label: 'Blocked accounts',
+              value: 'Who you stopped seeing',
+              onTap: () =>
+                  context.router.push(const BlockedAccountsRoute()),
+            ),
+            _SettingRow(
               icon: LucideIcons.shield,
               label: 'Privacy',
               value: 'Who can see your profile',
@@ -177,10 +184,6 @@ class SettingScreen extends ConsumerWidget {
   }
 }
 
-/// Rows share one surface with hairline dividers between them, rather than each
-/// row being its own card. Five stacked cards on the web settings page is what
-/// turned the surface accent into texture; the same over-articulation on a
-/// phone costs a whole screen of vertical space to say nothing.
 /// "3 unread", or just "Unread" while the count is unknown — a zero here
 /// would claim there are none, which is a different statement from not
 /// knowing yet.
@@ -191,6 +194,10 @@ String _plural(int? count, String suffix) {
   return '$count $suffix';
 }
 
+/// Rows share one surface with hairline dividers between them, rather than each
+/// row being its own card. Five stacked cards on the web settings page is what
+/// turned the surface accent into texture; the same over-articulation on a
+/// phone costs a whole screen of vertical space to say nothing.
 class _SettingGroup extends StatelessWidget {
   const _SettingGroup({required this.children});
 

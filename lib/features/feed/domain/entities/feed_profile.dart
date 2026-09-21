@@ -7,10 +7,24 @@ import 'package:apsaratalent_mobile/core/utils/json_parse.dart';
 /// forgiving — a missing list is empty, a missing string is null — because one
 /// half-filled profile must not take the whole feed down with a type error.
 sealed class FeedProfile {
-  const FeedProfile({required this.id, this.avatarUrl, this.location});
+  const FeedProfile({
+    required this.id,
+    this.userId,
+    this.avatarUrl,
+    this.location,
+  });
 
   /// The employee's or company's own id — what matching and favourites take.
   final String id;
+
+  /// The account behind the profile, from the nested `user` record.
+  ///
+  /// Moderation is the one thing addressed by **user** id rather than profile
+  /// id: blocking and reporting act on the account, not on the employee or
+  /// company row hanging off it. Null when the payload omitted `user`, which
+  /// trimmed records (favourites, matches) do — those cannot be blocked from
+  /// where they are shown.
+  final String? userId;
   final String? avatarUrl;
   final String? location;
 
@@ -22,6 +36,7 @@ class FeedCompany extends FeedProfile {
   const FeedCompany({
     required super.id,
     required this.name,
+    super.userId,
     super.avatarUrl,
     super.location,
     this.industry,
@@ -36,6 +51,7 @@ class FeedCompany extends FeedProfile {
 
   factory FeedCompany.fromJson(Map<String, dynamic> json) => FeedCompany(
         id: '${json['id']}',
+        userId: _userId(json),
         name: jsonText(json['name']) ?? 'Company',
         avatarUrl: jsonText(json['avatar']),
         location: jsonText(json['location']),
@@ -87,6 +103,7 @@ class FeedEmployee extends FeedProfile {
   const FeedEmployee({
     required super.id,
     required this.fullName,
+    super.userId,
     super.avatarUrl,
     super.location,
     this.job,
@@ -106,6 +123,7 @@ class FeedEmployee extends FeedProfile {
         .join(' ');
     return FeedEmployee(
       id: '${json['id']}',
+      userId: _userId(json),
       fullName: name.isNotEmpty ? name : (jsonText(json['username']) ?? 'Talent'),
       avatarUrl: jsonText(json['avatar']),
       location: jsonText(json['location']),
@@ -159,6 +177,13 @@ class FavoriteProfile {
 
   final FeedProfile profile;
   final String favoriteId;
+}
+
+/// Only the id is taken from the nested `user`. The rest of that record —
+/// email, account status — is other people's, and nothing here should hold it.
+String? _userId(Map<String, dynamic> json) {
+  final user = json['user'];
+  return user is Map ? jsonText(user['id']) : null;
 }
 
 /// `full_time` → `Full time`, `available` → `Available`. Values the API

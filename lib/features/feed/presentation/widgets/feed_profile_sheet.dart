@@ -2,6 +2,7 @@ import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart';
+import 'package:apsaratalent_mobile/features/moderation/presentation/moderation_sheet.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -103,6 +104,20 @@ class _Sheet extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  // Only where the payload carried a user id. Moderation acts
+                  // on the account, and the trimmed records behind favourites
+                  // and matches have no account id to act on.
+                  if (profile.userId case final userId?)
+                    IconButton(
+                      icon: const Icon(LucideIcons.ellipsisVertical, size: 18),
+                      tooltip: 'Block or report',
+                      onPressed: () => showModerationSheet(
+                        context,
+                        ref,
+                        userId: userId,
+                        name: profile.displayName,
+                      ),
+                    ),
                 ],
               ),
               const SizedBox(height: AppShape.space4),
