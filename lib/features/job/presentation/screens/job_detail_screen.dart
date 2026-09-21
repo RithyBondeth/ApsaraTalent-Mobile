@@ -7,6 +7,8 @@ import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/application/domain/entities/job_application.dart';
+import 'package:apsaratalent_mobile/features/application/providers/application_notifier.dart';
 import 'package:apsaratalent_mobile/features/search/domain/entities/job_posting.dart';
 import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
@@ -41,14 +43,22 @@ class JobDetailScreen extends ConsumerWidget {
             onAction: () => ref.invalidate(jobPostingProvider(jobId)),
           ),
         ],
-        data: (job) => _content(context, job),
+        data: (job) => _content(context, ref, job),
       ),
     );
   }
 
-  List<Widget> _content(BuildContext context, JobPosting job) {
+  List<Widget> _content(BuildContext context, WidgetRef ref, JobPosting job) {
     final t = context.tokens;
     final company = job.company;
+    // The applications list is already loaded for its own screen, so knowing
+    // whether this posting has been applied for costs nothing.
+    final applications = ref.watch(applicationsProvider).value;
+    final existing = applications?.items
+        .where((a) => a.jobId == job.id)
+        .cast<JobApplication?>()
+        .firstOrNull;
+    final active = existing != null && existing.status.isOpen;
 
     return [
       AppSurface(
@@ -160,25 +170,105 @@ class JobDetailScreen extends ConsumerWidget {
         ),
       ],
       const SizedBox(height: AppShape.space2),
-      // Applying is POST /job/application, which is not wired yet. Disabled
-      // and labelled rather than tapping into nothing.
-      const AppButton(
-        label: 'Apply',
-        icon: LucideIcons.send,
+      AppButton(
+        label: active ? 'Applied' : 'Apply',
+        icon: active ? LucideIcons.check : LucideIcons.send,
         fullWidth: true,
-        onPressed: null,
+        // Applying twice answers 409. The button says so rather than letting
+        // someone tap into a refusal.
+        onPressed: active ? null : () => _apply(context, ref, job),
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: AppShape.space2),
-        child: Text(
-          'Applying from the app is not built yet.',
-          textAlign: TextAlign.center,
-          style: AppTypography.tiny.copyWith(color: t.mutedForeground),
+      if (existing != null)
+        Padding(
+          padding: const EdgeInsets.only(top: AppShape.space2),
+          child: Text(
+            active
+                ? '${existing.status.label} · ${existing.appliedAge.toLowerCase()}'
+                // A withdrawn application is revived by applying again, not
+                // replaced by a second one.
+                : 'You withdrew this one. Applying again revives it.',
+            textAlign: TextAlign.center,
+            style: AppTypography.tiny.copyWith(color: t.mutedForeground),
+          ),
         ),
-      ),
       const SizedBox(height: AppShape.space6),
     ];
   }
+}
+
+/// Asks for an optional note, then applies.
+///
+/// The note is optional because the API treats it so, and a required covering
+/// note on a phone would stop people applying rather than improve what they
+/// send.
+Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
+  final controller = TextEditingController();
+  final send = await showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        left: AppShape.screenPadding,
+        right: AppShape.screenPadding,
+        top: AppShape.screenPadding,
+        bottom: MediaQuery.of(context).viewInsets.bottom + AppShape.screenPadding,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Apply for ${job.title}',
+            style: AppTypography.h4.copyWith(color: context.tokens.foreground),
+          ),
+          const SizedBox(height: AppShape.space2),
+          Text(
+            'Add a note if you want to. You can send it without one.',
+            style: AppTypography.small.copyWith(
+              color: context.tokens.mutedForeground,
+            ),
+          ),
+          const SizedBox(height: AppShape.space4),
+          AppInput(
+            controller: controller,
+            hintText: 'Why you are a fit (optional)',
+            maxLines: 4,
+          ),
+          const SizedBox(height: AppShape.space4),
+          AppButton(
+            label: 'Send application',
+            icon: LucideIcons.send,
+            fullWidth: true,
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+          const SizedBox(height: AppShape.space2),
+        ],
+      ),
+    ),
+  );
+
+  final note = controller.text;
+  controller.dispose();
+  if (send != true || !context.mounted) return;
+
+  try {
+    await ref
+        .read(applicationsProvider.notifier)
+        .apply(job.id, coverLetterNote: note);
+    if (!context.mounted) return;
+    _snack(context, 'Applied for ${job.title}.');
+  } on ApiException catch (e) {
+    // A duplicate arrives as the API's own 409 message, which is clearer than
+    // anything this screen would write.
+    if (context.mounted) _snack(context, e.message);
+  }
+}
+
+void _snack(BuildContext context, String message) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message)));
 }
 
 class _Requirement extends StatelessWidget {
