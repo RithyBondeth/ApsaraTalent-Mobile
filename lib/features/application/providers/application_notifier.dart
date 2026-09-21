@@ -43,6 +43,38 @@ class ApplicationsNotifier
     state = AsyncData(ApplicationsState(items: await _repository.fetchMine()));
   }
 
+  /// Applies for [jobId] and folds the result into the list.
+  ///
+  /// The API keeps one application per (employee, job): a withdrawn one is
+  /// revived rather than duplicated, so the returned row replaces the
+  /// existing one when there is one. Throws [ApiException] — a duplicate
+  /// comes back as the API's own 409 message.
+  Future<JobApplication> apply(String jobId, {String? coverLetterNote}) async {
+    final applied = await _repository.apply(jobId, coverLetterNote: coverLetterNote);
+    final current = state.value;
+    if (current != null) {
+      final known = current.items.any((a) => a.id == applied.id);
+      state = AsyncData(current.copyWith(
+        items: known
+            ? [
+                for (final a in current.items)
+                  if (a.id == applied.id) applied else a,
+              ]
+            // Newest first, as the API orders them.
+            : [applied, ...current.items],
+      ));
+    }
+    return applied;
+  }
+
+  /// Whether an application for [jobId] is already in play. A withdrawn one
+  /// is not — it can be revived by applying again.
+  bool hasActiveApplicationFor(String jobId) =>
+      state.value?.items.any(
+        (a) => a.jobId == jobId && a.status.isOpen,
+      ) ??
+      false;
+
   /// Withdraws [application]. The row stays — it moves to `withdrawn`, which
   /// is what the API does — rather than disappearing, so the record of having
   /// applied is not silently lost.

@@ -7,6 +7,13 @@ library;
 
 const String apiMyApplications = '/job/application/mine';
 
+/// Applying takes `{jobId, coverLetterNote?}`.
+///
+/// One application per (employee, job): applying while one is already active
+/// answers 409, and applying after a withdrawal **revives that same row**
+/// rather than inserting a second.
+const String apiApplyToJob = '/job/application';
+
 /// DELETE withdraws; it does not erase the application.
 String apiWithdrawApplication(String applicationId) =>
     '/job/application/$applicationId';

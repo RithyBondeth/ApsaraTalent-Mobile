@@ -13,7 +13,12 @@ import '../../support/fake_http.dart';
 
 /// A real row from `GET /job/application/mine`. Note what is absent: the
 /// payload names the job but never the company.
-Map<String, dynamic> row(String id, {String status = 'pending'}) => {
+Map<String, dynamic> row(
+  String id, {
+  String status = 'pending',
+  String jobId = 'j1',
+}) =>
+    {
       'id': id,
       'status': status,
       'coverLetterNote': 'Keen to help scale the frontend.',
@@ -21,25 +26,64 @@ Map<String, dynamic> row(String id, {String status = 'pending'}) => {
       'reviewedAt': null,
       'statusChangedAt': null,
       'appliedAt': '2026-09-20T08:48:45.717Z',
-      'jobId': 'j1',
+      'jobId': jobId,
       'jobTitle': 'React Developer',
     };
 
-JobApplication app(String id, {String status = 'pending'}) =>
-    JobApplication.fromJson(row(id, status: status));
+JobApplication app(String id, {String status = 'pending', String jobId = 'j1'}) =>
+    JobApplication.fromJson(row(id, status: status, jobId: jobId));
 
 class FakeApplicationRepository implements ApplicationRepository {
-  List<JobApplication> items = [app('a1'), app('a2', status: 'rejected')];
+  // One application per (employee, job) — the API enforces it, so the fixture
+  // must not pretend otherwise.
+  List<JobApplication> items = [
+    app('a1'),
+    app('a2', status: 'rejected', jobId: 'j2'),
+  ];
   bool fail = false;
   final List<String> withdrawn = [];
+  final List<String> applied = [];
 
   @override
   Future<List<JobApplication>> fetchMine() async => items;
+
+  /// Mirrors the API: a withdrawn application is revived rather than a second
+  /// one inserted, and applying while one is active is refused.
+  @override
+  Future<JobApplication> apply(String jobId, {String? coverLetterNote}) async {
+    applied.add(jobId);
+    if (fail) throw ApiException(message: 'apply failed');
+    final existing =
+        items.where((a) => a.jobId == jobId).cast<JobApplication?>().firstOrNull;
+    if (existing != null && existing.status != ApplicationStatus.withdrawn) {
+      throw ApiException(
+        message: 'You have already applied to this job',
+        statusCode: 409,
+      );
+    }
+    final revived = (existing ?? app('new-$jobId', jobId: jobId))
+        .copyWith(status: ApplicationStatus.pending);
+    items = [
+      for (final a in items)
+        if (a.jobId == jobId) revived else a,
+      if (existing == null) revived,
+    ];
+    return revived;
+  }
 
   @override
   Future<void> withdraw(String applicationId) async {
     if (fail) throw ApiException(message: 'withdraw failed');
     withdrawn.add(applicationId);
+    // The API keeps the row and moves it to withdrawn; so does this, or a
+    // later apply would wrongly look like a duplicate.
+    items = [
+      for (final a in items)
+        if (a.id == applicationId)
+          a.copyWith(status: ApplicationStatus.withdrawn)
+        else
+          a,
+    ];
   }
 }
 
@@ -180,6 +224,63 @@ void main() {
       final latest = container.read(applicationsProvider).value!;
       expect(latest.items.first.status, ApplicationStatus.pending);
       expect(latest.isPending('a1'), isFalse);
+    });
+
+    test('applying while one is active is refused with the API message',
+        () async {
+      await container.read(applicationsProvider.future);
+
+      // a1 is pending on job j1.
+      await expectLater(
+        container.read(applicationsProvider.notifier).apply('j1'),
+        throwsA(isA<ApiException>().having(
+          (e) => e.message,
+          'message',
+          'You have already applied to this job',
+        )),
+      );
+    });
+
+    test('applying after a withdrawal revives the same row', () async {
+      // Verified against the API: the id is unchanged, the status returns to
+      // pending, and there is still exactly one application for that job.
+      final state = await container.read(applicationsProvider.future);
+      await container
+          .read(applicationsProvider.notifier)
+          .withdraw(state.items.first);
+
+      final revived =
+          await container.read(applicationsProvider.notifier).apply('j1');
+
+      expect(revived.id, 'a1');
+      expect(revived.status, ApplicationStatus.pending);
+      final latest = container.read(applicationsProvider).value!;
+      expect(latest.items.where((a) => a.jobId == 'j1'), hasLength(1));
+    });
+
+    test('an active application is visible to the job detail screen',
+        () async {
+      await container.read(applicationsProvider.future);
+      final notifier = container.read(applicationsProvider.notifier);
+
+      expect(notifier.hasActiveApplicationFor('j1'), isTrue);
+      expect(notifier.hasActiveApplicationFor('j-unknown'), isFalse);
+    });
+
+    test('a withdrawn application does not count as active', () async {
+      // It can be revived by applying again, so the button must not say
+      // "Applied".
+      final state = await container.read(applicationsProvider.future);
+      await container
+          .read(applicationsProvider.notifier)
+          .withdraw(state.items.first);
+
+      expect(
+        container
+            .read(applicationsProvider.notifier)
+            .hasActiveApplicationFor('j1'),
+        isFalse,
+      );
     });
 
     test('a finished application cannot be withdrawn', () async {
