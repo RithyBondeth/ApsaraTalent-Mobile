@@ -368,6 +368,22 @@ class PhoneNumberRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ProfileEditScreen]
+class ProfileEditRoute extends PageRouteInfo<void> {
+  const ProfileEditRoute({List<PageRouteInfo>? children})
+    : super(ProfileEditRoute.name, initialChildren: children);
+
+  static const String name = 'ProfileEditRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProfileEditScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})

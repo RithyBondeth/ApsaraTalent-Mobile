@@ -15,6 +15,25 @@ class FakeProfileRepository implements ProfileRepository {
   int calls = 0;
   FeedViewer? lastViewer;
 
+  Map<String, dynamic>? lastChanges;
+
+  /// Mirrors the API: only the keys sent are applied.
+  @override
+  Future<UserProfile> updateProfile(
+    FeedViewer viewer,
+    Map<String, dynamic> changes,
+  ) async {
+    calls++;
+    lastChanges = changes;
+    if (fail) throw ApiException(message: 'save failed');
+    if (changes.containsKey('job')) job = '${changes['job']}';
+    return EmployeeProfile(
+      id: viewer.profileId,
+      fullName: 'Chenda Nhem',
+      job: job,
+    );
+  }
+
   @override
   Future<UserProfile> fetchProfile(FeedViewer viewer) async {
     calls++;
@@ -79,6 +98,60 @@ void main() {
 
     expect(container.read(profileProvider).value!.headline, 'Head of Sales');
     expect(repository.calls, 2);
+  });
+
+  group('saving', () {
+    test('sends only the keys given', () async {
+      // The API Object.assigns whatever arrives, so an unchanged field must
+      // not be restated — for `job` it would re-trigger the server's
+      // embedding work for nothing.
+      final container = containerFor(viewer);
+      await container.read(profileProvider.future);
+
+      await container
+          .read(profileProvider.notifier)
+          .save({'job': 'Head of Sales'});
+
+      expect(repository.lastChanges, {'job': 'Head of Sales'});
+      expect(container.read(profileProvider).value!.headline, 'Head of Sales');
+    });
+
+    test('an empty change set asks the API for nothing', () async {
+      final container = containerFor(viewer);
+      await container.read(profileProvider.future);
+      final before = repository.calls;
+
+      await container.read(profileProvider.notifier).save({});
+
+      expect(repository.calls, before);
+    });
+
+    test('a null value is sent, because clearing a field is a change',
+        () async {
+      // An emptied text field clears the value; it is not the same as leaving
+      // the field out.
+      final container = containerFor(viewer);
+      await container.read(profileProvider.future);
+
+      await container
+          .read(profileProvider.notifier)
+          .save({'portfolioUrl': null});
+
+      expect(repository.lastChanges, containsPair('portfolioUrl', null));
+    });
+
+    test('a failed save rethrows and leaves the profile as it was', () async {
+      final container = containerFor(viewer);
+      await container.read(profileProvider.future);
+      repository.fail = true;
+
+      await expectLater(
+        container.read(profileProvider.notifier).save({'job': 'Nope'}),
+        throwsA(isA<ApiException>()),
+      );
+
+      expect(container.read(profileProvider).value!.headline, 'Sales Manager');
+    });
   });
 
   test('a failed refresh keeps the profile up and rethrows', () async {
