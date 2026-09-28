@@ -19,6 +19,7 @@ class MatchCard extends StatelessWidget {
     required this.busy,
     required this.onTap,
     required this.onMessage,
+    required this.onAiTools,
     required this.onUnmatch,
   });
 
@@ -26,6 +27,7 @@ class MatchCard extends StatelessWidget {
   final bool busy;
   final VoidCallback onTap;
   final VoidCallback onMessage;
+  final VoidCallback onAiTools;
   final VoidCallback onUnmatch;
 
   @override
@@ -83,6 +85,15 @@ class MatchCard extends StatelessWidget {
             const SizedBox(height: AppShape.space3),
             Divider(color: t.border, height: AppShape.hairline),
             const SizedBox(height: AppShape.space3),
+            AppButton(
+              label: 'AI match tools',
+              icon: LucideIcons.sparkles,
+              variant: AppButtonVariant.secondary,
+              size: AppButtonSize.sm,
+              fullWidth: true,
+              onPressed: busy ? null : onAiTools,
+            ),
+            const SizedBox(height: AppShape.space2),
             Row(
               children: [
                 Expanded(
