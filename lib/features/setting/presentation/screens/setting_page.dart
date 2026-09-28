@@ -159,8 +159,8 @@ class SettingScreen extends ConsumerWidget {
             _SettingRow(
               icon: LucideIcons.shield,
               label: 'Privacy',
-              value: 'Who can see your profile',
-              onTap: () {},
+              value: 'Private browsing and profile views',
+              onTap: () => context.router.push(const ProfilePrivacyRoute()),
             ),
             _SettingRow(
               icon: LucideIcons.globe,
@@ -172,7 +172,15 @@ class SettingScreen extends ConsumerWidget {
               icon: LucideIcons.circleHelp,
               label: 'Support',
               value: 'Report a problem',
-              onTap: () {},
+              onTap: () => context.router.push(const SupportReportRoute()),
+            ),
+            _SettingRow(
+              icon: LucideIcons.database,
+              label: 'Account data',
+              value: user?.deletionRequestedAt == null
+                  ? 'Export data or delete your account'
+                  : 'Account deletion is scheduled',
+              onTap: () => context.router.push(const AccountManagementRoute()),
             ),
           ],
         ),
