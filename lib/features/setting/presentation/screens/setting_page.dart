@@ -12,6 +12,7 @@ import 'package:apsaratalent_mobile/core/enums/theme_enum.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/features/setting/providers/activity_counts_notifier.dart';
 import 'package:apsaratalent_mobile/features/theme/providers/theme_provider.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 
 @RoutePage()
 class SettingScreen extends ConsumerWidget {
@@ -68,7 +69,8 @@ class SettingScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              Icon(LucideIcons.chevronRight, size: 18, color: t.mutedForeground),
+              Icon(LucideIcons.chevronRight,
+                  size: 18, color: t.mutedForeground),
             ],
           ),
         ),
@@ -101,8 +103,15 @@ class SettingScreen extends ConsumerWidget {
           children: [
             _SettingRow(
               icon: LucideIcons.send,
-              label: 'Applications',
-              value: _plural(counts?.applications, 'in flight'),
+              label: user?.role == EUserRole.company
+                  ? 'Hiring workflow'
+                  : 'Applications',
+              value: _plural(
+                counts?.applications,
+                user?.role == EUserRole.company
+                    ? 'active applicants'
+                    : 'in flight',
+              ),
               onTap: () => context.router.push(const ApplicationRoute()),
             ),
             _SettingRow(
@@ -145,8 +154,7 @@ class SettingScreen extends ConsumerWidget {
               icon: LucideIcons.userX,
               label: 'Blocked accounts',
               value: 'Who you stopped seeing',
-              onTap: () =>
-                  context.router.push(const BlockedAccountsRoute()),
+              onTap: () => context.router.push(const BlockedAccountsRoute()),
             ),
             _SettingRow(
               icon: LucideIcons.shield,
@@ -334,8 +342,7 @@ class _ThemeOption extends StatelessWidget {
                     label,
                     style: AppTypography.label.copyWith(
                       color: t.foreground,
-                      fontWeight:
-                          selected ? FontWeight.w600 : FontWeight.w500,
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 1),
@@ -348,8 +355,7 @@ class _ThemeOption extends StatelessWidget {
                 ],
               ),
             ),
-            if (selected)
-              Icon(LucideIcons.check, size: 18, color: t.primary),
+            if (selected) Icon(LucideIcons.check, size: 18, color: t.primary),
           ],
         ),
       ),

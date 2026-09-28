@@ -55,6 +55,9 @@ class JobApplication {
     required this.status,
     this.jobId,
     this.jobTitle,
+    this.employeeId,
+    this.employeeName,
+    this.matchScore,
     this.coverLetterNote,
     this.rejectionReason,
     this.appliedAt,
@@ -67,6 +70,11 @@ class JobApplication {
         status: ApplicationStatus.fromKey(jsonText(json['status'])),
         jobId: jsonText(json['jobId']),
         jobTitle: jsonText(json['jobTitle']),
+        employeeId: jsonText(json['employeeId']),
+        employeeName: jsonText(json['employeeName']),
+        matchScore: json['matchScore'] is num
+            ? (json['matchScore'] as num).toDouble()
+            : null,
         coverLetterNote: jsonText(json['coverLetterNote']),
         rejectionReason: jsonText(json['rejectionReason']),
         appliedAt: DateTime.tryParse(jsonText(json['appliedAt']) ?? ''),
@@ -82,6 +90,9 @@ class JobApplication {
   /// The role applied for. The company is **not** in this payload — see the
   /// note on the screen.
   final String? jobTitle;
+  final String? employeeId;
+  final String? employeeName;
+  final double? matchScore;
   final String? coverLetterNote;
 
   /// Set only on a rejection, and only when the company gave one.
@@ -100,6 +111,9 @@ class JobApplication {
         status: status ?? this.status,
         jobId: jobId,
         jobTitle: jobTitle,
+        employeeId: employeeId,
+        employeeName: employeeName,
+        matchScore: matchScore,
         coverLetterNote: coverLetterNote,
         rejectionReason: rejectionReason,
         appliedAt: appliedAt,
