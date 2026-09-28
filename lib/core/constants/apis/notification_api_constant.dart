@@ -14,6 +14,7 @@ const String apiNotificationPreferences = '/notification/preferences';
 /// rather than a bare array.
 const String apiNotifications = '/notification';
 const String apiNotificationsReadAll = '/notification/read-all';
+const String apiNotificationDeviceToken = '/notification/device-token';
 
 String apiNotificationRead(String id) => '/notification/$id/read';
 String apiNotification(String id) => '/notification/$id';

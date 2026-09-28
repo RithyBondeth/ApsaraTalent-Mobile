@@ -93,8 +93,12 @@ class ApiClient {
   }) =>
       _send(() => _dio.patch<dynamic>(path, data: data, options: options));
 
-  Future<Response<dynamic>> delete(String path, {Options? options}) =>
-      _send(() => _dio.delete<dynamic>(path, options: options));
+  Future<Response<dynamic>> delete(
+    String path, {
+    dynamic data,
+    Options? options,
+  }) =>
+      _send(() => _dio.delete<dynamic>(path, data: data, options: options));
 
   Future<Response<dynamic>> _send(
     Future<Response<dynamic>> Function() request,

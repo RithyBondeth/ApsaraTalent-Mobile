@@ -59,6 +59,53 @@ class ChatRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ConversationScreen]
+class ConversationRoute extends PageRouteInfo<ConversationRouteArgs> {
+  ConversationRoute({
+    Key? key,
+    required Conversation conversation,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ConversationRoute.name,
+         args: ConversationRouteArgs(key: key, conversation: conversation),
+         initialChildren: children,
+       );
+
+  static const String name = 'ConversationRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ConversationRouteArgs>();
+      return ConversationScreen(key: args.key, conversation: args.conversation);
+    },
+  );
+}
+
+class ConversationRouteArgs {
+  const ConversationRouteArgs({this.key, required this.conversation});
+
+  final Key? key;
+
+  final Conversation conversation;
+
+  @override
+  String toString() {
+    return 'ConversationRouteArgs{key: $key, conversation: $conversation}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ConversationRouteArgs) return false;
+    return key == other.key && conversation == other.conversation;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ conversation.hashCode;
+}
+
+/// generated route for
 /// [EmailVerificationScreen]
 class EmailVerificationRoute extends PageRouteInfo<EmailVerificationRouteArgs> {
   EmailVerificationRoute({
