@@ -25,6 +25,7 @@ import 'package:apsaratalent_mobile/features/navigation/presentation/screens/mai
 import 'package:apsaratalent_mobile/features/notification/presentation/screens/notification_screen.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/screens/profile_edit_screen.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/screens/profile_screen.dart';
+import 'package:apsaratalent_mobile/features/profile/presentation/screens/company_jobs_screen.dart';
 import 'package:apsaratalent_mobile/features/resume_builder/presentation/screens/resume_builder_screen.dart';
 import 'package:apsaratalent_mobile/features/saved_search/presentation/screens/saved_searches_screen.dart';
 import 'package:apsaratalent_mobile/features/search/presentation/screens/search_screen.dart';
@@ -183,6 +184,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: ProfileEditRoute.page,
           path: RoutePathConstant.profileEditPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: CompanyJobsRoute.page,
+          path: RoutePathConstant.companyJobsPath,
           guards: [_authGuard],
         ),
         AutoRoute(

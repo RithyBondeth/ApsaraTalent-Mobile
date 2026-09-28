@@ -100,6 +100,7 @@ void main() {
     expect(profile.headline, 'Telecommunications');
     expect((profile as CompanyProfile).openPositions, ['Backend Engineer']);
     expect(profile.openPositionItems.single.id, 'j1');
+    expect(profile.openPositionItems.single.title, 'Backend Engineer');
     expect(profile.images.single.id, 'image-1');
     expect(profile.images.single.url, '/storage/company-images/office.png');
   });

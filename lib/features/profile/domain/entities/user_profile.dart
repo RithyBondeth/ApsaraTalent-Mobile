@@ -322,15 +322,83 @@ class ProfileNamedItem {
 }
 
 class ProfileJob {
-  const ProfileJob({required this.id, required this.title});
+  const ProfileJob(
+      {required this.id,
+      required this.title,
+      this.description,
+      this.type,
+      this.experience,
+      this.education,
+      this.skills = const [],
+      this.salaryMin,
+      this.salaryMax,
+      this.salaryCurrency,
+      this.workMode,
+      this.location,
+      this.languagesRequired = const [],
+      this.openingsCount,
+      this.deadlineDate});
 
   factory ProfileJob.fromJson(Map<String, dynamic> json) => ProfileJob(
         id: '${json['id']}',
         title: jsonText(json['title']) ?? 'Role',
+        description: jsonText(json['description']),
+        type: jsonText(json['type']),
+        experience: jsonText(json['experience']),
+        education: jsonText(json['education']),
+        skills: json['skills'] is List
+            ? (json['skills'] as List).map((e) => '$e').toList()
+            : const [],
+        salaryMin: json['salaryMin'] is num
+            ? (json['salaryMin'] as num).toDouble()
+            : null,
+        salaryMax: json['salaryMax'] is num
+            ? (json['salaryMax'] as num).toDouble()
+            : null,
+        salaryCurrency: jsonText(json['salaryCurrency']),
+        workMode: jsonText(json['workMode']),
+        location: jsonText(json['location']),
+        languagesRequired: json['languagesRequired'] is List
+            ? (json['languagesRequired'] as List).map((e) => '$e').toList()
+            : const [],
+        openingsCount: jsonInt(json['openingsCount']),
+        deadlineDate: jsonText(json['deadlineDate']),
       );
 
   final String id;
   final String title;
+  final String? description;
+  final String? type;
+  final String? experience;
+  final String? education;
+  final List<String> skills;
+  final double? salaryMin;
+  final double? salaryMax;
+  final String? salaryCurrency;
+  final String? workMode;
+  final String? location;
+  final List<String> languagesRequired;
+  final int? openingsCount;
+  final String? deadlineDate;
+
+  Map<String, dynamic> toMutation() => {
+        if (id.isNotEmpty) 'id': id,
+        'title': title,
+        if (description != null) 'description': description,
+        if (type != null) 'type': type,
+        if (experience != null) 'experienceRequired': experience,
+        if (education != null) 'educationRequired': education,
+        if (skills.isNotEmpty) 'skillsRequired': skills.join(', '),
+        if (salaryMin != null) 'salaryMin': salaryMin,
+        if (salaryMax != null) 'salaryMax': salaryMax,
+        if (salaryCurrency != null) 'salaryCurrency': salaryCurrency,
+        if (workMode != null) 'workMode': workMode,
+        if (location != null) 'location': location,
+        if (languagesRequired.isNotEmpty)
+          'languagesRequired': languagesRequired,
+        if (openingsCount != null) 'openingsCount': openingsCount,
+        if (deadlineDate != null) 'expireDate': deadlineDate,
+      };
 }
 
 class ProfileExperience {

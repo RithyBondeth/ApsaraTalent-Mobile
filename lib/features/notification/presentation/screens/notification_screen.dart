@@ -11,6 +11,9 @@ import 'package:apsaratalent_mobile/features/notification/domain/entities/app_no
 import 'package:apsaratalent_mobile/features/notification/providers/notification_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
+import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
 
 /// The record of what happened: matches, applications, interviews, messages.
 @RoutePage()
@@ -136,8 +139,7 @@ class NotificationScreen extends ConsumerWidget {
             title: 'More could not load',
             description: state.loadMoreError,
             actionLabel: 'Try again',
-            onAction: () =>
-                ref.read(notificationsProvider.notifier).loadMore(),
+            onAction: () => ref.read(notificationsProvider.notifier).loadMore(),
           ),
         const SizedBox(height: AppShape.space6),
       ];
@@ -145,12 +147,46 @@ class NotificationScreen extends ConsumerWidget {
   /// Opening marks read, and takes the reader where the notification points —
   /// which today is only matches. The rest read as a record of what happened,
   /// because the screens they would open are not built yet.
-  void _open(BuildContext context, WidgetRef ref, AppNotification n) {
-    _run(context, () => ref.read(notificationsProvider.notifier).markRead(n));
+  Future<void> _open(
+      BuildContext context, WidgetRef ref, AppNotification n) async {
+    await _run(
+        context, () => ref.read(notificationsProvider.notifier).markRead(n));
+    if (!context.mounted) return;
     switch (n.kind) {
       case NotificationKind.match:
       case NotificationKind.like:
         context.router.push(const MatchRoute());
+      case NotificationKind.application:
+      case NotificationKind.offer:
+        if (n.jobId case final jobId?) {
+          context.router.push(JobDetailRoute(jobId: jobId));
+        } else {
+          context.router.push(const ApplicationRoute());
+        }
+      case NotificationKind.interview:
+        final role = ref.read(authSessionProvider).value?.user?.role;
+        context.router.push(role == EUserRole.employee
+            ? const InterviewScheduleRoute()
+            : const ApplicationRoute());
+      case NotificationKind.chat:
+      case NotificationKind.call:
+        if (n.senderId case final senderId?) {
+          try {
+            final conversation =
+                await ref.read(chatControllerProvider).initiate(senderId);
+            if (context.mounted) {
+              context.router
+                  .push(ConversationRoute(conversation: conversation));
+            }
+          } catch (error) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(ChatController.messageFor(error))));
+            }
+          }
+        } else {
+          context.router.push(const ChatRoute());
+        }
       case _:
         break;
     }
@@ -235,7 +271,8 @@ class _NotificationRow extends StatelessWidget {
             height: 32,
             alignment: Alignment.center,
             color: t.muted,
-            child: Icon(_icon(notification.kind), size: 16, color: t.foreground),
+            child:
+                Icon(_icon(notification.kind), size: 16, color: t.foreground),
           ),
           const SizedBox(width: AppShape.space3),
           Expanded(

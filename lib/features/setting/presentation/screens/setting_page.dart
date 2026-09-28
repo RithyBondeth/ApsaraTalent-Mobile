@@ -101,6 +101,13 @@ class SettingScreen extends ConsumerWidget {
         const SectionTitle(title: 'Activity'),
         _SettingGroup(
           children: [
+            if (user?.role == EUserRole.company)
+              _SettingRow(
+                icon: LucideIcons.briefcaseBusiness,
+                label: 'Open positions',
+                value: 'Create and manage job listings',
+                onTap: () => context.router.push(const CompanyJobsRoute()),
+              ),
             _SettingRow(
               icon: LucideIcons.send,
               label: user?.role == EUserRole.company

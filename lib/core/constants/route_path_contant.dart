@@ -55,4 +55,5 @@ class RoutePathConstant {
   static String supportReportPath = '/settings/support';
   static String accountManagementPath = '/settings/account';
   static String interviewSchedulePath = '/interviews';
+  static String companyJobsPath = '/company/jobs';
 }
