@@ -53,6 +53,7 @@ class CurrentUserResponse {
       avatarUrl: avatar,
       isEmailVerified: _json['isEmailVerified'] != false,
       isTwoFactorEnabled: _json['isTwoFactorEnabled'] == true,
+      deletionRequestedAt: DateTime.tryParse('${_json['deletedAt'] ?? ''}'),
     );
   }
 
