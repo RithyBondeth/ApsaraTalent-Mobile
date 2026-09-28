@@ -126,6 +126,17 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
               context,
               'A full profile view for matches is not built yet.',
             ),
+            onAiTools: () {
+              final employeeId =
+                  employee ? state.viewer.profileId : match.profile.id;
+              final companyId =
+                  employee ? match.profile.id : state.viewer.profileId;
+              context.router.push(AiMatchToolsRoute(
+                match: match,
+                employeeId: employeeId,
+                companyId: companyId,
+              ));
+            },
             onMessage: () => _message(match),
             onUnmatch: () => _confirmUnmatch(match),
           ),

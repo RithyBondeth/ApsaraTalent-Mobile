@@ -24,3 +24,10 @@ String apiCompanyMatchesSeen(String companyId) =>
 /// Always employee id then company id, whichever side is asking.
 String apiUnmatch(String employeeId, String companyId) =>
     '/match/unmatch/$employeeId/$companyId';
+
+String apiAiMatchExplanation(String employeeId, String companyId) =>
+    '/match/ai-explanation/$employeeId/$companyId';
+String apiAiSkillGap(String employeeId, String companyId) =>
+    '/match/ai-skill-gap/$employeeId/$companyId/stream';
+String apiAiInterviewPrep(String employeeId, String companyId) =>
+    '/match/ai-interview-prep/$employeeId/$companyId';
