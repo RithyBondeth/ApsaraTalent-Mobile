@@ -103,6 +103,13 @@ class EmployerWorkflowRepository {
         ).map(Interview.fromJson).toList(),
       );
 
+  Future<List<Interview>> employeeInterviews(String employeeId) => _guard(
+        'Could not load your interviews.',
+        () async => jsonMaps(
+          (await _client.get(apiEmployeeInterviews(employeeId))).data,
+        ).map(Interview.fromJson).toList(),
+      );
+
   Future<Interview> createInterview({
     required String employeeId,
     required String companyId,

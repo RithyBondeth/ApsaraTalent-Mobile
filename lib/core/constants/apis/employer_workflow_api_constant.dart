@@ -13,5 +13,7 @@ String apiApplicationHistory(String applicationId) =>
 const String apiEmployerAnalytics = '/job/employer-analytics';
 String apiCompanyInterviews(String companyId) =>
     '/match/interview/company/$companyId';
+String apiEmployeeInterviews(String employeeId) =>
+    '/match/interview/employee/$employeeId';
 const String apiInterview = '/match/interview';
 const String apiInterviewStatus = '/match/interview/status';

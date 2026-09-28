@@ -2,6 +2,8 @@ import 'package:apsaratalent_mobile/features/chat/presentation/screens/conversat
 import 'package:apsaratalent_mobile/features/chat/domain/chat_models.dart';
 import 'package:apsaratalent_mobile/core/constants/route_path_contant.dart';
 import 'package:apsaratalent_mobile/features/application/presentation/screens/application_screen.dart';
+import 'package:apsaratalent_mobile/features/application/presentation/screens/interview_schedule_screen.dart';
+import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/email_verification_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/signup/signup_account_screen.dart';
@@ -141,6 +143,11 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: ApplicationRoute.page,
           path: RoutePathConstant.applicationPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: InterviewScheduleRoute.page,
+          path: RoutePathConstant.interviewSchedulePath,
           guards: [_authGuard],
         ),
         AutoRoute(
