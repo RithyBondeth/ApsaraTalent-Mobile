@@ -10,6 +10,7 @@ import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.
 import 'package:apsaratalent_mobile/features/search/data/repositories/search_repository_impl.dart';
 import 'package:apsaratalent_mobile/features/search/domain/entities/job_posting.dart';
 import 'package:apsaratalent_mobile/features/search/domain/repositories/search_repository.dart';
+import 'package:apsaratalent_mobile/features/saved_search/domain/entities/saved_search.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final searchRepositoryProvider = Provider<SearchRepository>(
@@ -47,7 +48,7 @@ class SearchState {
   const SearchState({
     required this.mode,
     this.keyword = '',
-    this.narrowToMyScopes = false,
+    this.careerScopes = const [],
     this.jobs = const [],
     this.talent = const [],
     this.total = 0,
@@ -65,7 +66,9 @@ class SearchState {
   /// none of the career scopes carry embeddings, so the API's similarity
   /// branch never matches and only an identical name does. Narrowing by
   /// default would quietly hide results a reader expects to see.
-  final bool narrowToMyScopes;
+  final List<String> careerScopes;
+
+  bool get isNarrowed => careerScopes.isNotEmpty;
 
   final List<JobPosting> jobs;
   final List<FeedEmployee> talent;
@@ -86,7 +89,7 @@ class SearchState {
 
   SearchState copyWith({
     String? keyword,
-    bool? narrowToMyScopes,
+    List<String>? careerScopes,
     List<JobPosting>? jobs,
     List<FeedEmployee>? talent,
     int? total,
@@ -100,7 +103,7 @@ class SearchState {
       SearchState(
         mode: mode,
         keyword: keyword ?? this.keyword,
-        narrowToMyScopes: narrowToMyScopes ?? this.narrowToMyScopes,
+        careerScopes: careerScopes ?? this.careerScopes,
         jobs: jobs ?? this.jobs,
         talent: talent ?? this.talent,
         total: total ?? this.total,
@@ -154,8 +157,31 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
   void setNarrowing(bool narrow) {
     final current = state;
     if (current == null) return;
-    state = current.copyWith(narrowToMyScopes: narrow);
+    state = current.copyWith(
+      careerScopes: narrow ? ref.read(myCareerScopesProvider) : const [],
+    );
     if (current.keyword.trim().isNotEmpty) run();
+  }
+
+  /// Restores the exact snapshot that was saved. A user's current profile
+  /// scopes may have changed since then, and a search saved on web may contain
+  /// a different set, so substituting today's profile scopes would alter the
+  /// search without saying so.
+  Future<void> applySavedSearch(SavedSearch saved) async {
+    final current = state;
+    if (current == null || current.mode != SearchMode.jobs) return;
+    _timer?.cancel();
+    state = current.copyWith(
+      keyword: saved.keyword ?? '',
+      careerScopes: saved.careerScopes,
+      jobs: const [],
+      talent: const [],
+      total: 0,
+      page: 1,
+      usedFallback: false,
+      clearError: true,
+    );
+    await run();
   }
 
   Future<void> run() async {
@@ -215,8 +241,7 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
     SearchState from, {
     required int page,
   }) async {
-    final scopes =
-        from.narrowToMyScopes ? ref.read(myCareerScopesProvider) : const <String>[];
+    final scopes = from.careerScopes;
     final keyword = from.keyword.trim();
 
     if (from.mode == SearchMode.jobs) {
@@ -225,14 +250,24 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
         careerScopes: scopes,
         page: page,
       );
-      return (results.items, const <FeedEmployee>[], results.total, results.usedFallback);
+      return (
+        results.items,
+        const <FeedEmployee>[],
+        results.total,
+        results.usedFallback
+      );
     }
     final results = await _repository.searchTalent(
       keyword: keyword,
       careerScopes: scopes,
       page: page,
     );
-    return (const <JobPosting>[], results.items, results.total, results.usedFallback);
+    return (
+      const <JobPosting>[],
+      results.items,
+      results.total,
+      results.usedFallback
+    );
   }
 }
 

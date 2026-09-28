@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_card.dart';
+import 'package:apsaratalent_mobile/features/saved_search/domain/entities/saved_search.dart';
+import 'package:apsaratalent_mobile/features/saved_search/providers/saved_search_notifier.dart';
 import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/job_card.dart';
@@ -88,12 +91,153 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             onChanged: notifier.onKeyword,
             onSubmitted: (_) => notifier.run(),
           ),
+          if (jobs)
+            Row(
+              children: [
+                Expanded(
+                  child: AppButton(
+                    label: 'Saved searches',
+                    icon: LucideIcons.bookmark,
+                    variant: AppButtonVariant.outline,
+                    onPressed: () => _openSavedSearches(context),
+                  ),
+                ),
+                const SizedBox(width: AppShape.space2),
+                Expanded(
+                  child: AppButton(
+                    label: 'Save search',
+                    icon: LucideIcons.bookmarkPlus,
+                    onPressed: state.keyword.trim().isEmpty
+                        ? null
+                        : () => _saveSearch(context, state),
+                  ),
+                ),
+              ],
+            ),
           _ScopeToggle(state: state, onChanged: notifier.setNarrowing),
           ..._results(context, state),
           const SizedBox(height: AppShape.space6),
         ],
       ),
     );
+  }
+
+  Future<void> _openSavedSearches(BuildContext context) async {
+    final saved = await context.router.push<SavedSearch>(
+      const SavedSearchesRoute(),
+    );
+    if (saved == null || !mounted) return;
+    _controller.text = saved.keyword ?? '';
+    await ref.read(searchProvider.notifier).applySavedSearch(saved);
+  }
+
+  Future<void> _saveSearch(BuildContext context, SearchState search) async {
+    final name = TextEditingController(text: search.keyword.trim());
+    var frequency = SearchFrequency.weekly;
+    var saving = false;
+    String? error;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Save this search'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppInput(
+                controller: name,
+                labelText: 'Name',
+                hintText: 'e.g. Senior design roles',
+                errorText: error,
+                enabled: !saving,
+                textInputAction: TextInputAction.done,
+              ),
+              const SizedBox(height: AppShape.space4),
+              DropdownButtonFormField<SearchFrequency>(
+                initialValue: frequency,
+                decoration: const InputDecoration(labelText: 'Email updates'),
+                items: [
+                  for (final option in SearchFrequency.values)
+                    DropdownMenuItem(
+                      value: option,
+                      child: Text(option.label),
+                    ),
+                ],
+                onChanged: saving
+                    ? null
+                    : (value) {
+                        if (value != null) {
+                          setDialogState(() => frequency = value);
+                        }
+                      },
+              ),
+              const SizedBox(height: AppShape.space2),
+              Text(
+                frequency.description,
+                style: AppTypography.tiny.copyWith(
+                  color: context.tokens.mutedForeground,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: saving ? null : () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      final value = name.text.trim();
+                      if (value.isEmpty) {
+                        setDialogState(
+                            () => error = 'Give this search a name.');
+                        return;
+                      }
+                      setDialogState(() {
+                        saving = true;
+                        error = null;
+                      });
+                      try {
+                        await ref.read(savedSearchesProvider.notifier).save(
+                              name: value,
+                              keyword: search.keyword,
+                              careerScopes: search.careerScopes,
+                              frequency: frequency,
+                            );
+                        if (context.mounted) Navigator.of(context).pop();
+                        if (mounted) {
+                          ScaffoldMessenger.of(this.context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              const SnackBar(content: Text('Search saved.')),
+                            );
+                        }
+                      } on ApiException catch (e) {
+                        if (context.mounted) {
+                          setDialogState(() {
+                            saving = false;
+                            error = e.message;
+                          });
+                        }
+                      }
+                    },
+              child: saving
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Text('Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+    name.dispose();
   }
 
   List<Widget> _results(BuildContext context, SearchState state) {
@@ -203,7 +347,7 @@ class _ScopeToggle extends StatelessWidget {
               ],
             ),
           ),
-          Switch(value: state.narrowToMyScopes, onChanged: onChanged),
+          Switch(value: state.isNarrowed, onChanged: onChanged),
         ],
       ),
     );
