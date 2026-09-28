@@ -10,6 +10,7 @@ import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/constants/signup_options.dart';
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
 import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
+import 'package:apsaratalent_mobile/features/profile/presentation/widgets/profile_media_editor.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
 /// Editing the profile's own fields.
@@ -23,9 +24,6 @@ import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 /// which would silently drop someone into the unverified state from a screen
 /// that says nothing about verification. It belongs with the verification
 /// flow, not here.
-///
-/// **Photos, résumé and cover letter.** Those are multipart upload routes and
-/// the app has no file picker dependency.
 ///
 /// **Skills, education, work history, career scopes and socials.** The update
 /// endpoint takes them as nested collections with their own delete lists —
@@ -122,15 +120,16 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           }
           _seed(profile);
           return switch (profile) {
-            EmployeeProfile() => _employeeForm(),
-            CompanyProfile() => _companyForm(),
+            EmployeeProfile() => _employeeForm(profile),
+            CompanyProfile() => _companyForm(profile),
           };
         },
       ),
     );
   }
 
-  List<Widget> _employeeForm() => [
+  List<Widget> _employeeForm(EmployeeProfile profile) => [
+        ProfileMediaEditor(profile: profile),
         const SectionTitle(title: 'You'),
         _text('firstname', 'First name'),
         _text('lastname', 'Last name'),
@@ -166,7 +165,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         ..._footer(),
       ];
 
-  List<Widget> _companyForm() => [
+  List<Widget> _companyForm(CompanyProfile profile) => [
+        ProfileMediaEditor(profile: profile),
         const SectionTitle(title: 'Company'),
         _text('name', 'Company name'),
         _text('industry', 'Industry'),
@@ -196,9 +196,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         Padding(
           padding: const EdgeInsets.only(top: AppShape.space2),
           child: Text(
-            // Says what this screen cannot do, rather than leaving someone
-            // hunting for it.
-            'Photos, résumé and email are not editable here yet.',
+            'Email changes require account verification.',
             textAlign: TextAlign.center,
             style: AppTypography.tiny.copyWith(
               color: context.tokens.mutedForeground,

@@ -6,6 +6,7 @@ import 'package:apsaratalent_mobile/features/profile/domain/repositories/profile
 import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'dart:typed_data';
 
 class FakeProfileRepository implements ProfileRepository {
   FakeProfileRepository({this.job = 'Sales Manager'});
@@ -16,6 +17,7 @@ class FakeProfileRepository implements ProfileRepository {
   FeedViewer? lastViewer;
 
   Map<String, dynamic>? lastChanges;
+  String? lastMediaAction;
 
   /// Mirrors the API: only the keys sent are applied.
   @override
@@ -39,7 +41,56 @@ class FakeProfileRepository implements ProfileRepository {
     calls++;
     lastViewer = viewer;
     if (fail) throw ApiException(message: 'profile down');
-    return EmployeeProfile(id: viewer.profileId, fullName: 'Chenda Nhem', job: job);
+    return EmployeeProfile(
+        id: viewer.profileId, fullName: 'Chenda Nhem', job: job);
+  }
+
+  @override
+  Future<void> uploadAvatar(FeedViewer viewer, ProfileUpload file) async {
+    lastMediaAction = 'upload-avatar:${file.filename}';
+  }
+
+  @override
+  Future<void> removeAvatar(FeedViewer viewer) async {
+    lastMediaAction = 'remove-avatar';
+  }
+
+  @override
+  Future<void> uploadEmployeeDocument(
+      String employeeId, EmployeeDocumentType type, ProfileUpload file) async {
+    lastMediaAction = 'upload-${type.apiValue}:${file.filename}';
+  }
+
+  @override
+  Future<void> removeEmployeeDocument(
+      String employeeId, EmployeeDocumentType type) async {
+    lastMediaAction = 'remove-${type.apiValue}';
+  }
+
+  @override
+  Future<Uint8List> downloadEmployeeDocument(
+          String employeeId, EmployeeDocumentType type) async =>
+      Uint8List.fromList([1, 2, 3]);
+
+  @override
+  Future<void> uploadCompanyCover(String companyId, ProfileUpload file) async {
+    lastMediaAction = 'upload-cover:${file.filename}';
+  }
+
+  @override
+  Future<void> removeCompanyCover(String companyId) async {
+    lastMediaAction = 'remove-cover';
+  }
+
+  @override
+  Future<void> uploadCompanyImages(
+      String companyId, List<ProfileUpload> files) async {
+    lastMediaAction = 'upload-images:${files.length}';
+  }
+
+  @override
+  Future<void> removeCompanyImage(String companyId, String imageId) async {
+    lastMediaAction = 'remove-image:$imageId';
   }
 }
 
@@ -167,5 +218,21 @@ void main() {
     // The screen reports the error; it does not go blank.
     expect(container.read(profileProvider).value, isNotNull);
     expect(container.read(profileProvider).value!.headline, 'Sales Manager');
+  });
+
+  test('a media mutation refreshes the profile after the upload', () async {
+    final container = containerFor(viewer);
+    await container.read(profileProvider.future);
+    final before = repository.calls;
+
+    await container.read(profileProvider.notifier).uploadAvatar(
+          ProfileUpload(
+            filename: 'avatar.png',
+            bytes: Uint8List.fromList([1, 2, 3]),
+          ),
+        );
+
+    expect(repository.lastMediaAction, 'upload-avatar:avatar.png');
+    expect(repository.calls, before + 1);
   });
 }
