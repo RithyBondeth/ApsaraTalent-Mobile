@@ -9,18 +9,47 @@ import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/application/domain/entities/job_application.dart';
 import 'package:apsaratalent_mobile/features/application/providers/application_notifier.dart';
+import 'package:apsaratalent_mobile/features/application/presentation/screens/employer_workflow_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
+import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
+import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
 /// The viewer's own applications.
 ///
-/// Employee-side only: the pipeline, status changes and notes are company
-/// routes, and application history answers an employee with 403.
 @RoutePage()
 class ApplicationScreen extends ConsumerWidget {
   const ApplicationScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final role = ref.watch(authSessionProvider).value?.user?.role;
+    if (role == EUserRole.company) {
+      return ref.watch(profileProvider).when(
+            loading: () => const AppScreen(children: [_RowSkeleton()]),
+            error: (error, _) => AppScreen(children: [
+              PageState(
+                variant: PageStateVariant.error,
+                title: 'Your company profile could not load',
+                description: error is ApiException
+                    ? error.message
+                    : 'Check your connection and try again.',
+                actionLabel: 'Try again',
+                onAction: () => ref.invalidate(profileProvider),
+              ),
+            ]),
+            data: (profile) => profile is CompanyProfile
+                ? EmployerWorkflowScreen(profile: profile)
+                : const AppScreen(children: [
+                    PageState(
+                      variant: PageStateVariant.empty,
+                      title: 'No company profile',
+                      description: 'Finish company setup to manage applicants.',
+                    ),
+                  ]),
+          );
+    }
     final applications = ref.watch(applicationsProvider);
     final notifier = ref.read(applicationsProvider.notifier);
 

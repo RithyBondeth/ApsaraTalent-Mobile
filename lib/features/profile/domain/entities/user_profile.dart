@@ -50,7 +50,9 @@ class EmployeeProfile extends UserProfile {
     this.coverLetter,
     this.languages = const [],
     this.skills = const [],
+    this.skillItems = const [],
     this.careerScopes = const [],
+    this.careerScopeItems = const [],
     this.experiences = const [],
     this.educations = const [],
     this.socials = const [],
@@ -89,7 +91,12 @@ class EmployeeProfile extends UserProfile {
       // A TypeORM `simple-array` column: a list of plain strings, or null.
       languages: jsonStrings(json['languages']),
       skills: jsonLabels(json['skills'], 'name'),
+      skillItems:
+          jsonMaps(json['skills']).map(ProfileNamedItem.fromJson).toList(),
       careerScopes: jsonLabels(json['careerScopes'], 'name'),
+      careerScopeItems: jsonMaps(json['careerScopes'])
+          .map(ProfileNamedItem.fromJson)
+          .toList(),
       experiences: jsonMaps(json['experiences'])
           .map(ProfileExperience.fromJson)
           .where((e) => e.title != null)
@@ -125,7 +132,9 @@ class EmployeeProfile extends UserProfile {
   final String? coverLetter;
   final List<String> languages;
   final List<String> skills;
+  final List<ProfileNamedItem> skillItems;
   final List<String> careerScopes;
+  final List<ProfileNamedItem> careerScopeItems;
   final List<ProfileExperience> experiences;
   final List<ProfileEducation> educations;
   final List<ProfileSocial> socials;
@@ -186,9 +195,11 @@ class CompanyProfile extends UserProfile {
     this.companySize,
     this.foundedYear,
     this.openPositions = const [],
+    this.openPositionItems = const [],
     this.benefits = const [],
     this.values = const [],
     this.careerScopes = const [],
+    this.careerScopeItems = const [],
     this.images = const [],
     this.socials = const [],
     super.avatarUrl,
@@ -212,9 +223,14 @@ class CompanyProfile extends UserProfile {
         companySize: jsonInt(json['companySize']),
         foundedYear: jsonInt(json['foundedYear']),
         openPositions: jsonLabels(json['openPositions'], 'title'),
+        openPositionItems:
+            jsonMaps(json['openPositions']).map(ProfileJob.fromJson).toList(),
         benefits: jsonLabels(json['benefits'], 'label'),
         values: jsonLabels(json['values'], 'label'),
         careerScopes: jsonLabels(json['careerScopes'], 'name'),
+        careerScopeItems: jsonMaps(json['careerScopes'])
+            .map(ProfileNamedItem.fromJson)
+            .toList(),
         images: jsonMaps(json['images']).map(ProfileImage.fromJson).toList(),
         socials: jsonMaps(json['socials'])
             .map(ProfileSocial.fromJson)
@@ -231,9 +247,11 @@ class CompanyProfile extends UserProfile {
   final int? companySize;
   final int? foundedYear;
   final List<String> openPositions;
+  final List<ProfileJob> openPositionItems;
   final List<String> benefits;
   final List<String> values;
   final List<String> careerScopes;
+  final List<ProfileNamedItem> careerScopeItems;
 
   final List<ProfileImage> images;
   final List<ProfileSocial> socials;
@@ -282,49 +300,121 @@ class ProfileImage {
   final String url;
 }
 
-class ProfileExperience {
-  const ProfileExperience({this.title, this.company, this.description});
+class ProfileNamedItem {
+  const ProfileNamedItem({this.id, this.name, this.description});
 
-  factory ProfileExperience.fromJson(Map<String, dynamic> json) =>
-      ProfileExperience(
-        title: jsonText(json['title']),
-        company: jsonText(json['company']),
+  factory ProfileNamedItem.fromJson(Map<String, dynamic> json) =>
+      ProfileNamedItem(
+        id: jsonText(json['id']),
+        name: jsonText(json['name']),
         description: jsonText(json['description']),
       );
 
+  final String? id;
+  final String? name;
+  final String? description;
+
+  Map<String, dynamic> toJson() => {
+        if (id != null) 'id': id,
+        if (name != null) 'name': name,
+        if (description != null) 'description': description,
+      };
+}
+
+class ProfileJob {
+  const ProfileJob({required this.id, required this.title});
+
+  factory ProfileJob.fromJson(Map<String, dynamic> json) => ProfileJob(
+        id: '${json['id']}',
+        title: jsonText(json['title']) ?? 'Role',
+      );
+
+  final String id;
+  final String title;
+}
+
+class ProfileExperience {
+  const ProfileExperience({
+    this.id,
+    this.title,
+    this.company,
+    this.description,
+    this.startDate,
+    this.endDate,
+  });
+
+  factory ProfileExperience.fromJson(Map<String, dynamic> json) =>
+      ProfileExperience(
+        id: jsonText(json['id']),
+        title: jsonText(json['title']),
+        company: jsonText(json['company']),
+        description: jsonText(json['description']),
+        startDate: jsonText(json['startDate']),
+        endDate: jsonText(json['endDate']),
+      );
+
+  final String? id;
   final String? title;
   final String? company;
   final String? description;
+  final String? startDate;
+  final String? endDate;
+
+  Map<String, dynamic> toJson() => {
+        if (id != null) 'id': id,
+        if (title != null) 'title': title,
+        if (company != null) 'company': company,
+        if (description != null) 'description': description,
+        if (startDate != null) 'startDate': startDate,
+        if (endDate != null) 'endDate': endDate,
+      };
 
   /// "Title · Company", or just whichever of the two the record has.
   String get summary => [title, company].whereType<String>().join(' · ');
 }
 
 class ProfileEducation {
-  const ProfileEducation({this.school, this.degree, this.year});
+  const ProfileEducation({this.id, this.school, this.degree, this.year});
 
   factory ProfileEducation.fromJson(Map<String, dynamic> json) =>
       ProfileEducation(
+        id: jsonText(json['id']),
         school: jsonText(json['school']),
         degree: jsonText(json['degree']),
         year: jsonText(json['year']),
       );
 
+  final String? id;
   final String? school;
   final String? degree;
   final String? year;
+
+  Map<String, dynamic> toJson() => {
+        if (id != null) 'id': id,
+        if (school != null) 'school': school,
+        if (degree != null) 'degree': degree,
+        if (year != null) 'year': year,
+      };
 
   String get summary => [degree, school].whereType<String>().join(' · ');
 }
 
 class ProfileSocial {
-  const ProfileSocial({this.platform, this.url});
+  const ProfileSocial({this.id, this.platform, this.url});
 
   factory ProfileSocial.fromJson(Map<String, dynamic> json) => ProfileSocial(
+        id: jsonText(json['id']),
         platform: jsonText(json['platform']),
         url: jsonText(json['url']),
       );
 
+  final String? id;
   final String? platform;
   final String? url;
+
+  Map<String, dynamic> toJson() => {
+        if (id != null) 'id': id,
+        if (platform != null) 'platform': platform,
+        if (url != null) 'url': url,
+      };
 }

@@ -39,7 +39,10 @@ void main() {
     // A `simple-array` column the seed leaves null.
     'languages': null,
     'skills': [
-      {'id': 's1', 'name': 'Digital Marketing'},
+      {'id': 's1', 'name': 'Digital Marketing', 'description': 'Campaigns'},
+    ],
+    'careerScopes': [
+      {'id': 'cs1', 'name': 'Marketing'},
     ],
     'experiences': [
       {'id': 'x1', 'title': 'Sales Representative', 'company': null},
@@ -62,6 +65,9 @@ void main() {
 
     final record = profile as EmployeeProfile;
     expect(record.skills, ['Digital Marketing']);
+    expect(record.skillItems.single.id, 's1');
+    expect(record.skillItems.single.description, 'Campaigns');
+    expect(record.careerScopeItems.single.id, 'cs1');
     // A null simple-array is an empty list, not a crash.
     expect(record.languages, isEmpty);
     // An experience with no company keeps the title alone.
@@ -76,7 +82,7 @@ void main() {
           'industry': 'Telecommunications',
           'companySize': 900,
           'openPositions': [
-            {'title': 'Backend Engineer'},
+            {'id': 'j1', 'title': 'Backend Engineer'},
           ],
           'benefits': [
             {'label': 'Annual Bonus'},
@@ -93,6 +99,7 @@ void main() {
     expect(profile.displayName, 'Smart Axiata');
     expect(profile.headline, 'Telecommunications');
     expect((profile as CompanyProfile).openPositions, ['Backend Engineer']);
+    expect(profile.openPositionItems.single.id, 'j1');
     expect(profile.images.single.id, 'image-1');
     expect(profile.images.single.url, '/storage/company-images/office.png');
   });
@@ -178,5 +185,30 @@ void main() {
         ),
       ),
     );
+  });
+
+  test('sends nested profile collections and scoped deletion ids unchanged',
+      () async {
+    final http = FakeHttp((request) async => jsonResponse(200, {
+          'message': 'saved',
+          'employee': employeeJson,
+        }));
+    final changes = {
+      'skills': [
+        {'id': 's1'},
+        {'name': 'Flutter'},
+      ],
+      'experiences': [
+        {'id': 'x1', 'title': 'Lead Engineer', 'company': 'Apsara'},
+      ],
+      'skillIdsToDelete': ['s2'],
+      'educationIdsToDelete': ['d2'],
+    };
+
+    await repositoryFor(http).updateProfile(employee, changes);
+
+    expect(http.requests.single.method, 'PATCH');
+    expect(http.requests.single.path, '/user/employee/update-info/e1');
+    expect(http.requests.single.data, changes);
   });
 }

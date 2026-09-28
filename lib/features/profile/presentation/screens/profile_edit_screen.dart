@@ -11,6 +11,7 @@ import 'package:apsaratalent_mobile/features/auth/domain/constants/signup_option
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
 import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/widgets/profile_media_editor.dart';
+import 'package:apsaratalent_mobile/features/profile/presentation/widgets/profile_collections_editor.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
 /// Editing the profile's own fields.
@@ -25,9 +26,6 @@ import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 /// that says nothing about verification. It belongs with the verification
 /// flow, not here.
 ///
-/// **Skills, education, work history, career scopes and socials.** The update
-/// endpoint takes them as nested collections with their own delete lists —
-/// a list editor per collection, which is its own screen.
 @RoutePage()
 class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
@@ -40,6 +38,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   final _fields = <String, TextEditingController>{};
   final _picked = <String, String?>{};
   List<String>? _languages;
+  final _collectionChanges = <String, dynamic>{};
   bool _saving = false;
   UserProfile? _loaded;
 
@@ -130,6 +129,10 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   List<Widget> _employeeForm(EmployeeProfile profile) => [
         ProfileMediaEditor(profile: profile),
+        ProfileCollectionsEditor(
+          profile: profile,
+          onChanged: (changes) => _collectionChanges.addAll(changes),
+        ),
         const SectionTitle(title: 'You'),
         _text('firstname', 'First name'),
         _text('lastname', 'Last name'),
@@ -167,6 +170,10 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   List<Widget> _companyForm(CompanyProfile profile) => [
         ProfileMediaEditor(profile: profile),
+        ProfileCollectionsEditor(
+          profile: profile,
+          onChanged: (changes) => _collectionChanges.addAll(changes),
+        ),
         const SectionTitle(title: 'Company'),
         _text('name', 'Company name'),
         _text('industry', 'Industry'),
@@ -305,7 +312,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         compareInt('companySize', profile.companySize);
         compareInt('foundedYear', profile.foundedYear);
     }
-    return changes;
+    return {...changes, ..._collectionChanges};
   }
 
   static bool _sameList(List<String> a, List<String> b) =>

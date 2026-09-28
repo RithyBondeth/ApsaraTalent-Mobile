@@ -4,6 +4,7 @@ import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 import 'package:apsaratalent_mobile/features/setting/domain/entities/activity_counts.dart';
+import 'package:apsaratalent_mobile/core/constants/apis/employer_workflow_api_constant.dart';
 
 /// Reads the three Activity counts. Nothing here fails the settings page:
 /// every count resolves to null on error, and its row simply has no number.
@@ -14,7 +15,7 @@ class ActivityCountsRepository {
 
   Future<ActivityCounts> fetch(FeedViewer viewer) async {
     final results = await Future.wait([
-      _applications(),
+      _applications(viewer),
       _saved(viewer),
       _unread(),
     ]);
@@ -26,9 +27,18 @@ class ActivityCountsRepository {
   }
 
   /// No count route exists, so the list is fetched and counted.
-  Future<int?> _applications() => _orNull(() async {
-        final response = await _client.get(apiMyApplications);
+  Future<int?> _applications(FeedViewer viewer) => _orNull(() async {
+        final response = await _client.get(
+          viewer.role == FeedViewerRole.company
+              ? apiEmployerAnalytics
+              : apiMyApplications,
+        );
         final data = response.data;
+        if (viewer.role == FeedViewerRole.company) {
+          return data is Map && data['activePipeline'] is int
+              ? data['activePipeline'] as int
+              : null;
+        }
         return data is List ? data.length : null;
       });
 
