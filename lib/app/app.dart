@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/features/call/presentation/realtime_host.dart';
 import 'package:apsaratalent_mobile/core/configs/config_service.dart';
 import 'package:apsaratalent_mobile/core/themes/app_theme.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
@@ -7,6 +8,7 @@ import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/routes/auth_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:apsaratalent_mobile/core/push/push_host.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -41,6 +43,10 @@ class _AppState extends ConsumerState<App> {
       title: AppConfigService.appName,
       debugShowCheckedModeBanner: false,
       routerConfig: _router.config(),
+      builder: (context, child) => PushHost(
+        router: _router,
+        child: RealtimeHost(child: child ?? const SizedBox.shrink()),
+      ),
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: themeMode.themeMode,

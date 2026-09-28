@@ -1,3 +1,5 @@
+import 'package:apsaratalent_mobile/features/chat/presentation/screens/conversation_screen.dart';
+import 'package:apsaratalent_mobile/features/chat/domain/chat_models.dart';
 import 'package:apsaratalent_mobile/core/constants/route_path_contant.dart';
 import 'package:apsaratalent_mobile/features/application/presentation/screens/application_screen.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/screens/email_verification_screen.dart';
@@ -116,6 +118,10 @@ class AppRouter extends RootStackRouter {
         ),
 
         // Detail routes — pushed over the tabs, not into them.
+        AutoRoute(
+            page: ConversationRoute.page,
+            path: '/conversation',
+            guards: [_authGuard]),
         AutoRoute(
           page: NotificationRoute.page,
           path: RoutePathConstant.notificationPath,

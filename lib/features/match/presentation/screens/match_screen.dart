@@ -1,3 +1,5 @@
+import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,7 +91,9 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     return [
       PageBanner(
         eyebrow: 'Matches',
-        title: employee ? 'Companies who liked you back' : 'Talent who liked you back',
+        title: employee
+            ? 'Companies who liked you back'
+            : 'Talent who liked you back',
         subtitle: 'A match means you both said yes. Start the conversation.',
         stats: [
           PageBannerStat(
@@ -122,14 +126,32 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
               context,
               'A full profile view for matches is not built yet.',
             ),
-            onMessage: () => _snack(
-              context,
-              'Messaging is not wired up yet.',
-            ),
+            onMessage: () => _message(match),
             onUnmatch: () => _confirmUnmatch(match),
           ),
       const SizedBox(height: AppShape.space6),
     ];
+  }
+
+  bool _openingChat = false;
+  Future<void> _message(MatchProfile match) async {
+    if (_openingChat) return;
+    _openingChat = true;
+    try {
+      // initiate resolves a profile ID to its canonical account ID, even when
+      // the trimmed matching payload omits the nested user.
+      final conversation = await ref.read(chatControllerProvider).initiate(
+            match.profile.userId ?? match.profile.id,
+          );
+      if (mounted) {
+        await context.router
+            .push(ConversationRoute(conversation: conversation));
+      }
+    } catch (e) {
+      if (mounted) _snack(context, ChatController.messageFor(e));
+    } finally {
+      _openingChat = false;
+    }
   }
 
   /// Unmatching is destructive well beyond ending the match: the API deletes

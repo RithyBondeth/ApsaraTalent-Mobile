@@ -9,6 +9,7 @@ import 'package:apsaratalent_mobile/features/auth/providers/auth_providers.dart'
 import 'package:apsaratalent_mobile/features/auth/providers/otp/otp_notifier.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:apsaratalent_mobile/core/push/push_providers.dart';
 
 /// Owns "is anyone signed in" for the whole app.
 ///
@@ -48,6 +49,7 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSessionState> {
   }
 
   Future<void> signOut() async {
+    await ref.read(pushTokenServiceProvider).unregister();
     await LogoutUseCase(_repository)();
 
     // What the last user typed shouldn't greet the next one.
