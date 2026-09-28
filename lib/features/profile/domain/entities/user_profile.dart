@@ -152,7 +152,8 @@ class EmployeeProfile extends UserProfile {
         ProfileField('email', 4, filled: email != null),
         ProfileField('phone number', 4, filled: phone != null),
         ProfileField('job title', 6, filled: job != null),
-        ProfileField('years of experience', 4, filled: yearsOfExperience != null),
+        ProfileField('years of experience', 4,
+            filled: yearsOfExperience != null),
         ProfileField('availability', 4, filled: availability != null),
         ProfileField('bio', 6, filled: description != null),
         ProfileField('location', 4, filled: location != null),
@@ -188,7 +189,7 @@ class CompanyProfile extends UserProfile {
     this.benefits = const [],
     this.values = const [],
     this.careerScopes = const [],
-    this.images = 0,
+    this.images = const [],
     this.socials = const [],
     super.avatarUrl,
     super.location,
@@ -214,7 +215,7 @@ class CompanyProfile extends UserProfile {
         benefits: jsonLabels(json['benefits'], 'label'),
         values: jsonLabels(json['values'], 'label'),
         careerScopes: jsonLabels(json['careerScopes'], 'name'),
-        images: jsonMaps(json['images']).length,
+        images: jsonMaps(json['images']).map(ProfileImage.fromJson).toList(),
         socials: jsonMaps(json['socials'])
             .map(ProfileSocial.fromJson)
             .where((s) => s.url != null)
@@ -234,8 +235,7 @@ class CompanyProfile extends UserProfile {
   final List<String> values;
   final List<String> careerScopes;
 
-  /// Only the count is scored, and the gallery is not on this screen yet.
-  final int images;
+  final List<ProfileImage> images;
   final List<ProfileSocial> socials;
 
   @override
@@ -244,8 +244,7 @@ class CompanyProfile extends UserProfile {
   @override
   String? get headline => industry;
 
-  /// 18 weighted fields totalling 100, matching the web exactly. A count of
-  /// zero or less is missing, not present — the web checks `> 0`.
+  /// 18 weighted fields totalling 100, matching the web exactly.
   @override
   ProfileCompletion get completion => ProfileCompletion.of([
         ProfileField('company name', 5, filled: name.isNotEmpty),
@@ -267,8 +266,20 @@ class CompanyProfile extends UserProfile {
         ProfileField('values', 5, filled: values.isNotEmpty),
         ProfileField('career scopes', 6, filled: careerScopes.isNotEmpty),
         ProfileField('social links', 7, filled: socials.isNotEmpty),
-        ProfileField('company photos', 7, filled: images > 0),
+        ProfileField('company photos', 7, filled: images.isNotEmpty),
       ]);
+}
+
+class ProfileImage {
+  const ProfileImage({required this.id, required this.url});
+
+  factory ProfileImage.fromJson(Map<String, dynamic> json) => ProfileImage(
+        id: '${json['id']}',
+        url: jsonText(json['image']) ?? '',
+      );
+
+  final String id;
+  final String url;
 }
 
 class ProfileExperience {
@@ -286,8 +297,7 @@ class ProfileExperience {
   final String? description;
 
   /// "Title · Company", or just whichever of the two the record has.
-  String get summary =>
-      [title, company].whereType<String>().join(' · ');
+  String get summary => [title, company].whereType<String>().join(' · ');
 }
 
 class ProfileEducation {

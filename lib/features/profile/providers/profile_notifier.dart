@@ -1,4 +1,5 @@
 import 'package:apsaratalent_mobile/core/network/network_providers.dart';
+import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
 import 'package:apsaratalent_mobile/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
@@ -33,8 +34,9 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
     if (changes.isEmpty) return;
     final viewer = ref.read(feedViewerProvider);
     if (viewer == null) return;
-    final saved =
-        await ref.read(profileRepositoryProvider).updateProfile(viewer, changes);
+    final saved = await ref
+        .read(profileRepositoryProvider)
+        .updateProfile(viewer, changes);
     state = AsyncData(saved);
   }
 
@@ -53,6 +55,48 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
       await ref.read(profileRepositoryProvider).fetchProfile(viewer),
     );
   }
+
+  Future<void> _mutate(
+      Future<void> Function(ProfileRepository, FeedViewer) action) async {
+    final viewer = ref.read(feedViewerProvider);
+    if (viewer == null) return;
+    await action(ref.read(profileRepositoryProvider), viewer);
+    await refresh();
+  }
+
+  Future<void> uploadAvatar(ProfileUpload file) =>
+      _mutate((repository, viewer) => repository.uploadAvatar(viewer, file));
+
+  Future<void> removeAvatar() =>
+      _mutate((repository, viewer) => repository.removeAvatar(viewer));
+
+  Future<void> uploadDocument(EmployeeDocumentType type, ProfileUpload file) =>
+      _mutate((repository, viewer) => repository.uploadEmployeeDocument(
+            viewer.profileId,
+            type,
+            file,
+          ));
+
+  Future<void> removeDocument(EmployeeDocumentType type) =>
+      _mutate((repository, viewer) => repository.removeEmployeeDocument(
+            viewer.profileId,
+            type,
+          ));
+
+  Future<void> uploadCompanyCover(ProfileUpload file) =>
+      _mutate((repository, viewer) =>
+          repository.uploadCompanyCover(viewer.profileId, file));
+
+  Future<void> removeCompanyCover() => _mutate(
+      (repository, viewer) => repository.removeCompanyCover(viewer.profileId));
+
+  Future<void> uploadCompanyImages(List<ProfileUpload> files) =>
+      _mutate((repository, viewer) =>
+          repository.uploadCompanyImages(viewer.profileId, files));
+
+  Future<void> removeCompanyImage(String imageId) =>
+      _mutate((repository, viewer) =>
+          repository.removeCompanyImage(viewer.profileId, imageId));
 }
 
 final profileProvider =
