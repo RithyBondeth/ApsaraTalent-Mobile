@@ -40,6 +40,12 @@ class AppNotification {
     this.createdAt,
     this.senderName,
     this.senderAvatarUrl,
+    this.applicationId,
+    this.jobId,
+    this.interviewId,
+    this.employeeId,
+    this.companyId,
+    this.senderId,
   });
 
   factory AppNotification.fromJson(Map<String, dynamic> json) {
@@ -56,6 +62,12 @@ class AppNotification {
       createdAt: DateTime.tryParse(jsonText(json['createdAt']) ?? ''),
       senderName: sender == null ? null : jsonText(sender['senderName']),
       senderAvatarUrl: sender == null ? null : jsonText(sender['senderAvatar']),
+      applicationId: sender == null ? null : jsonText(sender['applicationId']),
+      jobId: sender == null ? null : jsonText(sender['jobId']),
+      interviewId: sender == null ? null : jsonText(sender['interviewId']),
+      employeeId: sender == null ? null : jsonText(sender['employeeId']),
+      companyId: sender == null ? null : jsonText(sender['companyId']),
+      senderId: sender == null ? null : jsonText(sender['senderId']),
     );
   }
 
@@ -67,6 +79,12 @@ class AppNotification {
   final DateTime? createdAt;
   final String? senderName;
   final String? senderAvatarUrl;
+  final String? applicationId;
+  final String? jobId;
+  final String? interviewId;
+  final String? employeeId;
+  final String? companyId;
+  final String? senderId;
 
   AppNotification copyWith({bool? isRead}) => AppNotification(
         id: id,
@@ -77,6 +95,12 @@ class AppNotification {
         createdAt: createdAt,
         senderName: senderName,
         senderAvatarUrl: senderAvatarUrl,
+        applicationId: applicationId,
+        jobId: jobId,
+        interviewId: interviewId,
+        employeeId: employeeId,
+        companyId: companyId,
+        senderId: senderId,
       );
 
   /// "3h", "2d", "just now". Coarse on purpose: the exact minute a match

@@ -191,6 +191,29 @@ void main() {
       expect(repository.lastChanges, containsPair('portfolioUrl', null));
     });
 
+    test('open-position helpers send one upsert or owned deletion id',
+        () async {
+      final container = containerFor(viewer);
+      await container.read(profileProvider.future);
+
+      await container.read(profileProvider.notifier).saveOpenPosition({
+        'title': 'Mobile Engineer',
+        'workMode': 'hybrid',
+      });
+      expect(repository.lastChanges, {
+        'jobs': [
+          {'title': 'Mobile Engineer', 'workMode': 'hybrid'}
+        ],
+      });
+
+      await container
+          .read(profileProvider.notifier)
+          .deleteOpenPosition('job-1');
+      expect(repository.lastChanges, {
+        'jobIdsToDelete': ['job-1']
+      });
+    });
+
     test('a failed save rethrows and leaves the profile as it was', () async {
       final container = containerFor(viewer);
       await container.read(profileProvider.future);
