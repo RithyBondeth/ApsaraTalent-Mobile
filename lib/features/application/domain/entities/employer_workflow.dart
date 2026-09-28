@@ -122,11 +122,15 @@ class Interview {
     this.applicationId,
     this.employeeId,
     this.employeeName,
+    this.companyId,
+    this.companyName,
   });
 
   factory Interview.fromJson(Map<String, dynamic> json) {
     final employee = json['employee'];
     final employeeMap = employee is Map ? employee : const {};
+    final company = json['company'];
+    final companyMap = company is Map ? company : const {};
     final first = jsonText(employeeMap['firstname']);
     final last = jsonText(employeeMap['lastname']);
     return Interview(
@@ -143,6 +147,8 @@ class Interview {
       applicationId: jsonText(json['applicationId']),
       employeeId: jsonText(employeeMap['id']),
       employeeName: [first, last].whereType<String>().join(' '),
+      companyId: jsonText(companyMap['id']),
+      companyName: jsonText(companyMap['name']),
     );
   }
 
@@ -158,6 +164,8 @@ class Interview {
   final String? applicationId;
   final String? employeeId;
   final String? employeeName;
+  final String? companyId;
+  final String? companyName;
 }
 
 class EmployerAnalytics {

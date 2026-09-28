@@ -207,4 +207,28 @@ void main() {
       InterviewStatus.completed,
     );
   });
+
+  test('employee schedule includes company identity and meeting details',
+      () async {
+    final http = FakeHttp((_) async => jsonResponse(200, [
+          {
+            'id': 'i1',
+            'title': 'Technical interview',
+            'status': 'pending',
+            'scheduledAt': '2026-10-01T03:00:00.000Z',
+            'timezone': 'Asia/Phnom_Penh',
+            'durationMinutes': 45,
+            'meetingLink': 'https://meet.example/interview',
+            'company': {'id': 'c1', 'name': 'Apsara Labs'},
+          },
+        ]));
+
+    final interview =
+        (await repositoryFor(http).employeeInterviews('e1')).single;
+
+    expect(http.requests.single.path, '/match/interview/employee/e1');
+    expect(interview.companyName, 'Apsara Labs');
+    expect(interview.timezone, 'Asia/Phnom_Penh');
+    expect(interview.meetingLink, 'https://meet.example/interview');
+  });
 }

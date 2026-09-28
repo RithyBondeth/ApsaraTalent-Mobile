@@ -4,6 +4,7 @@ import 'package:apsaratalent_mobile/core/network/network_providers.dart';
 import 'package:apsaratalent_mobile/features/application/data/repositories/employer_workflow_repository.dart';
 import 'package:apsaratalent_mobile/features/application/domain/entities/employer_workflow.dart';
 import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
+import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 
 final employerWorkflowRepositoryProvider = Provider<EmployerWorkflowRepository>(
   (ref) => EmployerWorkflowRepository(ref.watch(apiClientProvider)),
@@ -20,6 +21,15 @@ final employerInterviewsProvider =
   return ref
       .read(employerWorkflowRepositoryProvider)
       .interviews(viewer.profileId);
+});
+
+final employeeInterviewsProvider =
+    FutureProvider.autoDispose<List<Interview>>((ref) async {
+  final viewer = ref.watch(feedViewerProvider);
+  if (viewer == null || viewer.role != FeedViewerRole.employee) return const [];
+  return ref
+      .read(employerWorkflowRepositoryProvider)
+      .employeeInterviews(viewer.profileId);
 });
 
 typedef PipelineRequest = ({String jobId, String companyId});
