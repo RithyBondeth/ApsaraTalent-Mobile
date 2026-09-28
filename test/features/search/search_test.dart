@@ -1,9 +1,14 @@
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/session/session_store.dart';
+import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart';
 import 'package:apsaratalent_mobile/features/search/data/repositories/search_repository_impl.dart';
 import 'package:apsaratalent_mobile/features/search/domain/entities/job_posting.dart';
+import 'package:apsaratalent_mobile/features/search/domain/repositories/search_repository.dart';
+import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
+import 'package:apsaratalent_mobile/features/saved_search/domain/entities/saved_search.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -53,6 +58,33 @@ Map<String, dynamic> envelope(
       'pageSize': 20,
       'isUsingFallback': fallback,
     };
+
+class RecordingSearchRepository implements SearchRepository {
+  String? keyword;
+  List<String>? careerScopes;
+
+  @override
+  Future<SearchResults<JobPosting>> searchJobs({
+    required String keyword,
+    List<String> careerScopes = const [],
+    int page = 1,
+  }) async {
+    this.keyword = keyword;
+    this.careerScopes = careerScopes;
+    return SearchResults.empty();
+  }
+
+  @override
+  Future<SearchResults<FeedEmployee>> searchTalent({
+    required String keyword,
+    List<String> careerScopes = const [],
+    int page = 1,
+  }) async =>
+      SearchResults.empty();
+
+  @override
+  Future<JobPosting> fetchJob(String jobId) => throw UnimplementedError();
+}
 
 void main() {
   setUp(() => FlutterSecureStorage.setMockInitialValues({}));
@@ -200,5 +232,30 @@ void main() {
         throwsA(isA<ApiException>()),
       );
     });
+  });
+
+  test('running a saved search preserves its stored scope snapshot', () async {
+    final repository = RecordingSearchRepository();
+    final container = ProviderContainer(overrides: [
+      searchModeProvider.overrideWithValue(SearchMode.jobs),
+      myCareerScopesProvider.overrideWithValue(['Current profile scope']),
+      searchRepositoryProvider.overrideWithValue(repository),
+    ]);
+    container.listen(searchProvider, (_, __) {});
+    addTearDown(container.dispose);
+
+    await container.read(searchProvider.notifier).applySavedSearch(
+          const SavedSearch(
+            id: 'saved-1',
+            name: 'Web search',
+            frequency: SearchFrequency.weekly,
+            keyword: 'designer',
+            careerScopes: ['Stored web scope'],
+          ),
+        );
+
+    expect(repository.keyword, 'designer');
+    expect(repository.careerScopes, ['Stored web scope']);
+    expect(container.read(searchProvider)?.careerScopes, ['Stored web scope']);
   });
 }
