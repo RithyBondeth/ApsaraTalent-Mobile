@@ -51,4 +51,7 @@ class RoutePathConstant {
   static String twoFactorSettingsPath = '/settings/two-factor';
   static String notificationPreferencesPath = '/settings/notifications';
   static String savedSearchesPath = '/saved-searches';
+  static String profilePrivacyPath = '/settings/privacy';
+  static String supportReportPath = '/settings/support';
+  static String accountManagementPath = '/settings/account';
 }

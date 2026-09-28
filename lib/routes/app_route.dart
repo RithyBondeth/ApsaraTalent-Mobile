@@ -27,6 +27,9 @@ import 'package:apsaratalent_mobile/features/search/presentation/screens/search_
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/notification_preferences_screen.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/setting_page.dart';
 import 'package:apsaratalent_mobile/features/setting/presentation/screens/two_factor_settings_screen.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/profile_privacy_screen.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/support_report_screen.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/account_management_screen.dart';
 import 'package:apsaratalent_mobile/features/splash/presentation/screens/splash_screen.dart';
 import 'package:apsaratalent_mobile/routes/auth_guard.dart';
 import 'package:auto_route/auto_route.dart';
@@ -176,6 +179,21 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: SavedSearchesRoute.page,
           path: RoutePathConstant.savedSearchesPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: ProfilePrivacyRoute.page,
+          path: RoutePathConstant.profilePrivacyPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: SupportReportRoute.page,
+          path: RoutePathConstant.supportReportPath,
+          guards: [_authGuard],
+        ),
+        AutoRoute(
+          page: AccountManagementRoute.page,
+          path: RoutePathConstant.accountManagementPath,
           guards: [_authGuard],
         ),
       ];

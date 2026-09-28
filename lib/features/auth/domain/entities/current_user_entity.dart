@@ -17,6 +17,7 @@ class CurrentUserEntity {
     this.avatarUrl,
     this.isEmailVerified = true,
     this.isTwoFactorEnabled = false,
+    this.deletionRequestedAt,
   });
 
   final String id;
@@ -40,6 +41,9 @@ class CurrentUserEntity {
   final bool isEmailVerified;
 
   final bool isTwoFactorEnabled;
+
+  /// Set while the account is inside the API's 30-day deletion grace period.
+  final DateTime? deletionRequestedAt;
 
   /// A phone-OTP login for a number with no account yet produces a user with
   /// no role and no profile.

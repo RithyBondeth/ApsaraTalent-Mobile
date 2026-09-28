@@ -29,4 +29,14 @@ void main() {
 
     expect(user.profileId, isNull);
   });
+
+  test('carries a pending deletion timestamp', () {
+    final user = CurrentUserResponse.fromJson({
+      'id': 'u',
+      'role': 'employee',
+      'deletedAt': '2026-09-28T10:00:00.000Z',
+    }).toEntity();
+
+    expect(user.deletionRequestedAt, DateTime.utc(2026, 9, 28, 10));
+  });
 }
