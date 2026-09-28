@@ -9,6 +9,7 @@ import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart'
     show humanize;
+import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 import 'package:apsaratalent_mobile/features/profile/domain/entities/profile_completion.dart';
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
 import 'package:apsaratalent_mobile/features/profile/presentation/widgets/profile_skeleton.dart';
@@ -20,17 +21,29 @@ import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 /// whichever the account has.
 @RoutePage()
 class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.viewedProfile});
+
+  /// Null means the signed-in user's editable profile. A value renders a
+  /// read-only counterpart profile reached from a mutual match.
+  final FeedViewer? viewedProfile;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(profileProvider);
+    final own = viewedProfile == null;
+    final profile = own
+        ? ref.watch(profileProvider)
+        : ref.watch(viewedProfileProvider(viewedProfile!));
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: Text(own ? 'Profile' : 'Matched profile')),
       onRefresh: () async {
         try {
-          await ref.read(profileProvider.notifier).refresh();
+          if (own) {
+            await ref.read(profileProvider.notifier).refresh();
+          } else {
+            ref.invalidate(viewedProfileProvider(viewedProfile!));
+            await ref.read(viewedProfileProvider(viewedProfile!).future);
+          }
         } on ApiException catch (e) {
           if (context.mounted) _snack(context, e.message);
         }
@@ -42,12 +55,16 @@ class ProfileScreen extends ConsumerWidget {
         error: (error, _) => [
           PageState(
             variant: PageStateVariant.error,
-            title: 'Your profile could not load',
+            title: own
+                ? 'Your profile could not load'
+                : 'This profile could not load',
             description: error is ApiException
                 ? error.message
                 : 'Check your connection and try again.',
             actionLabel: 'Try again',
-            onAction: () => ref.invalidate(profileProvider),
+            onAction: () => own
+                ? ref.invalidate(profileProvider)
+                : ref.invalidate(viewedProfileProvider(viewedProfile!)),
           ),
         ],
         data: (profile) => profile == null
@@ -61,25 +78,28 @@ class ProfileScreen extends ConsumerWidget {
                       'signing up to get one.',
                 ),
               ]
-            : _content(context, profile),
+            : _content(context, profile, own: own),
       ),
     );
   }
 
-  List<Widget> _content(BuildContext context, UserProfile profile) => [
+  List<Widget> _content(BuildContext context, UserProfile profile,
+          {required bool own}) =>
+      [
         _Identity(profile: profile),
-        _CompletionCard(completion: profile.completion),
+        if (own) _CompletionCard(completion: profile.completion),
         ...switch (profile) {
           EmployeeProfile() => _employee(profile),
           CompanyProfile() => _company(profile),
         },
         const SizedBox(height: AppShape.space2),
-        AppButton(
-          label: 'Edit profile',
-          icon: LucideIcons.pencil,
-          fullWidth: true,
-          onPressed: () => context.router.push(const ProfileEditRoute()),
-        ),
+        if (own)
+          AppButton(
+            label: 'Edit profile',
+            icon: LucideIcons.pencil,
+            fullWidth: true,
+            onPressed: () => context.router.push(const ProfileEditRoute()),
+          ),
         const SizedBox(height: AppShape.space6),
       ];
 

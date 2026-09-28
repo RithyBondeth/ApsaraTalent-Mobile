@@ -57,7 +57,7 @@ class FeedScreen extends ConsumerWidget {
           avatarUrl: user?.avatarUrl,
           unreadCount: state?.unreadCount ?? 0,
           matchCount: matchCount?.unseen ?? 0,
-          onProfileTap: () => context.router.push(const ProfileRoute()),
+          onProfileTap: () => context.router.push(ProfileRoute()),
           onMatchesTap: () => context.router.push(const MatchRoute()),
           onNotificationsTap: () =>
               context.router.push(const NotificationRoute()),
@@ -273,7 +273,7 @@ class FeedScreen extends ConsumerWidget {
       _snack(
         context,
         'You liked ${profile.displayName}. '
-            "You'll match if they like you back.",
+        "You'll match if they like you back.",
       );
     } on ApiException catch (e) {
       if (context.mounted) _snack(context, e.message);

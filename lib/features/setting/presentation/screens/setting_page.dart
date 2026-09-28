@@ -38,7 +38,7 @@ class SettingScreen extends ConsumerWidget {
 
         // Identity Section
         AppSurface(
-          onTap: () => context.router.push(const ProfileRoute()),
+          onTap: () => context.router.push(ProfileRoute()),
           child: Row(
             children: [
               AppAvatar(
@@ -124,6 +124,14 @@ class SettingScreen extends ConsumerWidget {
                   : _plural(counts?.saved, 'saved'),
               onTap: () => context.router.push(const FavoriteRoute()),
             ),
+            if (user?.role == EUserRole.employee)
+              _SettingRow(
+                icon: LucideIcons.calendarDays,
+                label: 'Interviews',
+                value: 'Schedule, details, and response status',
+                onTap: () =>
+                    context.router.push(const InterviewScheduleRoute()),
+              ),
             _SettingRow(
               icon: LucideIcons.bell,
               label: 'Notifications',

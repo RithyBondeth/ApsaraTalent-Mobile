@@ -103,3 +103,9 @@ final profileProvider =
     AsyncNotifierProvider.autoDispose<ProfileNotifier, UserProfile?>(
   ProfileNotifier.new,
 );
+
+/// A counterpart profile opened from a match. Kept separate from the signed-in
+/// profile so viewing someone else can never replace editable account state.
+final viewedProfileProvider = FutureProvider.autoDispose
+    .family<UserProfile?, FeedViewer>((ref, viewer) =>
+        ref.read(profileRepositoryProvider).fetchProfile(viewer));

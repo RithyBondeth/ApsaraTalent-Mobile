@@ -314,6 +314,22 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [InterviewScheduleScreen]
+class InterviewScheduleRoute extends PageRouteInfo<void> {
+  const InterviewScheduleRoute({List<PageRouteInfo>? children})
+    : super(InterviewScheduleRoute.name, initialChildren: children);
+
+  static const String name = 'InterviewScheduleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const InterviewScheduleScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [JobDetailScreen]
 class JobDetailRoute extends PageRouteInfo<JobDetailRouteArgs> {
   JobDetailRoute({
@@ -552,18 +568,51 @@ class ProfilePrivacyRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ProfileScreen]
-class ProfileRoute extends PageRouteInfo<void> {
-  const ProfileRoute({List<PageRouteInfo>? children})
-    : super(ProfileRoute.name, initialChildren: children);
+class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    Key? key,
+    FeedViewer? viewedProfile,
+    List<PageRouteInfo>? children,
+  }) : super(
+         ProfileRoute.name,
+         args: ProfileRouteArgs(key: key, viewedProfile: viewedProfile),
+         initialChildren: children,
+       );
 
   static const String name = 'ProfileRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ProfileScreen();
+      final args = data.argsAs<ProfileRouteArgs>(
+        orElse: () => const ProfileRouteArgs(),
+      );
+      return ProfileScreen(key: args.key, viewedProfile: args.viewedProfile);
     },
   );
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({this.key, this.viewedProfile});
+
+  final Key? key;
+
+  final FeedViewer? viewedProfile;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key, viewedProfile: $viewedProfile}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ProfileRouteArgs) return false;
+    return key == other.key && viewedProfile == other.viewedProfile;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ viewedProfile.hashCode;
 }
 
 /// generated route for

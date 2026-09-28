@@ -122,10 +122,13 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
             key: ValueKey('match-${match.profile.id}'),
             match: match,
             busy: state.isPending(match.profile.id),
-            onTap: () => _snack(
-              context,
-              'A full profile view for matches is not built yet.',
-            ),
+            onTap: () => context.router.push(ProfileRoute(
+              viewedProfile: FeedViewer(
+                role:
+                    employee ? FeedViewerRole.company : FeedViewerRole.employee,
+                profileId: match.profile.id,
+              ),
+            )),
             onAiTools: () {
               final employeeId =
                   employee ? state.viewer.profileId : match.profile.id;

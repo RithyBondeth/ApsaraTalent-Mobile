@@ -15,6 +15,7 @@ import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session
 import 'package:apsaratalent_mobile/features/profile/domain/entities/user_profile.dart';
 import 'package:apsaratalent_mobile/features/profile/providers/profile_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
 
 /// The viewer's own applications.
 ///
@@ -104,6 +105,13 @@ class ApplicationScreen extends ConsumerWidget {
               label: 'still open',
             ),
           ],
+        ),
+        AppButton(
+          label: 'View interview schedule',
+          icon: LucideIcons.calendarDays,
+          variant: AppButtonVariant.outline,
+          fullWidth: true,
+          onPressed: () => context.router.push(const InterviewScheduleRoute()),
         ),
         if (state.items.isEmpty)
           const PageState(
