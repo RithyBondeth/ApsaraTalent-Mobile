@@ -60,6 +60,24 @@ void main() {
     );
   });
 
+  test('a company activity count is its active hiring pipeline', () async {
+    final http = FakeHttp((request) async {
+      if (request.path == '/job/employer-analytics') {
+        return jsonResponse(200, {'activePipeline': 7});
+      }
+      if (request.path.contains('count-favorite')) {
+        return jsonResponse(200, {'count': 2});
+      }
+      return jsonResponse(200, {'unreadCount': 1});
+    });
+
+    final counts = await repositoryFor(http).fetch(company);
+
+    expect(counts.applications, 7);
+    expect(http.requests.map((request) => request.path),
+        contains('/job/employer-analytics'));
+  });
+
   test('one failing count does not take the others down', () async {
     // Nothing here should be able to stop the settings page opening.
     final http = FakeHttp((request) async {
