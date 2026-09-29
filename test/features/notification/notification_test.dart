@@ -45,8 +45,7 @@ AppNotification note(String id, {bool isRead = false}) =>
     AppNotification.fromJson(row(id, isRead: isRead));
 
 class FakeNotificationRepository implements NotificationRepository {
-  List<AppNotification> items =
-      List.generate(25, (i) => note('n$i'));
+  List<AppNotification> items = List.generate(25, (i) => note('n$i'));
   bool fail = false;
   final List<String> calls = [];
 
@@ -104,6 +103,26 @@ void main() {
       expect(parsed.isRead, isFalse);
       expect(parsed.senderName, 'Smart Axiata');
       expect(parsed.senderAvatarUrl, isNull);
+      expect(parsed.employeeId, 'e1');
+      expect(parsed.companyId, 'c9');
+    });
+
+    test('keeps destination ids used by notification deep links', () {
+      final json = row('n2', type: 'chat');
+      json['data'] = {
+        'senderId': 'user-2',
+        'messageId': 'message-1',
+        'jobId': 'job-1',
+        'applicationId': 'application-1',
+        'interviewId': 'interview-1',
+      };
+
+      final parsed = AppNotification.fromJson(json);
+
+      expect(parsed.senderId, 'user-2');
+      expect(parsed.jobId, 'job-1');
+      expect(parsed.applicationId, 'application-1');
+      expect(parsed.interviewId, 'interview-1');
     });
 
     test('an unknown type still renders rather than being dropped', () {
@@ -148,7 +167,8 @@ void main() {
         );
 
     test('pages with page and limit, not skip', () async {
-      final http = FakeHttp((_) async => jsonResponse(200, envelope([row('n1')])));
+      final http =
+          FakeHttp((_) async => jsonResponse(200, envelope([row('n1')])));
 
       await repositoryFor(http).fetchPage(page: 3, limit: 20);
 
@@ -158,7 +178,8 @@ void main() {
     });
 
     test('marking one read patches its own route', () async {
-      final http = FakeHttp((_) async => jsonResponse(200, <String, dynamic>{}));
+      final http =
+          FakeHttp((_) async => jsonResponse(200, <String, dynamic>{}));
 
       await repositoryFor(http).markRead('n1');
 
@@ -167,7 +188,8 @@ void main() {
     });
 
     test('clearing all deletes the collection, not an id', () async {
-      final http = FakeHttp((_) async => jsonResponse(200, <String, dynamic>{}));
+      final http =
+          FakeHttp((_) async => jsonResponse(200, <String, dynamic>{}));
 
       await repositoryFor(http).clearAll();
 

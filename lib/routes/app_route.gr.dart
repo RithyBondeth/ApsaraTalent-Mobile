@@ -147,6 +147,22 @@ class ChatRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CompanyJobsScreen]
+class CompanyJobsRoute extends PageRouteInfo<void> {
+  const CompanyJobsRoute({List<PageRouteInfo>? children})
+    : super(CompanyJobsRoute.name, initialChildren: children);
+
+  static const String name = 'CompanyJobsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const CompanyJobsScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ConversationScreen]
 class ConversationRoute extends PageRouteInfo<ConversationRouteArgs> {
   ConversationRoute({

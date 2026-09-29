@@ -7,6 +7,7 @@ import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart
 import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
 import 'package:apsaratalent_mobile/features/notification/providers/notification_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 import 'push_bootstrap.dart';
 import 'push_providers.dart';
 
@@ -108,7 +109,28 @@ class _SignedInPushHostState extends ConsumerState<_SignedInPushHost>
         }
       }
     }
-    if (mounted) await widget.router.push(const NotificationRoute());
+    if (!mounted) return;
+    final type = message.data['type'];
+    switch (type) {
+      case 'match':
+      case 'like':
+        await widget.router.push(const MatchRoute());
+      case 'application':
+      case 'offer':
+        final jobId = message.data['jobId'];
+        await widget.router.push(jobId == null || jobId.isEmpty
+            ? const ApplicationRoute()
+            : JobDetailRoute(jobId: jobId));
+      case 'interview':
+        final role = ref.read(authSessionProvider).value?.user?.role;
+        await widget.router.push(role == EUserRole.employee
+            ? const InterviewScheduleRoute()
+            : const ApplicationRoute());
+      case 'call':
+        await widget.router.push(const ChatRoute());
+      default:
+        await widget.router.push(const NotificationRoute());
+    }
   }
 
   @override

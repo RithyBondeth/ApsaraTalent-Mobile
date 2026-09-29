@@ -97,6 +97,14 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserProfile?> {
   Future<void> removeCompanyImage(String imageId) =>
       _mutate((repository, viewer) =>
           repository.removeCompanyImage(viewer.profileId, imageId));
+
+  Future<void> saveOpenPosition(Map<String, dynamic> job) => save({
+        'jobs': [job]
+      });
+
+  Future<void> deleteOpenPosition(String id) => save({
+        'jobIdsToDelete': [id]
+      });
 }
 
 final profileProvider =
