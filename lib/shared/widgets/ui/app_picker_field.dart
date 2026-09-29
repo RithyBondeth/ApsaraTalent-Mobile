@@ -1,4 +1,5 @@
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:flutter/material.dart';
@@ -39,13 +40,14 @@ class AppPickerField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (labelText != null) ...[
-          Text(labelText!, style: AppTypography.label.copyWith(color: t.foreground)),
+          Text(context.tr(labelText!),
+              style: AppTypography.label.copyWith(color: t.foreground)),
           const SizedBox(height: AppShape.space2),
         ],
         Semantics(
           button: true,
-          label: labelText ?? hintText,
-          value: value,
+          label: context.tr(labelText ?? hintText),
+          value: value == null ? null : context.tr(value!),
           child: GestureDetector(
             onTap: onTap,
             behavior: HitTestBehavior.opaque,
@@ -70,7 +72,7 @@ class AppPickerField extends StatelessWidget {
                   ],
                   Expanded(
                     child: Text(
-                      hasValue ? value! : hintText,
+                      context.tr(hasValue ? value! : hintText),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: hasValue
@@ -80,7 +82,8 @@ class AppPickerField extends StatelessWidget {
                             ),
                     ),
                   ),
-                  Icon(LucideIcons.chevronDown, size: 18, color: t.mutedForeground),
+                  Icon(LucideIcons.chevronDown,
+                      size: 18, color: t.mutedForeground),
                 ],
               ),
             ),
@@ -88,7 +91,8 @@ class AppPickerField extends StatelessWidget {
         ),
         if (hasError) ...[
           const SizedBox(height: AppShape.space1),
-          Text(errorText!, style: AppTypography.tiny.copyWith(color: t.destructive)),
+          Text(context.tr(errorText!),
+              style: AppTypography.tiny.copyWith(color: t.destructive)),
         ],
       ],
     );
@@ -180,7 +184,9 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
   List<PickerItem<T>> get _visible {
     final q = _query.trim().toLowerCase();
     if (q.isEmpty) return widget.items;
-    return widget.items.where((i) => i.label.toLowerCase().contains(q)).toList();
+    return widget.items
+        .where((i) => i.label.toLowerCase().contains(q))
+        .toList();
   }
 
   void _tap(PickerItem<T> item) {
@@ -204,7 +210,8 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: MediaQuery.sizeOf(context).height * 0.8,
@@ -217,13 +224,16 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
               Container(height: AppShape.accentSurface, color: t.foreground),
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                  AppShape.space4, AppShape.space4, AppShape.space2, AppShape.space2,
+                  AppShape.space4,
+                  AppShape.space4,
+                  AppShape.space2,
+                  AppShape.space2,
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        widget.title,
+                        context.tr(widget.title),
                         style: AppTypography.h4.copyWith(color: t.foreground),
                       ),
                     ),
@@ -232,10 +242,11 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                         widget.max == null
                             ? '${_selected.length} selected'
                             : '${_selected.length}/${widget.max}',
-                        style: AppTypography.tiny.copyWith(color: t.mutedForeground),
+                        style: AppTypography.tiny
+                            .copyWith(color: t.mutedForeground),
                       ),
                     IconButton(
-                      tooltip: 'Close',
+                      tooltip: context.tr('Close'),
                       onPressed: () => Navigator.of(context).pop(),
                       icon: Icon(LucideIcons.x, size: 20, color: t.foreground),
                     ),
@@ -244,14 +255,16 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
               ),
               if (widget.searchable)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppShape.space4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppShape.space4),
                   child: TextField(
                     autofocus: false,
                     onChanged: (v) => setState(() => _query = v),
                     style: AppTypography.field.copyWith(color: t.foreground),
                     decoration: InputDecoration(
-                      hintText: 'Search',
-                      prefixIcon: Icon(LucideIcons.search, size: 18, color: t.mutedForeground),
+                      hintText: context.tr('Search'),
+                      prefixIcon: Icon(LucideIcons.search,
+                          size: 18, color: t.mutedForeground),
                     ),
                   ),
                 ),
@@ -262,9 +275,10 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                     ? Padding(
                         padding: const EdgeInsets.all(AppShape.space6),
                         child: Text(
-                          'Nothing matches "$_query"',
+                          context.tr('Nothing matches your search'),
                           textAlign: TextAlign.center,
-                          style: AppTypography.small.copyWith(color: t.mutedForeground),
+                          style: AppTypography.small
+                              .copyWith(color: t.mutedForeground),
                         ),
                       )
                     : ListView.separated(
@@ -286,16 +300,18 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      item.label,
+                                      context.tr(item.label),
                                       style: AppTypography.small.copyWith(
                                         color: t.foreground,
-                                        fontWeight:
-                                            isOn ? FontWeight.w600 : FontWeight.w400,
+                                        fontWeight: isOn
+                                            ? FontWeight.w600
+                                            : FontWeight.w400,
                                       ),
                                     ),
                                   ),
                                   if (isOn)
-                                    Icon(LucideIcons.check, size: 18, color: t.primary),
+                                    Icon(LucideIcons.check,
+                                        size: 18, color: t.primary),
                                 ],
                               ),
                             ),
@@ -309,15 +325,17 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                   padding: const EdgeInsets.all(AppShape.space4),
                   child: FilledButton(
                     style: FilledButton.styleFrom(
-                      minimumSize: const Size.fromHeight(AppShape.controlHeightMd),
+                      minimumSize:
+                          const Size.fromHeight(AppShape.controlHeightMd),
                       shape: const RoundedRectangleBorder(),
                       backgroundColor: t.primary,
                       foregroundColor: t.primaryForeground,
                     ),
                     onPressed: () => Navigator.of(context).pop(_selected),
                     child: Text(
-                      'Done',
-                      style: AppTypography.button.copyWith(color: t.primaryForeground),
+                      context.tr('Done'),
+                      style: AppTypography.button
+                          .copyWith(color: t.primaryForeground),
                     ),
                   ),
                 ),

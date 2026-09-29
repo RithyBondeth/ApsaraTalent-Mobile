@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/app_surface.dart';
 
 /// One stat in a banner: a count the page has already loaded.
@@ -80,7 +81,7 @@ class PageBanner extends StatelessWidget {
               const SizedBox(width: AppShape.space2),
               Flexible(
                 child: Text(
-                  eyebrow.toUpperCase(),
+                  context.tr(eyebrow).toUpperCase(),
                   style: AppTypography.eyebrow.copyWith(
                     color: t.mutedForeground,
                   ),
@@ -93,7 +94,7 @@ class PageBanner extends StatelessWidget {
           // Title Section
           const SizedBox(height: AppShape.space3),
           Text(
-            title,
+            context.tr(title),
             style: AppTypography.bannerTitle.copyWith(color: t.foreground),
           ),
 
@@ -101,7 +102,7 @@ class PageBanner extends StatelessWidget {
           if (subtitle != null) ...[
             const SizedBox(height: 10),
             Text(
-              subtitle!,
+              context.tr(subtitle!),
               style: AppTypography.small.copyWith(
                 color: t.mutedForeground,
                 height: 1.55,
@@ -153,7 +154,7 @@ class _Stat extends StatelessWidget {
             Icon(stat.icon, size: 13, color: t.mutedForeground),
             const SizedBox(width: 5),
             Text(
-              stat.label.toUpperCase(),
+              context.tr(stat.label).toUpperCase(),
               style: AppTypography.statLabel.copyWith(
                 color: t.mutedForeground,
               ),

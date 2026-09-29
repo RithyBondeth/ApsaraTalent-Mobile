@@ -7,6 +7,7 @@ import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/features/navigation/providers/bottom_navigation_provider.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// The tab bar.
 ///
@@ -116,7 +117,7 @@ class _NavButton extends StatelessWidget {
             Icon(item.icon, size: 20, color: foreground),
             const SizedBox(height: 3),
             Text(
-              item.label,
+              context.tr(item.label),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: AppTypography.tiny.copyWith(

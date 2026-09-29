@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// A neutral label chip: skills, career scopes, languages, open-position
 /// titles.
@@ -47,7 +48,7 @@ class AppTag extends StatelessWidget {
               const SizedBox(width: AppShape.space1),
             ],
             Text(
-              label,
+              context.tr(label),
               style: AppTypography.tag.copyWith(
                 color: t.foreground.withValues(alpha: 0.75),
               ),
