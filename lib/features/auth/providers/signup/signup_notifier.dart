@@ -65,6 +65,10 @@ class SignupNotifier extends Notifier<SignupState> {
     );
   }
 
+  void prefillSocial({String? email}) {
+    state = SignupState(email: email?.trim() ?? '');
+  }
+
   Future<bool> submitEmployee(EmployeeRegistration request) =>
       _submit(() => ref.read(authRepositoryProvider).registerEmployee(request));
 

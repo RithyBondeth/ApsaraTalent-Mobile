@@ -94,6 +94,20 @@ void main() {
     expect(store.hasSession, isFalse);
   });
 
+  test('social authorization code is exchanged and stores its session', () async {
+    final http = FakeHttp((_) async => jsonResponse(200,
+        {'message': 'Social sign-in successful'},
+        setCookies: authCookies('social-access', 'social-refresh')));
+
+    await repositoryFor(http).exchangeSocialCode('authorization-code', remember: true);
+
+    expect(http.requests.single.path, '/social/mobile/exchange');
+    expect(http.requests.single.data, {'code': 'authorization-code'});
+    expect(store.tokens, const AuthTokens(
+      accessToken: 'social-access', refreshToken: 'social-refresh'));
+    expect(await SessionStore().restore(), isNotNull);
+  });
+
   test('logout clears the session even when the API cannot be reached',
       () async {
     await store.save(
