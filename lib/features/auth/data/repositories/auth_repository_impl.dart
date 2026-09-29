@@ -70,6 +70,17 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> exchangeSocialCode(
+    String code, {
+    required bool remember,
+  }) {
+    return _guard('Social sign-in could not be completed.', () async {
+      final result = await _remoteDataSource.exchangeSocialCode(code);
+      await _keep(result.tokens, remember: remember);
+    });
+  }
+
+  @override
   Future<LoginResponse> registerEmployee(EmployeeRegistration request) {
     return _guard('Could not create your account. Please try again.', () async {
       final result = await _remoteDataSource.registerEmployee(request);
@@ -139,8 +150,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
   @override
-  Future<bool> restoreSession() async =>
-      await _sessionStore.restore() != null;
+  Future<bool> restoreSession() async => await _sessionStore.restore() != null;
 
   @override
   Future<void> logout() async {

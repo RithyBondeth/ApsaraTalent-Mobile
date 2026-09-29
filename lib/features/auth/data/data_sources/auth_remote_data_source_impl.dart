@@ -36,7 +36,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     // two-factor step issues none until the second factor is verified.
     return AuthDataSourceResult(
       response: body,
-      tokens: body.requiresTwoFactor ? null : AuthCookies.read(response.headers),
+      tokens:
+          body.requiresTwoFactor ? null : AuthCookies.read(response.headers),
     );
   }
 
@@ -57,6 +58,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<AuthDataSourceResult> verifyPhoneOtp(String phone, String otp) =>
       _exchange(apiAuthVerifyOtp, {'phone': phone, 'otp': otp});
+
+  @override
+  Future<AuthDataSourceResult> exchangeSocialCode(String code) =>
+      _exchange(apiAuthSocialMobileExchange, {'code': code});
 
   @override
   Future<AuthDataSourceResult> registerEmployee(EmployeeRegistration request) =>

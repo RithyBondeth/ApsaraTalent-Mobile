@@ -1,4 +1,5 @@
 import 'package:apsaratalent_mobile/core/constants/asset_path_constant.dart';
+import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/auth_login_method_enum.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/social/social_auth_notifier.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
@@ -26,6 +29,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _obscurePassword = true;
+  EAuthLoginMethod? _socialProvider;
 
   // Held so the field can be emptied from outside: a password reset clears
   // [passwordInputProvider], and the old password must not stay in the box
@@ -54,6 +58,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
   }
 
+  Future<void> _socialSignIn(EAuthLoginMethod provider) async {
+    setState(() => _socialProvider = provider);
+    await ref.read(socialAuthProvider.notifier).signIn(provider);
+    if (mounted) setState(() => _socialProvider = null);
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
@@ -62,6 +72,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final formValid = ref.watch(loginFormValidProvider);
     final rememberMe = ref.watch(rememberMeProvider);
     final authState = ref.watch(loginProvider);
+    final socialState = ref.watch(socialAuthProvider);
 
     // LoginNotifier folds a failure back into `AsyncValue.data` carrying
     // `LoginState.error`, so the message lives on the value — an
@@ -88,6 +99,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context.router
             .push(EmailVerificationRoute(email: email, sendCode: true));
       } else if (state.isLoggedIn) {
+        context.router.replaceAll([const MainRoute()]);
+      }
+    });
+
+    ref.listen(socialAuthProvider, (_, next) {
+      final result = next.value;
+      if (result == null) return;
+      ref.read(socialAuthProvider.notifier).clear();
+      if (result.newUser) {
+        ref
+            .read(signupProvider.notifier)
+            .prefillSocial(email: result.profile?.email);
+        context.router.push(const SignupRoleRoute());
+      } else {
         context.router.replaceAll([const MainRoute()]);
       }
     });
@@ -130,7 +155,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: _SocialButton(
                 asset: AppAssetPathContant.googleIcon,
                 label: 'Google',
-                onTap: () {},
+                loading: _socialProvider == EAuthLoginMethod.google,
+                onTap: socialState.isLoading
+                    ? null
+                    : () => _socialSignIn(EAuthLoginMethod.google),
               ),
             ),
             const SizedBox(width: AppShape.space2),
@@ -138,7 +166,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: _SocialButton(
                 asset: AppAssetPathContant.facebookIcon,
                 label: 'Facebook',
-                onTap: () {},
+                loading: _socialProvider == EAuthLoginMethod.facebook,
+                onTap: socialState.isLoading
+                    ? null
+                    : () => _socialSignIn(EAuthLoginMethod.facebook),
               ),
             ),
           ],
@@ -150,7 +181,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: _SocialButton(
                 asset: AppAssetPathContant.linkedInIcon,
                 label: 'LinkedIn',
-                onTap: () {},
+                loading: _socialProvider == EAuthLoginMethod.linkedin,
+                onTap: socialState.isLoading
+                    ? null
+                    : () => _socialSignIn(EAuthLoginMethod.linkedin),
               ),
             ),
             const SizedBox(width: AppShape.space2),
@@ -158,7 +192,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: _SocialButton(
                 asset: AppAssetPathContant.githubIcon,
                 label: 'GitHub',
-                onTap: () {},
+                loading: _socialProvider == EAuthLoginMethod.github,
+                onTap: socialState.isLoading
+                    ? null
+                    : () => _socialSignIn(EAuthLoginMethod.github),
               ),
             ),
           ],
@@ -239,6 +276,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           const SizedBox(height: AppShape.space4),
           AuthMessage.error(loginError),
         ],
+        if (socialState.hasError) ...[
+          const SizedBox(height: AppShape.space4),
+          AuthMessage.error(
+            socialState.error is ApiException
+                ? (socialState.error! as ApiException).message
+                : 'Social sign-in could not be completed.',
+          ),
+        ],
 
         const SizedBox(height: AppShape.space5),
         AppButton(
@@ -258,11 +303,13 @@ class _SocialButton extends StatelessWidget {
     required this.asset,
     required this.label,
     required this.onTap,
+    this.loading = false,
   });
 
   final String asset;
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -271,26 +318,37 @@ class _SocialButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        height: AppShape.controlHeightMd,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: t.background,
-          border: Border.all(color: t.input, width: AppShape.hairline),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(asset, height: 18, width: 18),
-            const SizedBox(width: AppShape.space2),
-            Flexible(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: AppTypography.button.copyWith(color: t.foreground),
+      child: AnimatedOpacity(
+        opacity: onTap == null && !loading ? 0.5 : 1,
+        duration: const Duration(milliseconds: 150),
+        child: Container(
+          height: AppShape.controlHeightMd,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: t.background,
+            border: Border.all(color: t.input, width: AppShape.hairline),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (loading)
+                const SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Image.asset(asset, height: 18, width: 18),
+              const SizedBox(width: AppShape.space2),
+              Flexible(
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.button.copyWith(color: t.foreground),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
