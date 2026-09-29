@@ -7,8 +7,11 @@ import 'package:apsaratalent_mobile/features/theme/providers/theme_provider.dart
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/routes/auth_guard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/core/push/push_host.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
+import 'package:apsaratalent_mobile/features/setting/providers/locale_provider.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -28,6 +31,7 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
 
     // Whenever a session ends — sign-out, or the API refusing a refresh
     // mid-use — send the user to login from wherever they are.
@@ -41,6 +45,14 @@ class _AppState extends ConsumerState<App> {
 
     return MaterialApp.router(
       title: AppConfigService.appName,
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       debugShowCheckedModeBanner: false,
       routerConfig: _router.config(),
       builder: (context, child) => PushHost(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// A heading for a band of content inside a page.
 ///
@@ -35,13 +36,13 @@ class SectionTitle extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                context.tr(title),
                 style: AppTypography.h4.copyWith(color: t.foreground),
               ),
               if (subtitle != null) ...[
                 const SizedBox(height: AppShape.space1),
                 Text(
-                  subtitle!,
+                  context.tr(subtitle!),
                   style: AppTypography.tiny.copyWith(color: t.mutedForeground),
                 ),
               ],
@@ -55,7 +56,7 @@ class SectionTitle extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: AppShape.space3),
               child: Text(
-                actionLabel!,
+                context.tr(actionLabel!),
                 style: AppTypography.button.copyWith(color: t.primary),
               ),
             ),

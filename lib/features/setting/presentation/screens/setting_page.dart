@@ -13,6 +13,9 @@ import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session
 import 'package:apsaratalent_mobile/features/setting/providers/activity_counts_notifier.dart';
 import 'package:apsaratalent_mobile/features/theme/providers/theme_provider.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
+import 'package:apsaratalent_mobile/features/setting/providers/locale_provider.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/widgets/language_selection_sheet.dart';
 
 @RoutePage()
 class SettingScreen extends ConsumerWidget {
@@ -25,6 +28,7 @@ class SettingScreen extends ConsumerWidget {
     final name = user?.displayName ?? 'Your account';
     final themeMode = ref.watch(themeModeProvider);
     final counts = ref.watch(activityCountsProvider).value;
+    final locale = ref.watch(localeProvider);
 
     return AppScreen(
       children: [
@@ -180,8 +184,8 @@ class SettingScreen extends ConsumerWidget {
             _SettingRow(
               icon: LucideIcons.globe,
               label: 'Language',
-              value: 'English',
-              onTap: () {},
+              value: locale.languageCode == 'km' ? 'ភាសាខ្មែរ' : 'English',
+              onTap: () => showLanguageSelection(context),
             ),
             _SettingRow(
               icon: LucideIcons.circleHelp,
@@ -286,12 +290,12 @@ class _SettingRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    label,
+                    context.tr(label),
                     style: AppTypography.label.copyWith(color: t.foreground),
                   ),
                   const SizedBox(height: 1),
                   Text(
-                    value,
+                    context.tr(value),
                     style: AppTypography.tiny.copyWith(
                       color: t.mutedForeground,
                     ),
@@ -362,7 +366,7 @@ class _ThemeOption extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    label,
+                    context.tr(label),
                     style: AppTypography.label.copyWith(
                       color: t.foreground,
                       fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
@@ -370,7 +374,7 @@ class _ThemeOption extends StatelessWidget {
                   ),
                   const SizedBox(height: 1),
                   Text(
-                    description,
+                    context.tr(description),
                     style: AppTypography.tiny.copyWith(
                       color: t.mutedForeground,
                     ),

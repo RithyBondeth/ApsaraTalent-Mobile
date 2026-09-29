@@ -14,6 +14,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 @RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
@@ -84,7 +85,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         final email = state.unverifiedEmail!;
         // Consume it, or returning to this screen would route again.
         ref.read(loginProvider.notifier).clearError();
-        context.router.push(EmailVerificationRoute(email: email, sendCode: true));
+        context.router
+            .push(EmailVerificationRoute(email: email, sendCode: true));
       } else if (state.isLoggedIn) {
         context.router.replaceAll([const MainRoute()]);
       }
@@ -92,12 +94,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return AuthScaffold(
       title: 'Log in to your account',
-      subtitle: 'Welcome back to Apsara Talent. Choose how you want to sign in.',
+      subtitle:
+          'Welcome back to Apsara Talent. Choose how you want to sign in.',
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Don't have an account yet? ",
+            context.tr("Don't have an account yet? "),
             style: AppTypography.small.copyWith(color: t.mutedForeground),
           ),
           GestureDetector(
@@ -107,7 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             },
             behavior: HitTestBehavior.opaque,
             child: Text(
-              'Create account',
+              context.tr('Create account'),
               style: AppTypography.button.copyWith(
                 color: t.primary,
                 fontWeight: FontWeight.w700,
@@ -217,7 +220,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(width: AppShape.space2),
             Expanded(
               child: Text(
-                'Remember me',
+                context.tr('Remember me'),
                 style: AppTypography.small.copyWith(color: t.mutedForeground),
               ),
             ),
@@ -225,7 +228,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               onTap: () => context.router.push(const ForgotPasswordRoute()),
               behavior: HitTestBehavior.opaque,
               child: Text(
-                'Forgot password?',
+                context.tr('Forgot password?'),
                 style: AppTypography.button.copyWith(color: t.primary),
               ),
             ),

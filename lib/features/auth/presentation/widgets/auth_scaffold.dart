@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/app_logo.dart';
 
 /// The frame every auth screen sits in: mark, headline, standfirst, content.
@@ -66,7 +67,7 @@ class AuthScaffold extends StatelessWidget {
                 const SizedBox(height: AppShape.space5),
               ],
               Text(
-                title,
+                context.tr(title),
                 style: AppTypography.h2.copyWith(
                   color: t.foreground,
                   fontWeight: FontWeight.w800,
@@ -74,7 +75,7 @@ class AuthScaffold extends StatelessWidget {
               ),
               const SizedBox(height: AppShape.space2),
               Text(
-                subtitle,
+                context.tr(subtitle),
                 style: AppTypography.small.copyWith(
                   color: t.mutedForeground,
                   height: 1.55,
@@ -110,7 +111,7 @@ class AuthDivider extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppShape.space3),
           child: Text(
-            label,
+            context.tr(label),
             style: AppTypography.tiny.copyWith(color: t.mutedForeground),
           ),
         ),
