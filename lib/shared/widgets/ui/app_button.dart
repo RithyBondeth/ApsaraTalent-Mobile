@@ -4,6 +4,7 @@ import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_tokens.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// The six button variants from the web app, in the same order of precedence.
 enum AppButtonVariant {
@@ -123,7 +124,7 @@ class _AppButtonState extends State<AppButton> {
           ],
           Flexible(
             child: Text(
-              widget.label,
+              context.tr(widget.label),
               overflow: TextOverflow.ellipsis,
               style: widget.variant == AppButtonVariant.link
                   ? AppTypography.button.copyWith(
@@ -153,7 +154,8 @@ class _AppButtonState extends State<AppButton> {
         curve: Curves.easeOut,
         child: Container(
           height: height,
-          width: isIconOnly ? height : (widget.fullWidth ? double.infinity : null),
+          width:
+              isIconOnly ? height : (widget.fullWidth ? double.infinity : null),
           padding: EdgeInsets.symmetric(horizontal: horizontal),
           // Only centre when the box is actually wider than its content. A
           // Container with an `alignment` and no width expands to fill its
@@ -176,7 +178,8 @@ class _AppButtonState extends State<AppButton> {
     return Semantics(
       button: true,
       enabled: _enabled,
-      label: widget.size == AppButtonSize.icon ? widget.label : null,
+      label:
+          widget.size == AppButtonSize.icon ? context.tr(widget.label) : null,
       child: GestureDetector(
         onTap: _enabled ? widget.onPressed : null,
         onTapDown: _enabled ? (_) => setState(() => _down = true) : null,

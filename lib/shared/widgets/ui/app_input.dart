@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// The app's text field.
 ///
@@ -108,7 +109,7 @@ class _AppInputState extends State<AppInput> {
       children: [
         if (widget.labelText != null) ...[
           Text(
-            widget.labelText!,
+            context.tr(widget.labelText!),
             style: AppTypography.label.copyWith(color: t.foreground),
           ),
           const SizedBox(height: AppShape.space2),
@@ -178,7 +179,9 @@ class _AppInputState extends State<AppInput> {
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      hintText: widget.hintText,
+                      hintText: widget.hintText == null
+                          ? null
+                          : context.tr(widget.hintText!),
                       hintStyle: AppTypography.small.copyWith(
                         color: t.mutedForeground.withValues(alpha: 0.7),
                       ),
@@ -206,7 +209,7 @@ class _AppInputState extends State<AppInput> {
         if (hasError) ...[
           const SizedBox(height: AppShape.space1),
           Text(
-            widget.errorText!,
+            context.tr(widget.errorText!),
             style: AppTypography.tiny.copyWith(color: t.destructive),
           ),
         ],

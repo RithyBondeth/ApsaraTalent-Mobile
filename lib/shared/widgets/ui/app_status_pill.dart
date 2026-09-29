@@ -4,6 +4,7 @@ import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_tokens.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 
 /// Severity, not kind. Four families and no more.
 enum AppStatus { success, warning, info, destructive }
@@ -73,7 +74,7 @@ class AppStatusPill extends StatelessWidget {
             const SizedBox(width: 6),
           ],
           Text(
-            label.toUpperCase(),
+            context.tr(label).toUpperCase(),
             style: AppTypography.pill.copyWith(color: foreground),
           ),
         ],
@@ -178,7 +179,8 @@ class AppCategoryChip extends StatelessWidget {
             Icon(icon, size: 13, color: accent),
             const SizedBox(width: 5),
           ],
-          Text(label, style: AppTypography.tag.copyWith(color: accent)),
+          Text(context.tr(label),
+              style: AppTypography.tag.copyWith(color: accent)),
         ],
       ),
     );

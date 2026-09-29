@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/app_button.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/app_surface.dart';
 
@@ -93,7 +94,7 @@ class PageState extends StatelessWidget {
           // than the card's own heading.
           SizedBox(height: compact ? AppShape.space3 : AppShape.space4),
           Text(
-            title,
+            context.tr(title),
             textAlign: TextAlign.center,
             style: (compact
                     ? AppTypography.h4.copyWith(fontSize: AppTypography.base)
@@ -103,7 +104,7 @@ class PageState extends StatelessWidget {
           if (description != null) ...[
             SizedBox(height: compact ? AppShape.space1 : AppShape.space2),
             Text(
-              description!,
+              context.tr(description!),
               textAlign: TextAlign.center,
               style: (compact ? AppTypography.tiny : AppTypography.small)
                   .copyWith(color: t.mutedForeground, height: 1.55),
@@ -117,9 +118,8 @@ class PageState extends StatelessWidget {
               label: actionLabel!,
               onPressed: onAction,
               size: AppButtonSize.sm,
-              variant: isError
-                  ? AppButtonVariant.outline
-                  : AppButtonVariant.primary,
+              variant:
+                  isError ? AppButtonVariant.outline : AppButtonVariant.primary,
             ),
           ],
         ],
