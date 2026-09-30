@@ -267,6 +267,7 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
 
   Future<void> _pickCareerScopes() async {
     final catalog = await ref.read(careerScopesProvider.future);
+    if (!mounted) return;
     final picked = await showMultiPickerSheet<String>(
       context,
       title: 'Career scopes',
@@ -288,6 +289,7 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
       lastDate: latest,
       helpText: 'Date of birth',
     );
+    if (!mounted) return;
     if (picked != null) setState(() => _dob = picked);
   }
 
