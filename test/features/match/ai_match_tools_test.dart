@@ -1,8 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
+import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/session/session_store.dart';
 import 'package:apsaratalent_mobile/features/match/data/repositories/ai_match_tools_repository.dart';
+import 'package:apsaratalent_mobile/features/match/data/interview_prep_export.dart';
+import 'package:apsaratalent_mobile/features/match/domain/entities/ai_match_tools.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -65,5 +71,90 @@ void main() {
     expect(result.single.category, 'Technical');
     expect(http.requests.single.queryParameters,
         {'interviewTitle': 'Technical Round'});
+  });
+
+  test('builds the interview PDF payload and decodes a valid PDF', () async {
+    final http = FakeHttp((request) async => jsonResponse(200, {
+          'mimeType': 'application/pdf',
+          'data': base64Encode(utf8.encode('%PDF-1.7\nprep')),
+        }));
+    final result = await repositoryFor(http).interviewPrepPdf(
+      interviewTitle: '  Technical round  ',
+      companyName: 'Company',
+      companyIndustry: 'Technology',
+      questions: const [
+        InterviewQuestion(
+            question: 'Tell me about Dart',
+            questionKm: 'សំណួរ',
+            category: 'Technical',
+            tip: 'Use an example.',
+            tipKm: 'គន្លឹះ')
+      ],
+    );
+    expect(String.fromCharCodes(result.take(5)), '%PDF-');
+    final request = http.requests.single;
+    expect(request.path, '/resume/interview-prep-pdf');
+    expect(request.data, {
+      'interviewTitle': 'Technical round',
+      'companyName': 'Company',
+      'companyIndustry': 'Technology',
+      'questions': [
+        {
+          'question': 'Tell me about Dart',
+          'questionKm': 'សំណួរ',
+          'category': 'Technical',
+          'tip': 'Use an example.',
+          'tipKm': 'គន្លឹះ'
+        }
+      ],
+    });
+  });
+
+  test('rejects missing, wrong MIME, malformed base64, and non-PDF responses',
+      () async {
+    for (final body in [
+      {
+        'mimeType': 'application/json',
+        'data': base64Encode(utf8.encode('%PDF-'))
+      },
+      {'mimeType': 'application/pdf', 'data': 'not-base64'},
+      {
+        'mimeType': 'application/pdf',
+        'data': base64Encode(utf8.encode('not pdf'))
+      },
+    ]) {
+      await expectLater(
+          repositoryFor(FakeHttp((_) async => jsonResponse(200, body)))
+              .interviewPrepPdf(
+                  interviewTitle: '',
+                  companyName: 'Company',
+                  questions: const []),
+          throwsA(isA<ApiException>()));
+    }
+  });
+
+  test('reports device-opening failures and does not hide the platform message',
+      () async {
+    final dir = await Directory.systemTemp.createTemp('interview-prep-test');
+    addTearDown(() => dir.delete(recursive: true));
+    await expectLater(
+      saveAndOpenInterviewPdf(
+        Uint8List.fromList(utf8.encode('%PDF-1.7\nprep')),
+        dir,
+        opener: (_) async => OpenResult(
+            type: ResultType.permissionDenied, message: 'Permission denied'),
+      ),
+      throwsA(isA<ApiException>()
+          .having((e) => e.message, 'message', contains('Permission denied'))),
+    );
+  });
+
+  test('does not write an invalid PDF before opening it', () async {
+    final dir = await Directory.systemTemp.createTemp('interview-prep-invalid');
+    addTearDown(() => dir.delete(recursive: true));
+    await expectLater(
+        saveAndOpenInterviewPdf(Uint8List.fromList(utf8.encode('bad')), dir),
+        throwsA(isA<ApiException>()));
+    expect(await File('${dir.path}/interview-prep.pdf').exists(), false);
   });
 }

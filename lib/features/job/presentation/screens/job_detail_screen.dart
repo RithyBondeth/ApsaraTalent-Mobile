@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/features/ai/presentation/cover_letter_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -207,12 +208,14 @@ Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    builder: (context) => Padding(
+    builder: (context) => SingleChildScrollView(
+        child: Padding(
       padding: EdgeInsets.only(
         left: AppShape.screenPadding,
         right: AppShape.screenPadding,
         top: AppShape.screenPadding,
-        bottom: MediaQuery.of(context).viewInsets.bottom + AppShape.screenPadding,
+        bottom:
+            MediaQuery.of(context).viewInsets.bottom + AppShape.screenPadding,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -236,6 +239,8 @@ Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
             maxLines: 4,
           ),
           const SizedBox(height: AppShape.space4),
+          CoverLetterButton(job: job, controller: controller),
+          const SizedBox(height: AppShape.space4),
           AppButton(
             label: 'Send application',
             icon: LucideIcons.send,
@@ -245,7 +250,7 @@ Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
           const SizedBox(height: AppShape.space2),
         ],
       ),
-    ),
+    )),
   );
 
   final note = controller.text;

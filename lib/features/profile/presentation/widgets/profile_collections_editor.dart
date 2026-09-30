@@ -10,17 +10,19 @@ class ProfileCollectionsEditor extends StatefulWidget {
     super.key,
     required this.profile,
     required this.onChanged,
+    this.careerScopeOptions = const [],
   });
 
   final UserProfile profile;
   final ValueChanged<Map<String, dynamic>> onChanged;
+  final List<String> careerScopeOptions;
 
   @override
   State<ProfileCollectionsEditor> createState() =>
-      _ProfileCollectionsEditorState();
+      ProfileCollectionsEditorState();
 }
 
-class _ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
+class ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
   late List<ProfileNamedItem> _skills;
   late List<ProfileNamedItem> _scopes;
   late Map<String, ProfileNamedItem> _originalSkills;
@@ -57,6 +59,50 @@ class _ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
       for (final item in _scopes)
         if (item.name != null) item.name!: item,
     };
+  }
+
+  /// Merge reviewed import data into the current unsaved collections.
+  void importResume(Map<String, dynamic> data) {
+    if (data['skills'] is List) {
+      _updateSkills({
+        ..._skills.map((s) => s.name).whereType<String>(),
+        ...List<String>.from(data['skills'])
+      }.toList());
+    }
+    if (data['careerScopes'] is List) {
+      _updateScopes({
+        ..._scopes.map((s) => s.name).whereType<String>(),
+        ...List<String>.from(data['careerScopes'])
+      }.toList());
+    }
+    setState(() {
+      for (final row
+          in List<Map<String, dynamic>>.from(data['experiences'] ?? [])) {
+        if (!_experiences.any((e) =>
+            e.title == row['title'] &&
+            e.company == row['company'] &&
+            (e.startDate ?? '').split('T').first == (row['startDate'] ?? ''))) {
+          _experiences.add(ProfileExperience.fromJson(row));
+        }
+      }
+      for (final row
+          in List<Map<String, dynamic>>.from(data['educations'] ?? [])) {
+        if (!_educations.any((e) =>
+            e.school == row['school'] &&
+            e.degree == row['degree'] &&
+            e.year == row['year'])) {
+          _educations.add(ProfileEducation.fromJson(row));
+        }
+      }
+    });
+    if (data.containsKey('experiences')) {
+      _emit('experiences', _experiences.map((e) => e.toJson()).toList(),
+          'experienceIdsToDelete', _deletedExperiences);
+    }
+    if (data.containsKey('educations')) {
+      _emit('educations', _educations.map((e) => e.toJson()).toList(),
+          'educationIdsToDelete', _deletedEducations);
+    }
   }
 
   @override
@@ -114,6 +160,12 @@ class _ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
             hintText: 'Add a career scope',
             onChanged: _updateScopes,
           ),
+          if (widget.careerScopeOptions.isNotEmpty)
+            TextButton.icon(
+              onPressed: _chooseCatalogScopes,
+              icon: const Icon(LucideIcons.listChecks),
+              label: const Text('Choose from career-scope catalog'),
+            ),
           const SectionTitle(title: 'Social links'),
           _records(
             empty: 'No social links yet.',
@@ -207,6 +259,20 @@ class _ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
         _scopes = _mergeNames(_scopes, names, _deletedScopes, _originalScopes));
     _emit('careerScopes', _scopes.map((item) => item.toJson()).toList(),
         'careerScopeIdsToDelete', _deletedScopes);
+  }
+
+  Future<void> _chooseCatalogScopes() async {
+    if (widget.careerScopeOptions.isEmpty) return;
+    final picked = await showMultiPickerSheet<String>(
+      context,
+      title: 'Career scopes',
+      items: [
+        for (final name in widget.careerScopeOptions) PickerItem(name, name)
+      ],
+      selected: _scopes.map((item) => item.name).whereType<String>().toSet(),
+      max: 10,
+    );
+    if (picked != null) _updateScopes(picked.toList());
   }
 
   List<ProfileNamedItem> _mergeNames(

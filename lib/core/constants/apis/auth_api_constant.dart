@@ -17,3 +17,4 @@ const String apiAuthTwoFactorDisable = '/auth/2fa/disable';
 const String apiAuthTwoFactorVerifyLogin = '/auth/2fa/verify-login';
 const String apiAuthLogout = '/auth/logout';
 const String apiCurrentUser = '/user/current-user';
+const String apiAuthSocialMobileExchange = '/social/mobile/exchange';

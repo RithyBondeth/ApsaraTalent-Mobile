@@ -2,9 +2,8 @@
 ///
 /// Serialises to the API's `EmployeeRegisterDTO` in the same shape the web app
 /// sends, so an account made on mobile is indistinguishable from one made on
-/// the web. Experience, education, avatar and documents are left to profile
-/// editing: the API takes them all as optional, and a nine-step signup on a
-/// phone is where people give up.
+/// the web. Reviewed resume imports can supply optional work history and
+/// education. Avatar and document uploads remain in profile editing.
 class EmployeeRegistration {
   const EmployeeRegistration({
     required this.email,
@@ -22,6 +21,8 @@ class EmployeeRegistration {
     required this.skills,
     this.phone,
     this.description,
+    this.experiences = const [],
+    this.educations = const [],
   });
 
   final String email;
@@ -39,6 +40,8 @@ class EmployeeRegistration {
   final List<String> skills;
   final String? phone;
   final String? description;
+  final List<Map<String, dynamic>> experiences;
+  final List<Map<String, dynamic>> educations;
 
   Map<String, dynamic> toJson() => {
         'authEmail': true,
@@ -65,8 +68,8 @@ class EmployeeRegistration {
         'careerScopes': [
           for (final c in careerScopes) {'name': c, 'description': c},
         ],
-        'educations': const <Object>[],
-        'experiences': const <Object>[],
+        'educations': educations,
+        'experiences': experiences,
         'socials': const <Object>[],
         'languages': const <String>[],
       };
