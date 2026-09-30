@@ -1,10 +1,14 @@
+import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/features/match/domain/entities/ai_match_tools.dart';
 import 'package:apsaratalent_mobile/features/match/domain/entities/match_profile.dart';
+import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart';
 import 'package:apsaratalent_mobile/features/match/providers/ai_match_tools_provider.dart';
+import 'package:apsaratalent_mobile/features/match/data/interview_prep_export.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +38,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
   AiMatchExplanation? _explanation;
   SkillGapAnalysis? _gaps;
   List<InterviewQuestion>? _questions;
+  bool _exporting = false;
   final _round = TextEditingController();
 
   @override
@@ -49,25 +54,60 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
     });
     final repository = ref.read(aiMatchToolsRepositoryProvider);
     try {
-      switch (_tool) {
-        case _Tool.explanation:
-          final result =
-              await repository.explanation(widget.employeeId, widget.companyId);
-          if (mounted) setState(() => _explanation = result);
-        case _Tool.gaps:
-          final result =
-              await repository.skillGap(widget.employeeId, widget.companyId);
-          if (mounted) setState(() => _gaps = result);
-        case _Tool.interview:
-          final result = await repository.interviewPrep(
-              widget.employeeId, widget.companyId,
-              interviewTitle: _round.text);
-          if (mounted) setState(() => _questions = result);
-      }
+      await runAiRequest(ref, () async {
+        switch (_tool) {
+          case _Tool.explanation:
+            final result = await repository.explanation(
+                widget.employeeId, widget.companyId);
+            if (mounted) setState(() => _explanation = result);
+          case _Tool.gaps:
+            final result =
+                await repository.skillGap(widget.employeeId, widget.companyId);
+            if (mounted) setState(() => _gaps = result);
+          case _Tool.interview:
+            final result = await repository.interviewPrep(
+                widget.employeeId, widget.companyId,
+                interviewTitle: _round.text);
+            if (mounted) setState(() => _questions = result);
+        }
+      });
     } catch (error) {
       if (mounted) setState(() => _error = error);
     } finally {
       if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _exportInterviewPrep() async {
+    final questions = _questions;
+    if (questions == null || questions.isEmpty) return;
+    setState(() {
+      _exporting = true;
+      _error = null;
+    });
+    try {
+      final bytes =
+          await ref.read(aiMatchToolsRepositoryProvider).interviewPrepPdf(
+                interviewTitle: _round.text,
+                companyName: widget.match.profile.displayName,
+                companyIndustry: switch (widget.match.profile) {
+                  FeedCompany(:final industry) => industry,
+                  _ => null,
+                },
+                questions: questions,
+              );
+      if (!mounted) return;
+      final dir = await getTemporaryDirectory();
+      await saveAndOpenInterviewPdf(bytes, dir,
+          filename:
+              'interview-prep-${DateTime.now().microsecondsSinceEpoch}.pdf');
+    } catch (error) {
+      if (mounted) {
+        setState(() => _error =
+            error is ApiException ? error : 'Could not export interview prep.');
+      }
+    } finally {
+      if (mounted) setState(() => _exporting = false);
     }
   }
 
@@ -93,6 +133,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
                 label: 'base match')
           ],
         ),
+        const AiQuotaPanel(),
         Wrap(spacing: AppShape.space2, runSpacing: AppShape.space2, children: [
           _choice(_Tool.explanation, 'Why this match'),
           _choice(_Tool.gaps, 'Skill gaps'),
@@ -130,8 +171,21 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
               description:
                   error is ApiException ? error.message : 'Please try again.',
               actionLabel: 'Try again',
-              onAction: _generate),
+              onAction: (ref.watch(aiQuotaProvider).value?.exhausted() ?? false)
+                  ? null
+                  : _generate),
         if (!_loading && _error == null) ..._results(),
+        if (_tool == _Tool.interview &&
+            _questions != null &&
+            !_loading &&
+            _error == null)
+          AppButton(
+            label: 'Export interview prep PDF',
+            icon: LucideIcons.fileDown,
+            variant: AppButtonVariant.outline,
+            loading: _exporting,
+            onPressed: _exporting ? null : _exportInterviewPrep,
+          ),
         if (!_loading && _error == null)
           AppButton(
               label: generated ? 'Generate again' : _buttonLabel,
@@ -140,7 +194,10 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
               variant: generated
                   ? AppButtonVariant.outline
                   : AppButtonVariant.primary,
-              onPressed: _generate),
+              onPressed:
+                  (ref.watch(aiQuotaProvider).value?.exhausted() ?? false)
+                      ? null
+                      : _generate),
         Text(
             'AI suggestions can be incomplete. Review them against the role and your own experience.',
             textAlign: TextAlign.center,

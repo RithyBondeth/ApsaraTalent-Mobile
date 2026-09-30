@@ -1,3 +1,7 @@
+import 'package:apsaratalent_mobile/features/ai/presentation/ai_writing_screen.dart';
+import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
+import 'package:apsaratalent_mobile/features/resume_import/presentation/resume_import_button.dart';
+import 'package:apsaratalent_mobile/features/career_scope/providers/career_scope_provider.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +44,56 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   List<String>? _languages;
   final _collectionChanges = <String, dynamic>{};
   bool _saving = false;
+  bool _importing = false;
+  final _collectionsKey = GlobalKey<ProfileCollectionsEditorState>();
+
+  void _applyResume(Map<String, dynamic> data) {
+    setState(() {
+      for (final key in ['firstname', 'lastname', 'job', 'description']) {
+        if (data[key] is String) _fields[key]?.text = data[key] as String;
+      }
+      for (final key in ['location', 'yearsOfExperience', 'availability']) {
+        if (data[key] is String) _picked[key] = data[key] as String;
+      }
+      _collectionsKey.currentState?.importResume(data);
+    });
+  }
+
+  Future<void> _writeBio(UserProfile profile) async {
+    final contextData = <String, dynamic>{};
+    if (profile is EmployeeProfile) {
+      contextData.addAll({
+        'type': 'employeeBio',
+        'jobTitle': _fields['job']!.text,
+        'skills': _collectionChanges.containsKey('skills')
+            ? (_collectionChanges['skills'] as List)
+                .map((s) => s['name'])
+                .whereType<String>()
+                .toList()
+            : profile.skills,
+        'experience': _picked['yearsOfExperience'] ?? '',
+        'availability': _picked['availability'] ?? '',
+      });
+    } else if (profile is CompanyProfile) {
+      contextData.addAll({
+        'type': 'companyBio',
+        'companyName': _fields['name']!.text,
+        'industry': _fields['industry']!.text,
+        'openPositions': profile.openPositions,
+        'benefits': profile.benefits,
+        'values': profile.values
+      });
+    }
+    final text = await Navigator.of(context).push<String>(MaterialPageRoute(
+        builder: (_) => AiWritingScreen(
+            bio: true,
+            initialText: _fields['description']!.text,
+            contextData: contextData)));
+    if (mounted && text != null) {
+      setState(() => _fields['description']!.text = text);
+    }
+  }
+
   UserProfile? _loaded;
 
   @override
@@ -128,9 +182,21 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   }
 
   List<Widget> _employeeForm(EmployeeProfile profile) => [
+        ResumeImportButton(
+          enabled: !_saving,
+          onBusyChanged: (busy) => setState(() => _importing = busy),
+          onImported: _applyResume,
+        ),
         ProfileMediaEditor(profile: profile),
         ProfileCollectionsEditor(
+          key: _collectionsKey,
           profile: profile,
+          careerScopeOptions: ref
+                  .watch(careerScopesProvider)
+                  .valueOrNull
+                  ?.map((scope) => scope.name)
+                  .toList() ??
+              const [],
           onChanged: (changes) => _collectionChanges.addAll(changes),
         ),
         const SectionTitle(title: 'You'),
@@ -156,6 +222,11 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         _pick('noticePeriod', 'Notice period', SignupOptions.noticePeriods),
         const SectionTitle(title: 'About'),
         _text('description', 'Bio', maxLines: 5),
+        const AiQuotaPanel(),
+        AppButton(
+            label: 'Write bio with AI',
+            variant: AppButtonVariant.outline,
+            onPressed: _saving || _importing ? null : () => _writeBio(profile)),
         const SectionTitle(title: 'Links'),
         _text('portfolioUrl', 'Portfolio URL'),
         _text('linkedinUrl', 'LinkedIn URL'),
@@ -188,6 +259,11 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         _text('foundedYear', 'Founded year', keyboard: TextInputType.number),
         const SectionTitle(title: 'About'),
         _text('description', 'Description', maxLines: 5),
+        const AiQuotaPanel(),
+        AppButton(
+            label: 'Write bio with AI',
+            variant: AppButtonVariant.outline,
+            onPressed: _saving ? null : () => _writeBio(profile)),
         ..._footer(),
       ];
 
@@ -198,7 +274,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           icon: LucideIcons.check,
           fullWidth: true,
           loading: _saving,
-          onPressed: _saving ? null : _save,
+          onPressed: _saving || _importing ? null : _save,
         ),
         Padding(
           padding: const EdgeInsets.only(top: AppShape.space2),

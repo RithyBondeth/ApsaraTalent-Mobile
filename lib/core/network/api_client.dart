@@ -141,7 +141,13 @@ class ApiClient {
         // The throttler's own text is "ThrottlerException: Too Many
         // Requests", which is not something to show a person.
         return ApiException(
-          message: 'Too many attempts. Please wait a minute and try again.',
+          message: (e.requestOptions.path.startsWith('/resume/') ||
+                      e.requestOptions.path.startsWith('/match/ai-')) &&
+                  (message.startsWith('Daily AI usage limit') ||
+                      message.startsWith('Daily CV generation limit') ||
+                      message.startsWith('AI request rate limit'))
+              ? message
+              : 'Too many attempts. Please wait a minute and try again.',
           statusCode: statusCode,
         );
       default:

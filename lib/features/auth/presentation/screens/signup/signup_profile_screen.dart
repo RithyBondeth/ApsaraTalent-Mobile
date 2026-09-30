@@ -1,3 +1,5 @@
+import 'package:apsaratalent_mobile/features/resume_import/presentation/resume_import_button.dart';
+import 'package:apsaratalent_mobile/features/career_scope/providers/career_scope_provider.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -20,11 +22,51 @@ class SignupProfileScreen extends ConsumerStatefulWidget {
   const SignupProfileScreen({super.key});
 
   @override
-  ConsumerState<SignupProfileScreen> createState() => _SignupProfileScreenState();
+  ConsumerState<SignupProfileScreen> createState() =>
+      _SignupProfileScreenState();
 }
 
 class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
   bool _submitted = false;
+  bool _importing = false;
+  final List<Map<String, dynamic>> _importedExperiences = [];
+  final List<Map<String, dynamic>> _importedEducations = [];
+
+  void _applyResume(Map<String, dynamic> data) {
+    setState(() {
+      for (final entry in {
+        'firstname': _firstname,
+        'lastname': _lastname,
+        'job': _job,
+        'description': _description
+      }.entries) {
+        if (data[entry.key] is String) {
+          entry.value.text = data[entry.key] as String;
+        }
+      }
+      _location = data['location'] as String? ?? _location;
+      _experience = data['yearsOfExperience'] as String? ?? _experience;
+      _availability = data['availability'] as String? ?? _availability;
+      _skills =
+          {..._skills, ...List<String>.from(data['skills'] ?? [])}.toList();
+      _careerScopes = {
+        ..._careerScopes,
+        ...List<String>.from(data['careerScopes'] ?? [])
+      };
+      for (final entry in {
+        'experiences': _importedExperiences,
+        'educations': _importedEducations
+      }.entries) {
+        for (final row
+            in List<Map<String, dynamic>>.from(data[entry.key] ?? [])) {
+          if (!entry.value.any((existing) =>
+              row.entries.every((e) => existing[e.key] == e.value))) {
+            entry.value.add(row);
+          }
+        }
+      }
+    });
+  }
 
   // Shared
   String? _location;
@@ -53,8 +95,15 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
   @override
   void dispose() {
     for (final c in [
-      _description, _firstname, _lastname, _username, _job,
-      _companyName, _industry, _companySize, _website,
+      _description,
+      _firstname,
+      _lastname,
+      _username,
+      _job,
+      _companyName,
+      _industry,
+      _companySize,
+      _website,
     ]) {
       c.dispose();
     }
@@ -72,7 +121,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
     if (!_submitted) return null;
     final v = value.trim();
     if (v.isEmpty) return '$field is required';
-    if (max != null && v.length > max) return '$field must be $max characters or fewer';
+    if (max != null && v.length > max) {
+      return '$field must be $max characters or fewer';
+    }
     return null;
   }
 
@@ -105,8 +156,12 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
     final v = _website.text.trim();
     if (v.isEmpty) return null;
     final uri = Uri.tryParse(v);
-    final ok = uri != null && (uri.scheme == 'https' || uri.scheme == 'http') && uri.host.contains('.');
-    return ok || !_submitted ? null : 'Enter a full address, like https://example.com';
+    final ok = uri != null &&
+        (uri.scheme == 'https' || uri.scheme == 'http') &&
+        uri.host.contains('.');
+    return ok || !_submitted
+        ? null
+        : 'Enter a full address, like https://example.com';
   }
 
   bool get _companyValid =>
@@ -133,7 +188,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
 
     if (isEmployee ? !_employeeValid : !_companyValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Some details are missing — check the highlighted fields.')),
+        const SnackBar(
+            content: Text(
+                'Some details are missing — check the highlighted fields.')),
       );
       return;
     }
@@ -155,6 +212,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             description: _description.text,
             careerScopes: _careerScopes.toList(),
             skills: _skills,
+            experiences: _importedExperiences,
+            educations: _importedEducations,
           ))
         : await notifier.submitCompany(CompanyRegistration(
             email: signup.email,
@@ -178,7 +237,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
     notifier.reset();
     // Replace the stack: back from verification must not return to a signup
     // form for an account that already exists.
-    context.router.replaceAll([EmailVerificationRoute(email: email, fromSignup: true)]);
+    context.router
+        .replaceAll([EmailVerificationRoute(email: email, fromSignup: true)]);
   }
 
   /* -------------------------------- Pickers ------------------------------- */
@@ -206,10 +266,11 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
       );
 
   Future<void> _pickCareerScopes() async {
+    final catalog = await ref.read(careerScopesProvider.future);
     final picked = await showMultiPickerSheet<String>(
       context,
       title: 'Career scopes',
-      items: [for (final c in SignupOptions.careerScopes) PickerItem(c, c)],
+      items: [for (final c in catalog) PickerItem(c.name, c.name)],
       selected: _careerScopes,
       max: 10,
     );
@@ -236,7 +297,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
       context,
       title: 'Founded year',
       items: [
-        for (var y = current; y >= SignupOptions.foundedYearMin; y--) PickerItem('$y', y),
+        for (var y = current; y >= SignupOptions.foundedYearMin; y--)
+          PickerItem('$y', y),
       ],
       selected: _foundedYear,
     );
@@ -262,13 +324,44 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
       children: [
         const StepHeader(step: 3, total: 3),
         const SizedBox(height: AppShape.space5),
+        if (isEmployee)
+          ResumeImportButton(
+            forSignup: true,
+            enabled: !signup.flow.isLoading,
+            onBusyChanged: (busy) => setState(() => _importing = busy),
+            onImported: _applyResume,
+          ),
         ...(isEmployee ? _employeeFields() : _companyFields()),
+        if (isEmployee) ...[
+          for (final entry in {
+            'Work history': _importedExperiences,
+            'Education': _importedEducations
+          }.entries)
+            if (entry.value.isNotEmpty)
+              ExpansionTile(
+                title: Text('${entry.key} from resume (${entry.value.length})'),
+                children: [
+                  for (final row in entry.value)
+                    ListTile(
+                      title: Text(row.values.join(' · ')),
+                      trailing: IconButton(
+                          tooltip: 'Remove imported entry',
+                          icon: const Icon(Icons.close),
+                          onPressed: () =>
+                              setState(() => entry.value.remove(row))),
+                    )
+                ],
+              ),
+        ],
         const SizedBox(height: AppShape.space4),
         _CareerScopes(
           selected: _careerScopes,
-          errorText: _submitted && _careerScopes.isEmpty ? 'Choose at least one' : null,
+          errorText: _submitted && _careerScopes.isEmpty
+              ? 'Choose at least one'
+              : null,
           onEdit: _pickCareerScopes,
-          onRemove: (c) => setState(() => _careerScopes = {..._careerScopes}..remove(c)),
+          onRemove: (c) =>
+              setState(() => _careerScopes = {..._careerScopes}..remove(c)),
         ),
         if (signup.flow.error != null) ...[
           const SizedBox(height: AppShape.space4),
@@ -280,7 +373,7 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           fullWidth: true,
           size: AppButtonSize.lg,
           loading: signup.flow.isLoading,
-          onPressed: signup.flow.isLoading ? null : _submit,
+          onPressed: signup.flow.isLoading || _importing ? null : _submit,
         ),
       ],
     );
@@ -345,7 +438,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
                 hintText: 'Choose',
                 value: _labelOf(SignupOptions.genders, _gender),
                 errorText: _requiredChoice(_gender, 'gender'),
-                onTap: () => _pickOne('Gender', SignupOptions.genders, _gender, (v) => _gender = v),
+                onTap: () => _pickOne('Gender', SignupOptions.genders, _gender,
+                    (v) => _gender = v),
               ),
             ),
             const SizedBox(width: AppShape.space2),
@@ -353,7 +447,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
               child: AppPickerField(
                 labelText: 'Date of birth',
                 hintText: 'Choose',
-                value: _dob == null ? null : MaterialLocalizations.of(context).formatShortDate(_dob!),
+                value: _dob == null
+                    ? null
+                    : MaterialLocalizations.of(context).formatShortDate(_dob!),
                 errorText: _requiredChoice(_dob, 'a date'),
                 onTap: _pickDob,
               ),
@@ -390,8 +486,11 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
                 hintText: 'Choose',
                 value: _labelOf(SignupOptions.yearsOfExperience, _experience),
                 errorText: _requiredChoice(_experience, 'one'),
-                onTap: () => _pickOne('Years of experience', SignupOptions.yearsOfExperience,
-                    _experience, (v) => _experience = v),
+                onTap: () => _pickOne(
+                    'Years of experience',
+                    SignupOptions.yearsOfExperience,
+                    _experience,
+                    (v) => _experience = v),
               ),
             ),
             const SizedBox(width: AppShape.space2),
@@ -401,8 +500,11 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
                 hintText: 'Choose',
                 value: _labelOf(SignupOptions.availability, _availability),
                 errorText: _requiredChoice(_availability, 'one'),
-                onTap: () => _pickOne('Availability', SignupOptions.availability,
-                    _availability, (v) => _availability = v),
+                onTap: () => _pickOne(
+                    'Availability',
+                    SignupOptions.availability,
+                    _availability,
+                    (v) => _availability = v),
               ),
             ),
           ],
@@ -422,7 +524,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           labelText: 'Skills',
           hintText: 'e.g. React, then press +',
           tags: _skills,
-          errorText: _submitted && _skills.isEmpty ? 'Add at least one skill' : null,
+          errorText:
+              _submitted && _skills.isEmpty ? 'Add at least one skill' : null,
           onChanged: (v) => setState(() => _skills = v),
         ),
       ];
@@ -468,7 +571,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
                 hintText: 'e.g. 50',
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                errorText: _submitted && (_sizeValue ?? 0) <= 0 ? 'Enter a number' : null,
+                errorText: _submitted && (_sizeValue ?? 0) <= 0
+                    ? 'Enter a number'
+                    : null,
                 onChanged: (_) => setState(() {}),
               ),
             ),
@@ -489,8 +594,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           labelText: 'Company type (optional)',
           hintText: 'Choose',
           value: _labelOf(SignupOptions.companyTypes, _companyType),
-          onTap: () => _pickOne('Company type', SignupOptions.companyTypes, _companyType,
-              (v) => _companyType = v),
+          onTap: () => _pickOne('Company type', SignupOptions.companyTypes,
+              _companyType, (v) => _companyType = v),
         ),
         const SizedBox(height: AppShape.space4),
         AppInput(
@@ -552,9 +657,11 @@ class _CareerScopes extends StatelessWidget {
             children: [
               for (final c in selected)
                 InputChip(
-                  label: Text(c, style: AppTypography.tag.copyWith(color: t.foreground)),
+                  label: Text(c,
+                      style: AppTypography.tag.copyWith(color: t.foreground)),
                   onDeleted: () => onRemove(c),
-                  deleteIcon: Icon(LucideIcons.x, size: 14, color: t.mutedForeground),
+                  deleteIcon:
+                      Icon(LucideIcons.x, size: 14, color: t.mutedForeground),
                   deleteButtonTooltipMessage: 'Remove $c',
                 ),
             ],
