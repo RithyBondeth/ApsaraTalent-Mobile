@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart';
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
@@ -44,6 +45,34 @@ Map<String, dynamic> resumeFromProfile(EmployeeProfile p, String email) => {
 class ResumeRepository {
   ResumeRepository(this.client);
   final ApiClient client;
+  Future<List<Map<String, dynamic>>> drafts() async =>
+      ((await client.get('/resume/drafts')).data as List)
+          .map((e) => Map<String, dynamic>.from(e as Map))
+          .toList();
+
+  Future<Map<String, dynamic>> draft(String id) async =>
+      Map<String, dynamic>.from(
+          (await client.get('/resume/drafts/$id')).data as Map);
+
+  Future<Map<String, dynamic>> saveDraft(
+      String name, Map<String, dynamic> content,
+      {String? id, int? revision}) async {
+    final body = {
+      'name': name,
+      'content': content,
+      if (revision == null) 'id': id ?? const Uuid().v4(),
+      if (revision != null) 'revision': revision
+    };
+    final response = revision == null
+        ? await client.post('/resume/drafts', data: body)
+        : await client.put('/resume/drafts/$id', data: body);
+    return Map<String, dynamic>.from(response.data as Map);
+  }
+
+  Future<void> deleteDraft(String id) async {
+    await client.delete('/resume/drafts/$id');
+  }
+
   Future<List<Map<String, dynamic>>> templates() async {
     final data = (await client.get('/resume/template/all')).data;
     if (data is! List) {
@@ -98,6 +127,24 @@ class ResumeDraftStore {
   final FlutterSecureStorage _storage;
 
   String _key(String profileId) => 'resume.draft.$profileId';
+
+  Future<Map<String, dynamic>?> recovery(String profileId) async {
+    final raw = await _storage.read(key: '${_key(profileId)}.sync');
+    if (raw == null) return null;
+    try {
+      final value = Map<String, dynamic>.from(jsonDecode(raw) as Map);
+      if (value['content'] is! Map) return null;
+      return value;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> saveRecovery(String profileId, Map<String, dynamic> record) =>
+      _storage.write(key: '${_key(profileId)}.sync', value: jsonEncode(record));
+
+  Future<void> clearRecovery(String profileId) =>
+      _storage.delete(key: '${_key(profileId)}.sync');
 
   Future<Map<String, dynamic>?> read(String profileId) async {
     final raw = await _storage.read(key: _key(profileId));
