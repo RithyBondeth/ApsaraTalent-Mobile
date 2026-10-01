@@ -1,5 +1,9 @@
 import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:uuid/uuid.dart';
+import 'my_resumes_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +21,21 @@ final resumeRepositoryProvider =
     Provider((ref) => ResumeRepository(ref.watch(apiClientProvider)));
 final resumeDraftStoreProvider = Provider((ref) => ResumeDraftStore());
 
+// Keep native file handling at a boundary so complete UI flows can run in CI.
+final resumePdfPreviewProvider =
+    Provider<Future<void> Function(Uint8List)>((ref) => (bytes) async {
+          final directory = await getTemporaryDirectory();
+          final file = File(
+              '${directory.path}/resume-${DateTime.now().microsecondsSinceEpoch}.pdf');
+          await file.writeAsBytes(bytes, flush: true);
+          final result = await OpenFilex.open(file.path);
+          if (result.type != ResultType.done) {
+            throw ApiException(
+                message:
+                    'PDF created, but it could not be opened: ${result.message}');
+          }
+        });
+
 @RoutePage()
 class ResumeBuilderScreen extends ConsumerStatefulWidget {
   const ResumeBuilderScreen({super.key});
@@ -33,6 +52,12 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
   bool _generated = false;
   bool _restored = false;
   bool _savingDraft = false;
+  String? _draftId;
+  int? _revision;
+  String _name = 'My resume';
+  bool _unsynced = false;
+  bool _saved = false;
+  String? _saveError;
   String? _error;
 
   @override
@@ -60,13 +85,31 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
           profile.email ??
           '';
       final saved = await ref.read(resumeDraftStoreProvider).read(profile.id);
+      final recovery =
+          await ref.read(resumeDraftStoreProvider).recovery(profile.id);
+      Map<String, dynamic>? remote;
+      if (recovery == null && saved == null) {
+        final repository = ref.read(resumeRepositoryProvider);
+        final records = await repository.drafts();
+        if (records.isNotEmpty) {
+          remote = await repository.draft(records.first['id'] as String);
+        }
+      }
       if (!mounted) return;
       setState(() {
         _templates = templates;
-        _draft = saved ??
+        final record = recovery ?? remote;
+        _draftId = record?['id'] as String?;
+        _revision = record?['revision'] as int?;
+        _name = record?['name'] as String? ?? 'My resume';
+        _unsynced = recovery != null || saved != null;
+        _saved = remote != null;
+        _draft = (record == null
+                ? saved
+                : Map<String, dynamic>.from(record['content'] as Map)) ??
             (resumeFromProfile(profile, email)
               ..['template'] = templates.first['templateKey']);
-        _restored = saved != null;
+        _restored = saved != null || recovery != null;
       });
     } catch (e) {
       if (mounted) setState(() => _error = _message(e));
@@ -82,19 +125,69 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
   Future<void> _persistDraft() async {
     final draft = _draft;
     final profile = ref.read(profileProvider).value;
-    if (draft == null || profile is! EmployeeProfile) return;
-    if (mounted) setState(() => _savingDraft = true);
+    if (draft == null || profile is! EmployeeProfile || _savingDraft) return;
+    final repository = ref.read(resumeRepositoryProvider);
+    final store = ref.read(resumeDraftStoreProvider);
+    final snapshot =
+        Map<String, dynamic>.from(jsonDecode(jsonEncode(draft)) as Map);
+    _draftId ??= const Uuid().v4();
+    if (mounted) {
+      setState(() {
+        _savingDraft = true;
+        _unsynced = true;
+        _saveError = null;
+      });
+    }
     try {
-      await ref.read(resumeDraftStoreProvider).write(profile.id, draft);
+      await store.saveRecovery(profile.id, {
+        'id': _draftId,
+        'revision': _revision,
+        'name': _name,
+        'content': snapshot
+      });
+      final record = await repository.saveDraft(_name, snapshot,
+          id: _draftId, revision: _revision);
+      _draftId = record['id'] as String;
+      _revision = record['revision'] as int;
+      await store.clear(profile.id);
+      await store.clearRecovery(profile.id);
+      if (mounted) {
+        setState(() {
+          _unsynced = false;
+          _saved = true;
+          _restored = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _saveError = _message(e));
     } finally {
       if (mounted) setState(() => _savingDraft = false);
     }
   }
 
   Future<void> _clearDraft() async {
+    if (_unsynced) {
+      final discard = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Discard local changes?'),
+                content: const Text(
+                    'These changes have not been saved to your account.'),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel')),
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Discard'))
+                ],
+              ));
+      if (!mounted || discard != true) return;
+    }
     final profile = ref.read(profileProvider).value;
     if (profile is! EmployeeProfile) return;
     await ref.read(resumeDraftStoreProvider).clear(profile.id);
+    await ref.read(resumeDraftStoreProvider).clearRecovery(profile.id);
     if (!mounted) return;
     final email =
         ref.read(authSessionProvider).value?.user?.email ?? profile.email ?? '';
@@ -103,7 +196,50 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
         ..['template'] = _templates.first['templateKey'];
       _restored = false;
       _generated = false;
+      _draftId = null;
+      _revision = null;
+      _name = 'My resume';
+      _saved = false;
+      _unsynced = false;
+      _saveError = null;
     });
+  }
+
+  Future<void> _myResumes() async {
+    final record = await Navigator.of(context).push<Map<String, dynamic>>(
+        MaterialPageRoute(
+            builder: (_) => MyResumesScreen(
+                repository: ref.read(resumeRepositoryProvider))));
+    if (!mounted) return;
+    if (record == null) {
+      // A rename/delete in the list may have changed the current record.
+      await _load();
+      return;
+    }
+    if (record['new'] == true) {
+      await _clearDraft();
+      return;
+    }
+    setState(() {
+      _draft = Map<String, dynamic>.from(record['content'] as Map);
+      _draftId = record['id'] as String;
+      _revision = record['revision'] as int;
+      _name = record['name'] as String;
+      _saved = true;
+      _unsynced = false;
+      _restored = false;
+      _generated = false;
+      _error = null;
+      _saveError = null;
+    });
+  }
+
+  Future<void> _rename() async {
+    final result =
+        await _edit('Resume name', {'Name': _name}, limits: {'Name': 120});
+    if (!mounted || result == null || result['Name']!.isEmpty) return;
+    setState(() => _name = result['Name']!);
+    await _persistDraft();
   }
 
   Future<void> _run(bool generate) async {
@@ -135,16 +271,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
       } else {
         final bytes = await repository.build(_draft!);
         if (!mounted) return;
-        final directory = await getTemporaryDirectory();
-        final file = File(
-            '${directory.path}/resume-${DateTime.now().microsecondsSinceEpoch}.pdf');
-        await file.writeAsBytes(bytes, flush: true);
-        final result = await OpenFilex.open(file.path);
-        if (result.type != ResultType.done) {
-          throw ApiException(
-              message:
-                  'PDF created, but it could not be opened: ${result.message}');
-        }
+        await ref.read(resumePdfPreviewProvider)(bytes);
       }
     } catch (e) {
       if (mounted) setState(() => _error = _message(e));
@@ -294,13 +421,22 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Keep the auto-disposed profile alive while edits are being saved.
+    ref.watch(profileProvider);
     final draft = _draft;
     return AppScreen(children: [
       const PageBanner(
           eyebrow: 'Resume builder',
           title: 'Build your resume',
           subtitle:
-              'Review your profile details, choose a template, and open your PDF. Edits are saved privately on this device.'),
+              'Create resumes for different roles and save them to your account.'),
+      TextButton.icon(
+          onPressed:
+              _loading || draft == null || _busy || _savingDraft || _unsynced
+                  ? null
+                  : _myResumes,
+          icon: const Icon(Icons.folder_outlined),
+          label: const Text('My resumes')),
       if (_loading) const Center(child: CircularProgressIndicator()),
       if (_error != null)
         PageState(
@@ -310,21 +446,53 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
             actionLabel: draft == null ? 'Retry' : null,
             onAction: draft == null ? _load : null),
       if (draft != null) ...[
+        ListTile(
+            title: Text(_name),
+            trailing: const Icon(Icons.edit_outlined),
+            onTap: _busy || _savingDraft ? null : _rename),
+        Text(_savingDraft
+            ? 'Saving to your account…'
+            : _unsynced
+                ? 'Changes are not synced yet.'
+                : _saved
+                    ? 'Saved to your account'
+                    : 'New resume — save to keep it'),
+        if (_saveError != null) Text(_saveError!),
+        if (!_saved || _unsynced)
+          TextButton(
+              onPressed: _savingDraft || _busy ? null : _persistDraft,
+              child: Text(_unsynced ? 'Retry save' : 'Save resume')),
+        if (_saveError != null)
+          TextButton(
+              onPressed: _savingDraft || _busy
+                  ? null
+                  : () {
+                      _draftId = null;
+                      _revision = null;
+                      _persistDraft();
+                    },
+              child: const Text('Save as new resume')),
         if (_restored)
           AppSurface(
             child: Row(children: [
               const Expanded(
-                  child: Text('Saved draft restored from this device.')),
+                  child:
+                      Text('Local draft recovered. Save it to your account.')),
               TextButton(
-                  onPressed: _clearDraft, child: const Text('Start over')),
+                  onPressed: _savingDraft || _busy ? null : _clearDraft,
+                  child: const Text('Start over')),
             ]),
           ),
         if (_savingDraft) const LinearProgressIndicator(minHeight: 2),
         AbsorbPointer(
-            absorbing: _busy,
+            absorbing: _busy || _savingDraft,
             child: Column(children: [
               DropdownButtonFormField<String>(
-                initialValue: draft['template'] as String,
+                key: ValueKey('${_draftId}_${draft['template']}'),
+                initialValue:
+                    _templates.any((t) => t['templateKey'] == draft['template'])
+                        ? draft['template'] as String
+                        : null,
                 decoration: const InputDecoration(labelText: 'Template'),
                 isExpanded: true,
                 items: [
@@ -396,6 +564,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
             label: 'Generate AI draft',
             variant: AppButtonVariant.outline,
             onPressed: _busy ||
+                    _savingDraft ||
                     (ref
                             .watch(aiQuotaProvider)
                             .value
@@ -405,7 +574,8 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                 : () => _run(true)),
         const SizedBox(height: 12),
         AppButton(
-            label: 'Preview PDF', onPressed: _busy ? null : () => _run(false)),
+            label: 'Preview PDF',
+            onPressed: _busy || _savingDraft ? null : () => _run(false)),
         if (_busy)
           const Padding(
               padding: EdgeInsets.all(16), child: LinearProgressIndicator()),
