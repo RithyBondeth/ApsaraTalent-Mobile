@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,7 +83,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ),
           AppInput(
             controller: _controller,
-            hintText: jobs ? 'Role, skill or keyword' : 'Name, role or skill',
+            hintText: context
+                .tr(jobs ? 'Role, skill or keyword' : 'Name, role or skill'),
             prefixIcon: LucideIcons.search,
             suffixIcon: state.keyword.isEmpty ? null : LucideIcons.x,
             onSuffixTap: () {
@@ -143,15 +145,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Save this search'),
+          title: Text(context.tr('Save this search')),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AppInput(
                 controller: name,
-                labelText: 'Name',
-                hintText: 'e.g. Senior design roles',
+                labelText: context.tr('Name'),
+                hintText: context.tr('e.g. Senior design roles'),
                 errorText: error,
                 enabled: !saving,
                 textInputAction: TextInputAction.done,
@@ -159,7 +161,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               const SizedBox(height: AppShape.space4),
               DropdownButtonFormField<SearchFrequency>(
                 initialValue: frequency,
-                decoration: const InputDecoration(labelText: 'Email updates'),
+                decoration:
+                    InputDecoration(labelText: context.tr('Email updates')),
                 items: [
                   for (final option in SearchFrequency.values)
                     DropdownMenuItem(
@@ -187,7 +190,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           actions: [
             TextButton(
               onPressed: saving ? null : () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(context.tr('Cancel')),
             ),
             TextButton(
               onPressed: saving
@@ -215,7 +218,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           ScaffoldMessenger.of(this.context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
-                              const SnackBar(content: Text('Search saved.')),
+                              SnackBar(
+                                  content:
+                                      Text(this.context.tr('Search saved.'))),
                             );
                         }
                       } on ApiException catch (e) {
@@ -233,7 +238,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       height: 16,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Save'),
+                  : Text(context.tr('Save')),
             ),
           ],
         ),
@@ -336,7 +341,7 @@ class _ScopeToggle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Only my career scopes',
+                  context.tr('Only my career scopes'),
                   style: AppTypography.label.copyWith(color: t.foreground),
                 ),
                 const SizedBox(height: 2),
@@ -346,7 +351,7 @@ class _ScopeToggle extends StatelessWidget {
                   // never matches and only an identical name does. Promising
                   // more than exact matching would be a lie the results then
                   // quietly contradict.
-                  'Matches scope names exactly',
+                  context.tr('Matches scope names exactly'),
                   style: AppTypography.tiny.copyWith(
                     color: t.mutedForeground,
                   ),
@@ -386,12 +391,13 @@ class _FallbackNotice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nothing in your career scopes',
+                    context.tr('Nothing in your career scopes'),
                     style: AppTypography.label.copyWith(color: t.foreground),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Showing every match instead, so these are not narrowed.',
+                    context.tr(
+                        'Showing every match instead, so these are not narrowed.'),
                     style: AppTypography.tiny.copyWith(
                       color: t.mutedForeground,
                       height: 1.45,
@@ -419,7 +425,7 @@ class _ResultCount extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppShape.space2),
       child: Text(
-        state.total == 1 ? '1 $noun' : '${state.total} ${noun}s',
+        context.tr(state.total == 1 ? '1 $noun' : '${state.total} ${noun}s'),
         style: AppTypography.tiny.copyWith(color: t.mutedForeground),
       ),
     );

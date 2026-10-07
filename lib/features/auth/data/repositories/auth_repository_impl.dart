@@ -72,10 +72,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> exchangeSocialCode(
     String code, {
+    required String codeVerifier,
     required bool remember,
   }) {
     return _guard('Social sign-in could not be completed.', () async {
-      final result = await _remoteDataSource.exchangeSocialCode(code);
+      final result =
+          await _remoteDataSource.exchangeSocialCode(code, codeVerifier);
       await _keep(result.tokens, remember: remember);
     });
   }

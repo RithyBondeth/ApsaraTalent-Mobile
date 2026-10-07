@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,10 +109,10 @@ class _ResumeImportButtonState extends ConsumerState<ResumeImportButton> {
             variant: AppButtonVariant.outline,
             loading: _busy,
             onPressed: widget.enabled && !_busy ? _import : null),
-        const Padding(
+        Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-                'Upload a PDF up to 5 MB to prefill your profile. Review extracted details before applying them.')),
+            child: Text(context.tr(
+                'Upload a PDF up to 5 MB to prefill your profile. Review extracted details before applying them.'))),
         if (_error != null)
           Text(_error!,
               style: TextStyle(color: Theme.of(context).colorScheme.error)),
@@ -135,13 +136,13 @@ class _ResumeImportReviewState extends State<ResumeImportReview> {
       : '$value';
   @override
   Widget build(BuildContext context) => AlertDialog(
-        title: const Text('Review resume details'),
+        title: Text(context.tr('Review resume details')),
         content: SizedBox(
             width: 480,
             child: SingleChildScrollView(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const Text(
-                  'Selected text fields replace form values. Skills, career scopes, work history and education are added to your draft. Your login details stay the same. Nothing is saved until you submit the form.'),
+              Text(context.tr(
+                  'Selected text fields replace form values. Skills, career scopes, work history and education are added to your draft. Your login details stay the same. Nothing is saved until you submit the form.')),
               if (widget.notice != null) Text(widget.notice!),
               for (final entry in widget.data.entries)
                 CheckboxListTile(
@@ -161,13 +162,13 @@ class _ResumeImportReviewState extends State<ResumeImportReview> {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+              child: Text(context.tr('Cancel'))),
           TextButton(
               onPressed: _selected.isEmpty
                   ? null
                   : () => Navigator.pop(context,
                       {for (final key in _selected) key: widget.data[key]}),
-              child: const Text('Apply selected')),
+              child: Text(context.tr('Apply selected'))),
         ],
       );
 }

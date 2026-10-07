@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/features/ai/presentation/cover_letter_button.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class JobDetailScreen extends ConsumerWidget {
     final job = ref.watch(jobPostingProvider(jobId));
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Job')),
+      appBar: AppBar(title: Text(context.tr('Job'))),
       children: job.when(
         loading: () => const [_Skeleton()],
         error: (error, _) => [
@@ -183,11 +184,9 @@ class JobDetailScreen extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(top: AppShape.space2),
           child: Text(
-            active
+            context.tr(active
                 ? '${existing.status.label} · ${existing.appliedAge.toLowerCase()}'
-                // A withdrawn application is revived by applying again, not
-                // replaced by a second one.
-                : 'You withdrew this one. Applying again revives it.',
+                : 'You withdrew this one. Applying again revives it.'),
             textAlign: TextAlign.center,
             style: AppTypography.tiny.copyWith(color: t.mutedForeground),
           ),
@@ -222,12 +221,13 @@ Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Apply for ${job.title}',
+            context.tr("Apply for {0}", {'0': job.title}),
             style: AppTypography.h4.copyWith(color: context.tokens.foreground),
           ),
           const SizedBox(height: AppShape.space2),
           Text(
-            'Add a note if you want to. You can send it without one.',
+            context
+                .tr('Add a note if you want to. You can send it without one.'),
             style: AppTypography.small.copyWith(
               color: context.tokens.mutedForeground,
             ),
@@ -235,7 +235,7 @@ Future<void> _apply(BuildContext context, WidgetRef ref, JobPosting job) async {
           const SizedBox(height: AppShape.space4),
           AppInput(
             controller: controller,
-            hintText: 'Why you are a fit (optional)',
+            hintText: context.tr('Why you are a fit (optional)'),
             maxLines: 4,
           ),
           const SizedBox(height: AppShape.space4),

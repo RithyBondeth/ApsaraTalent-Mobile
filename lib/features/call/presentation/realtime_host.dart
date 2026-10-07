@@ -1,8 +1,9 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
+import 'package:apsaratalent_mobile/core/network/realtime_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
-import 'package:apsaratalent_mobile/features/match/providers/match_realtime_provider.dart';
 import '../providers/call_controller.dart';
 
 /// Above the router so incoming calls are visible on any signed-in page.
@@ -56,8 +57,8 @@ class _RealtimeState extends ConsumerState<_SignedInRealtime>
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(realtimeRefreshProvider);
     ref.watch(chatControllerProvider);
-    ref.watch(matchRealtimeSyncProvider);
     final call = ref.watch(callControllerProvider);
     return Stack(children: [
       widget.child,
@@ -95,16 +96,16 @@ class _RealtimeState extends ConsumerState<_SignedInRealtime>
                             OutlinedButton.icon(
                                 onPressed: call.decline,
                                 icon: const Icon(Icons.call_end),
-                                label: const Text('Decline')),
+                                label: Text(context.tr('Decline'))),
                             FilledButton.icon(
                                 onPressed: call.answer,
                                 icon: const Icon(Icons.call),
-                                label: const Text('Answer')),
+                                label: Text(context.tr('Answer'))),
                           ])
                         else if (call.phase == CallPhase.ended)
                           FilledButton(
                               onPressed: call.dismiss,
-                              child: const Text('Close'))
+                              child: Text(context.tr('Close')))
                         else ...[
                           Wrap(
                               alignment: WrapAlignment.center,

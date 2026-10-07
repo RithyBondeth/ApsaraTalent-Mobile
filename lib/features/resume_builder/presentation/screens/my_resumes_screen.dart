@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import '../../data/resume_repository.dart';
@@ -47,15 +48,16 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
       final confirmed = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-                title: const Text('Delete resume?'),
-                content: Text('Delete “${item['name']}” from your account?'),
+                title: Text(context.tr('Delete resume?')),
+                content: Text(context.tr(
+                    "Delete “{0}” from your account?", {'0': item['name']})),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel')),
+                      child: Text(context.tr('Cancel'))),
                   TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Delete'))
+                      child: Text(context.tr('Delete')))
                 ],
               ));
       if (confirmed != true || !mounted) return;
@@ -100,13 +102,13 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('My resumes')),
+        appBar: AppBar(title: Text(context.tr('My resumes'))),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: _busy
                 ? null
                 : () => Navigator.pop(context, <String, dynamic>{'new': true}),
             icon: const Icon(Icons.add),
-            label: const Text('New resume')),
+            label: Text(context.tr('New resume'))),
         body: RefreshIndicator(
             onRefresh: _load,
             child: ListView(padding: const EdgeInsets.all(16), children: [
@@ -114,29 +116,39 @@ class _MyResumesScreenState extends State<MyResumesScreen> {
               if (_error != null) ...[
                 Text(_error!),
                 TextButton(
-                    onPressed: _busy ? null : _load, child: const Text('Retry'))
+                    onPressed: _busy ? null : _load,
+                    child: Text(context.tr('Retry')))
               ],
               if (_items?.isEmpty == true)
-                const Padding(
+                Padding(
                     padding: EdgeInsets.all(24),
-                    child: Text(
-                        'Your saved resumes will appear here. Create one to get started.')),
+                    child: Text(context.tr(
+                        'Your saved resumes will appear here. Create one to get started.'))),
               for (final item in _items ?? <Map<String, dynamic>>[])
                 ListTile(
                     title: Text('${item['name']}'),
-                    subtitle: Text(
-                        'Updated ${DateTime.tryParse('${item['updatedAt']}')?.toLocal().toString().split('.').first ?? ''}'),
+                    subtitle: Text(context.tr("Updated {0}", {
+                      '0': DateTime.tryParse('${item['updatedAt']}')
+                              ?.toLocal()
+                              .toString()
+                              .split('.')
+                              .first ??
+                          ''
+                    })),
                     onTap: _busy ? null : () => _action(item, 'open'),
                     trailing: PopupMenuButton<String>(
                         enabled: !_busy,
                         onSelected: (action) => _action(item, action),
-                        itemBuilder: (_) => const [
+                        itemBuilder: (_) => [
                               PopupMenuItem(
-                                  value: 'rename', child: Text('Rename')),
+                                  value: 'rename',
+                                  child: Text(context.tr('Rename'))),
                               PopupMenuItem(
-                                  value: 'duplicate', child: Text('Duplicate')),
+                                  value: 'duplicate',
+                                  child: Text(context.tr('Duplicate'))),
                               PopupMenuItem(
-                                  value: 'delete', child: Text('Delete')),
+                                  value: 'delete',
+                                  child: Text(context.tr('Delete'))),
                             ])),
               const SizedBox(height: 90),
             ])),
@@ -160,7 +172,7 @@ class _NameDialogState extends State<_NameDialog> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-          title: const Text('Rename resume'),
+          title: Text(context.tr('Rename resume')),
           content: TextField(
               controller: controller,
               maxLength: 120,
@@ -169,11 +181,11 @@ class _NameDialogState extends State<_NameDialog> {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel')),
+                child: Text(context.tr('Cancel'))),
             TextButton(
                 onPressed: controller.text.trim().isEmpty
                     ? null
                     : () => Navigator.pop(context, controller.text.trim()),
-                child: const Text('Save'))
+                child: Text(context.tr('Save')))
           ]);
 }

@@ -19,7 +19,8 @@ abstract class AuthRemoteDataSource {
 
   /// Exchanges a phone number and its one-time code for a session.
   Future<AuthDataSourceResult> verifyPhoneOtp(String phone, String otp);
-  Future<AuthDataSourceResult> exchangeSocialCode(String code);
+  Future<AuthDataSourceResult> exchangeSocialCode(
+      String code, String codeVerifier);
 
   /// Both registrations issue a session immediately and, for an email account,
   /// send a verification code.

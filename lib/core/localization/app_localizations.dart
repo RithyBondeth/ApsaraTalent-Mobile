@@ -1,3 +1,4 @@
+import 'khmer_product_copy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +20,14 @@ class AppLocalizations {
 
   bool get isKhmer => locale.languageCode == 'km';
 
-  String translate(String source) {
-    if (!isKhmer) return source;
-    return _km[source] ?? source;
+  String translate(String source,
+      [Map<String, Object?> parameters = const {}]) {
+    var text =
+        isKhmer ? (khmerProductCopy[source] ?? _km[source] ?? source) : source;
+    for (final e in parameters.entries) {
+      text = text.replaceAll('{${e.key}}', '${e.value ?? ''}');
+    }
+    return text;
   }
 
   static const delegate = _AppLocalizationsDelegate();
@@ -229,5 +235,6 @@ class _AppLocalizationsDelegate
 
 extension AppLocalizationContext on BuildContext {
   AppLocalizations get l10n => AppLocalizations.of(this);
-  String tr(String source) => l10n.translate(source);
+  String tr(String source, [Map<String, Object?> parameters = const {}]) =>
+      l10n.translate(source, parameters);
 }

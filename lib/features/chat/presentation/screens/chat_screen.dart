@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +24,7 @@ class ChatScreen extends ConsumerWidget {
           child: TextButton.icon(
               onPressed: () => context.router.push(const MatchRoute()),
               icon: const Icon(Icons.add_comment_outlined),
-              label: const Text('Message a match'))),
+              label: Text(context.tr('Message a match')))),
       if (chat.error != null)
         PageState(
             variant: PageStateVariant.error,
@@ -59,7 +60,7 @@ class ChatScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (chat.online.contains(conversation.id))
-                          const Text('Online'),
+                          Text(context.tr('Online')),
                         if (!conversation.isRead)
                           const Icon(Icons.mark_chat_unread_outlined, size: 18),
                       ]),

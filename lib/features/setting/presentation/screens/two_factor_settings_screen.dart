@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/constants/app_constant.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -29,7 +30,8 @@ class TwoFactorSettingsScreen extends ConsumerStatefulWidget {
       _TwoFactorSettingsScreenState();
 }
 
-class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScreen> {
+class _TwoFactorSettingsScreenState
+    extends ConsumerState<TwoFactorSettingsScreen> {
   @override
   void initState() {
     super.initState();
@@ -44,13 +46,15 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
     final code = ref.read(otpProvider);
     if (!code.isComplete) return;
     final notifier = ref.read(twoFactorSettingsProvider.notifier);
-    final ok = enabling ? await notifier.enable(code.otp) : await notifier.disable(code.otp);
+    final ok = enabling
+        ? await notifier.enable(code.otp)
+        : await notifier.disable(code.otp);
     ref.read(otpProvider.notifier).clear();
     if (ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(enabling
+        content: Text(context.tr(enabling
             ? 'Two-step verification is on.'
-            : 'Two-step verification is off.'),
+            : 'Two-step verification is off.')),
       ));
     }
   }
@@ -66,7 +70,7 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
     final flow = state.flow;
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Two-step verification')),
+      appBar: AppBar(title: Text(context.tr('Two-step verification'))),
       children: [
         AppSurface(
           child: Row(
@@ -82,7 +86,7 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      enabled ? 'On' : 'Off',
+                      context.tr(enabled ? 'On' : 'Off'),
                       style: AppTypography.label.copyWith(
                         color: t.foreground,
                         fontWeight: FontWeight.w700,
@@ -90,10 +94,11 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      enabled
+                      context.tr(enabled
                           ? 'Signing in asks for a code from your authenticator app.'
-                          : 'Add a code from an authenticator app to your password.',
-                      style: AppTypography.tiny.copyWith(color: t.mutedForeground, height: 1.4),
+                          : 'Add a code from an authenticator app to your password.'),
+                      style: AppTypography.tiny
+                          .copyWith(color: t.mutedForeground, height: 1.4),
                     ),
                   ],
                 ),
@@ -105,15 +110,14 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
             ],
           ),
         ),
-
         if (flow.message != null && setup == null)
           AuthMessage.success(flow.message!),
         if (flow.error != null) AuthMessage.error(flow.error!),
-
         if (enabled) ...[
           const SectionTitle(
             title: 'Turn it off',
-            subtitle: 'Enter a current code from your authenticator app to confirm.',
+            subtitle:
+                'Enter a current code from your authenticator app to confirm.',
           ),
           OtpField(length: AppConstants.otpLength),
           AppButton(
@@ -139,7 +143,8 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
             loading: flow.isLoading,
             onPressed: flow.isLoading
                 ? null
-                : () => ref.read(twoFactorSettingsProvider.notifier).startSetup(),
+                : () =>
+                    ref.read(twoFactorSettingsProvider.notifier).startSetup(),
           ),
         ] else ...[
           const SectionTitle(
@@ -169,7 +174,7 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
                     await Clipboard.setData(ClipboardData(text: setup.secret));
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Setup key copied')),
+                        SnackBar(content: Text(context.tr('Setup key copied'))),
                       );
                     }
                   },
@@ -195,7 +200,8 @@ class _TwoFactorSettingsScreenState extends ConsumerState<TwoFactorSettingsScree
             label: 'Cancel',
             variant: AppButtonVariant.ghost,
             fullWidth: true,
-            onPressed: () => ref.read(twoFactorSettingsProvider.notifier).cancelSetup(),
+            onPressed: () =>
+                ref.read(twoFactorSettingsProvider.notifier).cancelSetup(),
           ),
         ],
       ],

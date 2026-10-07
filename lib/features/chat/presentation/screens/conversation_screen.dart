@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
@@ -98,7 +99,7 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
           ]),
           actions: [
             IconButton(
-                tooltip: 'Voice call',
+                tooltip: context.tr('Voice call'),
                 onPressed: chat.connected && !_recording
                     ? () => _run(() => ref
                         .read(callControllerProvider)
@@ -111,17 +112,19 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
         if (chat.error != null)
           MaterialBanner(content: Text(chat.error!), actions: [
             TextButton(
-                onPressed: chat.loadHistory, child: const Text('Reload')),
+                onPressed: chat.loadHistory, child: Text(context.tr('Reload'))),
           ]),
         if (chat.historyLoading) const LinearProgressIndicator(),
         if (chat.historyLimited)
-          const Padding(
+          Padding(
               padding: EdgeInsets.all(8),
-              child: Text('The server history limit has been reached.')),
+              child: Text(
+                  context.tr('The server history limit has been reached.'))),
         Expanded(
             child: messages.isEmpty && !chat.historyLoading
-                ? const Center(
-                    child: Text('Say hello to start the conversation.'))
+                ? Center(
+                    child: Text(
+                        context.tr('Say hello to start the conversation.')))
                 : ListView.builder(
                     controller: _scroll,
                     padding: const EdgeInsets.all(12),
@@ -131,11 +134,11 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
         if (_reply != null)
           ListTile(
               dense: true,
-              title: const Text('Replying to'),
+              title: Text(context.tr('Replying to')),
               subtitle: Text(_reply!.content,
                   maxLines: 1, overflow: TextOverflow.ellipsis),
               trailing: IconButton(
-                  tooltip: 'Cancel reply',
+                  tooltip: context.tr('Cancel reply'),
                   onPressed: () => setState(() => _reply = null),
                   icon: const Icon(Icons.close))),
         if (_attachment != null)
@@ -143,7 +146,7 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
               dense: true,
               title: Text(_attachment!.filename),
               trailing: IconButton(
-                  tooltip: 'Remove attachment',
+                  tooltip: context.tr('Remove attachment'),
                   onPressed: () => setState(() => _attachment = null),
                   icon: const Icon(Icons.close))),
         if (_uploading) const LinearProgressIndicator(),
@@ -151,19 +154,19 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
           Padding(
               padding: const EdgeInsets.all(8),
               child: Row(children: [
-                const Expanded(child: Text('Recording voice message…')),
+                Expanded(child: Text(context.tr('Recording voice message…'))),
                 TextButton(
                     onPressed: () => _stopRecording(cancel: true),
-                    child: const Text('Cancel')),
+                    child: Text(context.tr('Cancel'))),
                 FilledButton(
                     onPressed: () => _stopRecording(),
-                    child: const Text('Attach recording')),
+                    child: Text(context.tr('Attach recording'))),
               ])),
         Padding(
             padding: const EdgeInsets.all(8),
             child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
               IconButton(
-                  tooltip: 'Attach file',
+                  tooltip: context.tr('Attach file'),
                   onPressed: chat.connected &&
                           !_uploading &&
                           !_recording &&
@@ -177,8 +180,9 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
                       minLines: 1,
                       maxLines: 5,
                       maxLength: 5000,
-                      decoration: const InputDecoration(
-                          hintText: 'Write a message', counterText: ''),
+                      decoration: InputDecoration(
+                          hintText: context.tr('Write a message'),
+                          counterText: ''),
                       onChanged: (_) {
                         chat.setTyping(true);
                         _typingTimer?.cancel();
@@ -186,7 +190,7 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
                             () => chat.setTyping(false));
                       })),
               IconButton(
-                  tooltip: 'Record voice message',
+                  tooltip: context.tr('Record voice message'),
                   onPressed: chat.connected &&
                           !_uploading &&
                           !_recording &&
@@ -195,7 +199,7 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
                       : null,
                   icon: const Icon(Icons.mic_none)),
               IconButton(
-                  tooltip: 'Send message',
+                  tooltip: context.tr('Send message'),
                   onPressed: chat.connected &&
                           !_uploading &&
                           !_recording &&
@@ -235,7 +239,7 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (message.isDeleted)
-                    const Text('Message deleted',
+                    Text(context.tr('Message deleted'),
                         style: TextStyle(fontStyle: FontStyle.italic))
                   else ...[
                     if (message.replyToId != null)
@@ -264,26 +268,32 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
                           child: Icon(
                               message.isRead ? Icons.done_all : Icons.done,
                               size: 15,
-                              semanticLabel: message.isRead ? 'Read' : 'Sent')),
+                              semanticLabel: context
+                                  .tr(message.isRead ? 'Read' : 'Sent'))),
                     if (!message.isDeleted)
                       PopupMenuButton<String>(
-                          tooltip: 'Message actions',
+                          tooltip: context.tr('Message actions'),
                           onSelected: (action) => _action(action, message),
                           itemBuilder: (_) => [
-                                const PopupMenuItem(
-                                    value: 'reply', child: Text('Reply')),
-                                const PopupMenuItem(
-                                    value: 'react', child: Text('React')),
+                                PopupMenuItem(
+                                    value: 'reply',
+                                    child: Text(context.tr('Reply'))),
+                                PopupMenuItem(
+                                    value: 'react',
+                                    child: Text(context.tr('React'))),
                                 if (message.reactions.containsKey(chat.me))
-                                  const PopupMenuItem(
+                                  PopupMenuItem(
                                       value: 'unreact',
-                                      child: Text('Remove reaction')),
+                                      child:
+                                          Text(context.tr('Remove reaction'))),
                                 if (mine && message.type == 'text')
-                                  const PopupMenuItem(
-                                      value: 'edit', child: Text('Edit')),
+                                  PopupMenuItem(
+                                      value: 'edit',
+                                      child: Text(context.tr('Edit'))),
                                 if (mine)
-                                  const PopupMenuItem(
-                                      value: 'delete', child: Text('Delete')),
+                                  PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text(context.tr('Delete'))),
                               ]),
                   ]),
                 ])));
@@ -348,9 +358,9 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
         if (ref.read(callControllerProvider).active) return;
         if (!await _recorder.hasPermission()) {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-                    'Allow microphone access in device settings to record.')));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(context.tr(
+                    'Allow microphone access in device settings to record.'))));
           }
           return;
         }
@@ -406,15 +416,17 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
     if (action == 'react') {
       final emoji = await showDialog<String>(
           context: context,
-          builder: (context) =>
-              SimpleDialog(title: const Text('React to message'), children: [
-                Wrap(alignment: WrapAlignment.center, children: [
-                  for (final e in ['👍', '❤️', '😂', '🎉', '🙏', '😮'])
-                    TextButton(
-                        onPressed: () => Navigator.pop(context, e),
-                        child: Text(e, style: const TextStyle(fontSize: 28)))
-                ])
-              ]));
+          builder: (context) => SimpleDialog(
+                  title: Text(context.tr('React to message')),
+                  children: [
+                    Wrap(alignment: WrapAlignment.center, children: [
+                      for (final e in ['👍', '❤️', '😂', '🎉', '🙏', '😮'])
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, e),
+                            child:
+                                Text(e, style: const TextStyle(fontSize: 28)))
+                    ])
+                  ]));
       if (emoji != null && mounted) {
         await _run(() => chat.react(message, emoji));
       }
@@ -424,15 +436,16 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
       final confirmed = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-                  title: const Text('Delete this message?'),
-                  content: const Text('It will be removed for both people.'),
+                  title: Text(context.tr('Delete this message?')),
+                  content:
+                      Text(context.tr('It will be removed for both people.')),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: const Text('Cancel')),
+                        child: Text(context.tr('Cancel'))),
                     TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Delete'))
+                        child: Text(context.tr('Delete')))
                   ]));
       if (confirmed == true && mounted) await _run(() => chat.remove(message));
       return;
@@ -442,16 +455,16 @@ class _ConversationState extends ConsumerState<ConversationScreen> {
       final value = await showDialog<String>(
           context: context,
           builder: (context) => AlertDialog(
-                  title: const Text('Edit message'),
+                  title: Text(context.tr('Edit message')),
                   content: TextField(
                       controller: editor, maxLength: 5000, maxLines: 5),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel')),
+                        child: Text(context.tr('Cancel'))),
                     TextButton(
                         onPressed: () => Navigator.pop(context, editor.text),
-                        child: const Text('Save'))
+                        child: Text(context.tr('Save')))
                   ]));
       // Dialog route animations may still reference the controller this frame.
       Future.delayed(const Duration(milliseconds: 300), editor.dispose);

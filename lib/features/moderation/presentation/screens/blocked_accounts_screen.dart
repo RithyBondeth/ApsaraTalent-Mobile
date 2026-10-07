@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +23,7 @@ class BlockedAccountsScreen extends ConsumerWidget {
     final notifier = ref.read(blockedProvider.notifier);
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Blocked accounts')),
+      appBar: AppBar(title: Text(context.tr('Blocked accounts'))),
       onRefresh: () async {
         try {
           await notifier.refresh();
@@ -88,19 +89,20 @@ class BlockedAccountsScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Unblock ${user.name}?'),
-        content: const Text(
-          'You will be able to see each other again, in the feed and in '
-          'search. They are not told either way.',
+        title: Text(context.tr("Unblock {0}?", {'0': user.name})),
+        content: Text(
+          context.tr(
+              'You will be able to see each other again, in the feed and in '
+              'search. They are not told either way.'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep blocked'),
+            child: Text(context.tr('Keep blocked')),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Unblock'),
+            child: Text(context.tr('Unblock')),
           ),
         ],
       ),

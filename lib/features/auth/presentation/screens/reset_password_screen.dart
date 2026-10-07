@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -24,7 +25,8 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
   final bool viaPhone;
 
   @override
-  ConsumerState<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  ConsumerState<ResetPasswordScreen> createState() =>
+      _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
@@ -42,8 +44,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     super.dispose();
   }
 
-  String? get _tokenError =>
-      _submitted && _token.text.trim().isEmpty ? 'Paste the token you were sent' : null;
+  String? get _tokenError => _submitted && _token.text.trim().isEmpty
+      ? 'Paste the token you were sent'
+      : null;
 
   // Rules show as a live checklist; the field only turns red once the user has
   // tried to submit, so an unfinished password isn't scolded mid-keystroke.
@@ -51,7 +54,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       _submitted ? PasswordValidator.validateStrong(_password.text) : null;
 
   String? get _confirmError {
-    if (_confirm.text.isEmpty) return _submitted ? 'Confirm your new password' : null;
+    if (_confirm.text.isEmpty) {
+      return _submitted ? 'Confirm your new password' : null;
+    }
     return _confirm.text == _password.text ? null : 'Passwords do not match';
   }
 
@@ -80,7 +85,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     // longer works.
     ref.invalidate(passwordInputProvider);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Password updated. Log in with your new password.')),
+      SnackBar(
+          content: Text(
+              context.tr('Password updated. Log in with your new password.'))),
     );
     context.router.replaceAll([const LoginRoute()]);
   }
@@ -102,8 +109,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       children: [
         AppInput(
           controller: _token,
-          labelText: 'Reset token',
-          hintText: 'Paste the token',
+          labelText: context.tr('Reset token'),
+          hintText: context.tr('Paste the token'),
           prefixIcon: LucideIcons.keyRound,
           suffixIcon: LucideIcons.clipboardPaste,
           onSuffixTap: _pasteToken,
@@ -114,8 +121,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _password,
-          labelText: 'New password',
-          hintText: 'New password',
+          labelText: context.tr('New password'),
+          hintText: context.tr('New password'),
           prefixIcon: LucideIcons.lockKeyhole,
           suffixIcon: _obscure ? LucideIcons.eye : LucideIcons.eyeOff,
           onSuffixTap: () => setState(() => _obscure = !_obscure),
@@ -130,8 +137,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _confirm,
-          labelText: 'Confirm new password',
-          hintText: 'Repeat the new password',
+          labelText: context.tr('Confirm new password'),
+          hintText: context.tr('Repeat the new password'),
           prefixIcon: LucideIcons.lockKeyhole,
           obscureText: _obscure,
           textInputAction: TextInputAction.done,
@@ -145,8 +152,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         ],
         const SizedBox(height: AppShape.space4),
         Text(
-          'Tokens expire. If yours has, go back and request a new one.',
-          style: AppTypography.tiny.copyWith(color: t.mutedForeground, height: 1.5),
+          context.tr(
+              'Tokens expire. If yours has, go back and request a new one.'),
+          style: AppTypography.tiny
+              .copyWith(color: t.mutedForeground, height: 1.5),
         ),
         const SizedBox(height: AppShape.space5),
         AppButton(

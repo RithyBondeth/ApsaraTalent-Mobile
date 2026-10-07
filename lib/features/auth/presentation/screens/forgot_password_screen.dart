@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/validators/identifier_validator.dart';
 import 'package:apsaratalent_mobile/features/auth/presentation/widgets/auth_message.dart';
@@ -18,12 +19,14 @@ class ForgotPasswordScreen extends ConsumerWidget {
 
   Future<void> _submit(BuildContext context, WidgetRef ref) async {
     final identifier = ref.read(forgotPasswordInputProvider);
-    final sent = await ref.read(passwordResetProvider.notifier).request(identifier);
+    final sent =
+        await ref.read(passwordResetProvider.notifier).request(identifier);
     if (sent && context.mounted) {
       context.router.push(
         ResetPasswordRoute(
           sentTo: IdentifierValidator.normalize(identifier),
-          viaPhone: IdentifierValidator.kindOf(identifier) == EIdentifierKind.phone,
+          viaPhone:
+              IdentifierValidator.kindOf(identifier) == EIdentifierKind.phone,
         ),
       );
     }
@@ -45,7 +48,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
           'reset token to it.',
       children: [
         AppInput(
-          hintText: 'Email or phone number',
+          hintText: context.tr('Email or phone number'),
           prefixIcon: prefixIcon,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.done,
@@ -53,7 +56,9 @@ class ForgotPasswordScreen extends ConsumerWidget {
           errorText: error,
           onChanged: (value) {
             ref.read(forgotPasswordInputProvider.notifier).state = value;
-            if (flow.error != null) ref.read(passwordResetProvider.notifier).clear();
+            if (flow.error != null) {
+              ref.read(passwordResetProvider.notifier).clear();
+            }
           },
           onSubmitted: (_) {
             if (valid && !flow.isLoading) _submit(context, ref);

@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/features/ai/presentation/ai_writing_screen.dart';
 import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
 import 'package:apsaratalent_mobile/features/resume_import/presentation/resume_import_button.dart';
@@ -146,7 +147,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     final profile = ref.watch(profileProvider);
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Edit profile')),
+      appBar: AppBar(title: Text(context.tr('Edit profile'))),
       children: profile.when(
         loading: () => const [ProfileEditSkeleton()],
         error: (error, _) => [
@@ -233,7 +234,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         const SectionTitle(title: 'Languages'),
         AppTagInput(
           tags: _languages ?? const [],
-          hintText: 'Add a language',
+          hintText: context.tr('Add a language'),
           onChanged: (tags) => setState(() => _languages = tags),
         ),
         ..._footer(),
@@ -279,7 +280,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
         Padding(
           padding: const EdgeInsets.only(top: AppShape.space2),
           child: Text(
-            'Email changes require account verification.',
+            context.tr('Email changes require account verification.'),
             textAlign: TextAlign.center,
             style: AppTypography.tiny.copyWith(
               color: context.tokens.mutedForeground,

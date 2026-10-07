@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/network/generated/gateway_api.dart';
 import 'package:apsaratalent_mobile/core/constants/apis/auth_api_constant.dart';
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_interceptors.dart';
@@ -60,8 +61,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       _exchange(apiAuthVerifyOtp, {'phone': phone, 'otp': otp});
 
   @override
-  Future<AuthDataSourceResult> exchangeSocialCode(String code) =>
-      _exchange(apiAuthSocialMobileExchange, {'code': code});
+  Future<AuthDataSourceResult> exchangeSocialCode(
+      String code, String codeVerifier) async {
+    final response = await GatewayApi(_client).mobileOAuthControllerExchange(
+        body: ApiMobileOAuthExchangeDTO(code: code, codeVerifier: codeVerifier),
+        options: _public);
+    return AuthDataSourceResult(
+        response: _loginBody(response),
+        tokens: AuthCookies.read(response.headers));
+  }
 
   @override
   Future<AuthDataSourceResult> registerEmployee(EmployeeRegistration request) =>

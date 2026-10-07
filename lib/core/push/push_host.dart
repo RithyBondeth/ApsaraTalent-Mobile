@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
-import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
-import 'package:apsaratalent_mobile/features/notification/providers/notification_notifier.dart';
+import 'package:apsaratalent_mobile/core/network/realtime_refresh.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 import 'push_bootstrap.dart';
@@ -79,9 +78,7 @@ class _SignedInPushHostState extends ConsumerState<_SignedInPushHost>
   }
 
   void _refresh(String? type) {
-    ref
-      ..invalidate(notificationsProvider)
-      ..invalidate(feedProvider);
+    refreshRealtimeData(ref.invalidate);
     if (type == 'chat') unawaited(ref.read(chatControllerProvider).refresh());
   }
 

@@ -34,19 +34,20 @@ void main() {
   };
 
   test('login sends `identifier`, which is what the API validates', () async {
-    final http = FakeHttp((_) async =>
-        jsonResponse(200, signedIn, setCookies: authCookies('access', 'refresh')));
+    final http = FakeHttp((_) async => jsonResponse(200, signedIn,
+        setCookies: authCookies('access', 'refresh')));
 
     await repositoryFor(http).login('a@b.dev', 'pw', remember: false);
 
     expect(http.requests.single.path, '/auth/login');
-    expect(http.requests.single.data, {'identifier': 'a@b.dev', 'password': 'pw'});
+    expect(
+        http.requests.single.data, {'identifier': 'a@b.dev', 'password': 'pw'});
   });
 
   test('login keeps the session from Set-Cookie, remembered on request',
       () async {
-    final http = FakeHttp((_) async =>
-        jsonResponse(200, signedIn, setCookies: authCookies('access', 'refresh')));
+    final http = FakeHttp((_) async => jsonResponse(200, signedIn,
+        setCookies: authCookies('access', 'refresh')));
 
     await repositoryFor(http).login('a@b.dev', 'pw', remember: true);
 
@@ -70,16 +71,18 @@ void main() {
     expect(store.hasSession, isFalse);
   });
 
-  test('two-factor verification sends the token and code, then keeps the session',
+  test(
+      'two-factor verification sends the token and code, then keeps the session',
       () async {
-    final http = FakeHttp((_) async =>
-        jsonResponse(200, signedIn, setCookies: authCookies('access', 'refresh')));
+    final http = FakeHttp((_) async => jsonResponse(200, signedIn,
+        setCookies: authCookies('access', 'refresh')));
 
     await repositoryFor(http)
         .verifyTwoFactor('2fa-token', '123456', remember: false);
 
     expect(http.requests.single.path, '/auth/2fa/verify-login');
-    expect(http.requests.single.data, {'twoFactorToken': '2fa-token', 'otp': '123456'});
+    expect(http.requests.single.data,
+        {'twoFactorToken': '2fa-token', 'otp': '123456'});
     expect(store.hasSession, isTrue);
   });
 
@@ -94,17 +97,22 @@ void main() {
     expect(store.hasSession, isFalse);
   });
 
-  test('social authorization code is exchanged and stores its session', () async {
-    final http = FakeHttp((_) async => jsonResponse(200,
-        {'message': 'Social sign-in successful'},
+  test('social authorization code is exchanged and stores its session',
+      () async {
+    final http = FakeHttp((_) async => jsonResponse(
+        200, {'message': 'Social sign-in successful'},
         setCookies: authCookies('social-access', 'social-refresh')));
 
-    await repositoryFor(http).exchangeSocialCode('authorization-code', remember: true);
+    await repositoryFor(http).exchangeSocialCode('authorization-code',
+        codeVerifier: 'test-verifier', remember: true);
 
     expect(http.requests.single.path, '/social/mobile/exchange');
-    expect(http.requests.single.data, {'code': 'authorization-code'});
-    expect(store.tokens, const AuthTokens(
-      accessToken: 'social-access', refreshToken: 'social-refresh'));
+    expect(http.requests.single.data,
+        {'code': 'authorization-code', 'codeVerifier': 'test-verifier'});
+    expect(
+        store.tokens,
+        const AuthTokens(
+            accessToken: 'social-access', refreshToken: 'social-refresh'));
     expect(await SessionStore().restore(), isNotNull);
   });
 
@@ -132,31 +140,38 @@ void main() {
       remember: false,
     );
 
-    final employee = await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
-          'id': 'u1',
-          'role': 'employee',
-          'email': 'sophea@seed.dev',
-          'employee': {'firstname': 'Sophea', 'lastname': 'Chan', 'job': 'Frontend Developer'},
-        }))).getCurrentUser();
+    final employee =
+        await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
+              'id': 'u1',
+              'role': 'employee',
+              'email': 'sophea@seed.dev',
+              'employee': {
+                'firstname': 'Sophea',
+                'lastname': 'Chan',
+                'job': 'Frontend Developer'
+              },
+            }))).getCurrentUser();
     expect(employee.displayName, 'Sophea Chan');
     expect(employee.headline, 'Frontend Developer');
     expect(employee.role, EUserRole.employee);
 
-    final company = await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
-          'id': 'u2',
-          'role': 'company',
-          'email': 'hr@sabay.dev',
-          'company': {'name': 'Sabay Digital', 'industry': 'Technology'},
-        }))).getCurrentUser();
+    final company =
+        await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
+              'id': 'u2',
+              'role': 'company',
+              'email': 'hr@sabay.dev',
+              'company': {'name': 'Sabay Digital', 'industry': 'Technology'},
+            }))).getCurrentUser();
     expect(company.displayName, 'Sabay Digital');
     expect(company.headline, 'Technology');
 
-    final unnamed = await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
-          'id': 'u3',
-          'role': 'employee',
-          'email': 'new@seed.dev',
-          'employee': {'firstname': '', 'lastname': null},
-        }))).getCurrentUser();
+    final unnamed =
+        await repositoryFor(FakeHttp((_) async => jsonResponse(200, {
+              'id': 'u3',
+              'role': 'employee',
+              'email': 'new@seed.dev',
+              'employee': {'firstname': '', 'lastname': null},
+            }))).getCurrentUser();
     expect(unnamed.displayName, 'new@seed.dev');
   });
 }

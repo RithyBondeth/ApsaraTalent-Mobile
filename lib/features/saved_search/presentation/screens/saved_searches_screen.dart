@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +20,7 @@ class SavedSearchesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searches = ref.watch(savedSearchesProvider);
     return AppScreen(
-      appBar: AppBar(title: const Text('Saved searches')),
+      appBar: AppBar(title: Text(context.tr('Saved searches'))),
       onRefresh: () => ref.read(savedSearchesProvider.notifier).refresh(),
       children: searches.when(
         skipLoadingOnRefresh: true,
@@ -102,18 +103,19 @@ class SavedSearchesScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete saved search?'),
+        title: Text(context.tr('Delete saved search?')),
         content: Text(
-          '“${search.name}” and its email schedule will be removed.',
+          context.tr("“{0}” and its email schedule will be removed.",
+              {'0': search.name}),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep it'),
+            child: Text(context.tr('Keep it')),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete'),
+            child: Text(context.tr('Delete')),
           ),
         ],
       ),
@@ -251,7 +253,7 @@ class _SavedSearchCard extends StatelessWidget {
                           size: 16, color: t.mutedForeground),
                       const SizedBox(width: AppShape.space2),
                       Text(
-                        '${search.frequency.label} emails',
+                        context.tr("{0} emails", {'0': search.frequency.label}),
                         style: AppTypography.tiny.copyWith(color: t.foreground),
                       ),
                       const SizedBox(width: AppShape.space1),
@@ -272,7 +274,7 @@ class _SavedSearchCard extends StatelessWidget {
                 )
               else
                 IconButton(
-                  tooltip: 'Delete ${search.name}',
+                  tooltip: context.tr("Delete {0}", {'0': search.name}),
                   onPressed: onDelete,
                   icon: const Icon(LucideIcons.trash2, size: 18),
                 ),

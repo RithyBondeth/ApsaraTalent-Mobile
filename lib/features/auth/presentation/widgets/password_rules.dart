@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -33,7 +34,6 @@ class _Rule extends StatelessWidget {
   final String label;
   final bool met;
 
-
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
@@ -46,9 +46,11 @@ class _Rule extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(met ? LucideIcons.circleCheck : LucideIcons.circle, size: 14, color: color),
+          Icon(met ? LucideIcons.circleCheck : LucideIcons.circle,
+              size: 14, color: color),
           const SizedBox(width: AppShape.space1),
-          Text(label, style: AppTypography.tiny.copyWith(color: color)),
+          Text(context.tr(label),
+              style: AppTypography.tiny.copyWith(color: color)),
         ],
       ),
     );

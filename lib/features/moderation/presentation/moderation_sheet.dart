@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -46,15 +47,16 @@ Future<void> showModerationSheet(
           ),
           ListTile(
             leading: const Icon(LucideIcons.flag, size: 18),
-            title: const Text('Report'),
-            subtitle: const Text('Tell us what is wrong. They are not told.'),
+            title: Text(context.tr('Report')),
+            subtitle:
+                Text(context.tr('Tell us what is wrong. They are not told.')),
             onTap: () => Navigator.of(context).pop(_ModerationAction.report),
           ),
           ListTile(
             leading: const Icon(LucideIcons.userX, size: 18),
-            title: const Text('Block'),
-            subtitle: const Text(
-              'You disappear from each other\'s feed and search.',
+            title: Text(context.tr('Block')),
+            subtitle: Text(
+              context.tr('You disappear from each other\'s feed and search.'),
             ),
             onTap: () => Navigator.of(context).pop(_ModerationAction.block),
           ),
@@ -84,20 +86,21 @@ Future<void> _confirmBlock(
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text('Block $name?'),
-      content: const Text(
-        'You will not see each other in the feed or in search, and neither '
-        'of you can like the other. They are not told. You can undo this in '
-        'Settings.',
+      title: Text(context.tr("Block {0}?", {'0': name})),
+      content: Text(
+        context.tr(
+            'You will not see each other in the feed or in search, and neither '
+            'of you can like the other. They are not told. You can undo this in '
+            'Settings.'),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Cancel'),
+          child: Text(context.tr('Cancel')),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Block'),
+          child: Text(context.tr('Block')),
         ),
       ],
     ),
@@ -140,7 +143,7 @@ Future<void> _report(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Report $name',
+                context.tr("Report {0}", {'0': name}),
                 style:
                     AppTypography.h4.copyWith(color: context.tokens.foreground),
               ),
@@ -149,8 +152,9 @@ Future<void> _report(
                 // Reporting and blocking are separate on the API, so the
                 // sheet says so rather than letting someone assume one does
                 // the other.
-                'Reporting does not block them. Block separately if you also '
-                'want them gone from your feed.',
+                context.tr(
+                    'Reporting does not block them. Block separately if you also '
+                    'want them gone from your feed.'),
                 style: AppTypography.small.copyWith(
                   color: context.tokens.mutedForeground,
                 ),
@@ -177,7 +181,7 @@ Future<void> _report(
               const SizedBox(height: AppShape.space3),
               AppInput(
                 controller: controller,
-                hintText: 'Anything else we should know (optional)',
+                hintText: context.tr('Anything else we should know (optional)'),
                 maxLines: 4,
               ),
               const SizedBox(height: AppShape.space4),

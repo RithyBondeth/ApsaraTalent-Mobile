@@ -74,7 +74,11 @@ void main() {
           'mimeType': 'application/pdf',
           'data': base64Encode(bytes)
         }));
-    expect(await repository(http).build({}), bytes);
+    expect(
+        await repository(http).build(resumeFromProfile(
+            const EmployeeProfile(id: 'e', fullName: 'Candidate'),
+            'me@example.com')),
+        bytes);
     expect(http.requests.single.path, '/resume/build-resume');
   });
   test('rejects malformed PDF content', () async {
@@ -82,7 +86,11 @@ void main() {
           'mimeType': 'application/pdf',
           'data': base64Encode(utf8.encode('not a pdf'))
         }));
-    await expectLater(repository(http).build({}), throwsA(isA<ApiException>()));
+    await expectLater(
+        repository(http).build(resumeFromProfile(
+            const EmployeeProfile(id: 'e', fullName: 'Candidate'),
+            'me@example.com')),
+        throwsA(isA<ApiException>()));
   });
 
   test('persists drafts per profile and ignores corrupt records', () async {

@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/network/generated/gateway_api.dart';
 import 'dart:async';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
@@ -35,9 +36,7 @@ class SocketChatTransport implements ChatTransport {
     'remoteIceCandidate',
     'callDeclined',
     'callEnded',
-    'unmatchUpdate',
-    'badgeIncrement',
-    'interviewUpdate',
+    ...realtimeRefreshEvents,
   ];
 
   final ApiClient api;

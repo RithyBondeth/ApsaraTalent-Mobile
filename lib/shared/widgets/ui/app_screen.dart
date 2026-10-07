@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -216,7 +217,7 @@ class _BadgedAction extends StatelessWidget {
                   child: Text(
                     // A three-digit count would stretch the dot into a lozenge
                     // wider than the icon it sits on.
-                    count > 9 ? '9+' : '$count',
+                    context.tr(count > 9 ? '9+' : '$count'),
                     textAlign: TextAlign.center,
                     style: AppTypography.tiny.copyWith(
                       color: t.destructiveForeground,

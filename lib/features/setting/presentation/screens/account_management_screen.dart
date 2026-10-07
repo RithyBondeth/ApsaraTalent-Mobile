@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -53,17 +54,18 @@ class _AccountManagementScreenState
     final accepted = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Schedule account deletion?'),
-        content: const Text(
-          'Your account stays available for 30 days. After that, it and its associated data will be permanently deleted. You can cancel during the grace period.',
+        title: Text(context.tr('Schedule account deletion?')),
+        content: Text(
+          context.tr(
+              'Your account stays available for 30 days. After that, it and its associated data will be permanently deleted. You can cancel during the grace period.'),
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Keep account')),
+              child: Text(context.tr('Keep account'))),
           FilledButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Schedule deletion')),
+              child: Text(context.tr('Schedule deletion'))),
         ],
       ),
     );
@@ -110,7 +112,7 @@ class _AccountManagementScreenState
     final scheduled =
         _scheduledFor ?? requestedAt?.add(const Duration(days: 30));
     return AppScreen(
-      appBar: AppBar(title: const Text('Account data')),
+      appBar: AppBar(title: Text(context.tr('Account data'))),
       children: [
         const PageBanner(
           eyebrow: 'Your account',
@@ -124,12 +126,13 @@ class _AccountManagementScreenState
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Icon(LucideIcons.download, color: context.tokens.mutedForeground),
           const SizedBox(height: AppShape.space3),
-          Text('Download your data',
+          Text(context.tr('Download your data'),
               style: AppTypography.label
                   .copyWith(color: context.tokens.foreground)),
           const SizedBox(height: AppShape.space1),
           Text(
-            'Creates a JSON file with your profile, applications, interviews, matches, saved items, notifications, support reports, and login history. Exports are limited to once every 24 hours.',
+            context.tr(
+                'Creates a JSON file with your profile, applications, interviews, matches, saved items, notifications, support reports, and login history. Exports are limited to once every 24 hours.'),
             style: AppTypography.small
                 .copyWith(color: context.tokens.mutedForeground),
           ),
@@ -147,12 +150,14 @@ class _AccountManagementScreenState
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
               if (scheduled != null) ...[
-                Text('Deletion scheduled',
+                Text(context.tr('Deletion scheduled'),
                     style: AppTypography.label
                         .copyWith(color: context.tokens.destructive)),
                 const SizedBox(height: AppShape.space2),
                 Text(
-                  'Your account is scheduled for permanent deletion on ${_date(scheduled)}. You can continue using it and cancel before then.',
+                  context.tr(
+                      "Your account is scheduled for permanent deletion on {0}. You can continue using it and cancel before then.",
+                      {'0': _date(scheduled)}),
                   style: AppTypography.small
                       .copyWith(color: context.tokens.mutedForeground),
                 ),
@@ -164,12 +169,13 @@ class _AccountManagementScreenState
                     loading: _changingDeletion,
                     onPressed: _cancelDeletion),
               ] else ...[
-                Text('Delete your account',
+                Text(context.tr('Delete your account'),
                     style: AppTypography.label
                         .copyWith(color: context.tokens.foreground)),
                 const SizedBox(height: AppShape.space2),
                 Text(
-                  'Deletion starts a 30-day grace period. You can cancel at any time during that period.',
+                  context.tr(
+                      'Deletion starts a 30-day grace period. You can cancel at any time during that period.'),
                   style: AppTypography.small
                       .copyWith(color: context.tokens.mutedForeground),
                 ),

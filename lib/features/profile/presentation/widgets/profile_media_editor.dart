@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -278,9 +279,9 @@ class _ProfileMediaEditorState extends ConsumerState<ProfileMediaEditor> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (profile.images.isEmpty)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: AppShape.space3),
-                child: Text('No company photos yet.'),
+                child: Text(context.tr('No company photos yet.')),
               )
             else
               Padding(
@@ -445,15 +446,16 @@ class _ProfileMediaEditorState extends ConsumerState<ProfileMediaEditor> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(title),
-        content: const Text('This removes the stored file from your profile.'),
+        content:
+            Text(context.tr('This removes the stored file from your profile.')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.tr('Cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
+            child: Text(context.tr('Remove')),
           ),
         ],
       ),

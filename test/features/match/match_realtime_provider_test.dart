@@ -104,7 +104,7 @@ void main() {
 
   Future<Map<String, int>> push(String event) async {
     transport.controller.add(ChatEvent(event));
-    await Future<void>.delayed(Duration.zero);
+    await Future<void>.delayed(const Duration(milliseconds: 180));
     await readAll();
     return {for (final e in builds.entries) e.key: e.value - 1};
   }
@@ -120,21 +120,21 @@ void main() {
     });
   });
 
-  test('a like or interview refreshes matches and the badge only', () async {
+  test('a badge change refreshes the mounted account data', () async {
     expect(await push('badgeIncrement'), {
       'matches': 1,
-      'feed': 0,
+      'feed': 1,
       'count': 1,
-      'employerInterviews': 0,
-      'employeeInterviews': 0,
+      'employerInterviews': 1,
+      'employeeInterviews': 1,
     });
   });
 
-  test('an interview change refreshes interviews only', () async {
+  test('an interview change refreshes the mounted account data', () async {
     expect(await push('interviewUpdate'), {
-      'matches': 0,
-      'feed': 0,
-      'count': 0,
+      'matches': 1,
+      'feed': 1,
+      'count': 1,
       'employerInterviews': 1,
       'employeeInterviews': 1,
     });

@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -31,7 +32,9 @@ class _PhoneNumberScreenState extends ConsumerState<PhoneNumberScreen> {
 
   /// Local digits without the leading trunk zero: 012 345 678 and 12 345 678
   /// are the same number.
-  String get _local => _controller.text.replaceAll(RegExp(r'\D'), '').replaceFirst(RegExp('^0'), '');
+  String get _local => _controller.text
+      .replaceAll(RegExp(r'\D'), '')
+      .replaceFirst(RegExp('^0'), '');
 
   /// Cambodian mobile numbers are 8 or 9 digits after the country code.
   bool get _valid => RegExp(r'^[0-9]{8,9}$').hasMatch(_local);
@@ -70,7 +73,7 @@ class _PhoneNumberScreenState extends ConsumerState<PhoneNumberScreen> {
                 border: Border.all(color: t.input, width: AppShape.hairline),
               ),
               child: Text(
-                '+855',
+                context.tr('+855'),
                 style: AppTypography.field.copyWith(
                   color: t.foreground,
                   fontWeight: FontWeight.w600,
@@ -81,7 +84,7 @@ class _PhoneNumberScreenState extends ConsumerState<PhoneNumberScreen> {
             Expanded(
               child: AppInput(
                 controller: _controller,
-                hintText: 'Phone number',
+                hintText: context.tr('Phone number'),
                 prefixIcon: LucideIcons.phone,
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.done,

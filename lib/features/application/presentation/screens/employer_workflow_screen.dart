@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -47,7 +48,7 @@ class _EmployerWorkflowScreenState
           )));
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Hiring workflow')),
+      appBar: AppBar(title: Text(context.tr('Hiring workflow'))),
       onRefresh: () async {
         ref.invalidate(employerAnalyticsProvider);
         ref.invalidate(employerInterviewsProvider);
@@ -74,8 +75,8 @@ class _EmployerWorkflowScreenState
           )
         else ...[
           AppPickerField(
-            labelText: 'Position',
-            hintText: 'Choose a position',
+            labelText: context.tr('Position'),
+            hintText: context.tr('Choose a position'),
             value: selectedJob?.title,
             onTap: () => _pickJob(jobs, selectedJob!),
           ),
@@ -177,8 +178,9 @@ class _EmployerWorkflowScreenState
                         contentPadding: EdgeInsets.zero,
                         title: Text(job.title),
                         subtitle: Text(
-                          '${job.activePipeline} active · ${job.hired} hired · '
-                          '${job.rejected} rejected',
+                          context.tr(
+                              '${job.activePipeline} active · ${job.hired} hired · '
+                              '${job.rejected} rejected'),
                         ),
                         trailing: Text('${job.totalApplicants}'),
                       ),
@@ -283,7 +285,9 @@ class _EmployerWorkflowScreenState
           accent: SurfaceAccent.info,
           child: Row(
             children: [
-              Expanded(child: Text('${_selected.length} selected')),
+              Expanded(
+                  child: Text(
+                      context.tr("{0} selected", {'0': _selected.length}))),
               AppButton(
                 label: 'Move',
                 size: AppButtonSize.sm,
@@ -321,8 +325,8 @@ class _EmployerWorkflowScreenState
               children: [
                 Text(interview.title, style: AppTypography.label),
                 Text(
-                  '${interview.employeeName ?? 'Applicant'} · '
-                  '${_dateTime(interview.scheduledAt)}',
+                  context.tr('${interview.employeeName ?? 'Applicant'} · '
+                      '${_dateTime(interview.scheduledAt)}'),
                 ),
                 if (interview.location != null) Text(interview.location!),
                 const SizedBox(height: AppShape.space2),
@@ -476,20 +480,20 @@ class _EmployerWorkflowScreenState
         content: TextField(
           controller: controller,
           maxLines: 4,
-          decoration:
-              InputDecoration(hintText: required ? 'Required' : 'Optional'),
+          decoration: InputDecoration(
+              hintText: context.tr(required ? 'Required' : 'Optional')),
         ),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+              child: Text(context.tr('Cancel'))),
           TextButton(
             onPressed: () {
               if (!required || controller.text.trim().isNotEmpty) {
                 Navigator.pop(context, controller.text.trim());
               }
             },
-            child: const Text('Continue'),
+            child: Text(context.tr('Continue')),
           ),
         ],
       ),
@@ -563,7 +567,7 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
             const SectionTitle(title: 'Private notes'),
             AppInput(
               controller: _note,
-              hintText: 'Add a private hiring note',
+              hintText: context.tr('Add a private hiring note'),
               maxLines: 3,
             ),
             const SizedBox(height: AppShape.space2),
@@ -575,7 +579,7 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
             ),
             ...notes.when(
               loading: () => [const LinearProgressIndicator()],
-              error: (_, __) => [const Text('Notes could not load.')],
+              error: (_, __) => [Text(context.tr('Notes could not load.'))],
               data: (items) => [
                 for (final note in items)
                   ListTile(
@@ -583,7 +587,7 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
                     title: Text(note.body),
                     subtitle: Text(note.authorName ?? 'Company'),
                     trailing: IconButton(
-                      tooltip: 'Delete note',
+                      tooltip: context.tr('Delete note'),
                       onPressed: _busy ? null : () => _deleteNote(note),
                       icon: const Icon(LucideIcons.trash2),
                     ),
@@ -593,9 +597,9 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
             const SectionTitle(title: 'Status history'),
             ...history.when(
               loading: () => [const LinearProgressIndicator()],
-              error: (_, __) => [const Text('History could not load.')],
+              error: (_, __) => [Text(context.tr('History could not load.'))],
               data: (items) => items.isEmpty
-                  ? [const Text('No stage changes yet.')]
+                  ? [Text(context.tr('No stage changes yet.'))]
                   : [
                       for (final item in items)
                         ListTile(
@@ -642,21 +646,23 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Schedule interview'),
+          title: Text(context.tr('Schedule interview')),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                     controller: title,
-                    decoration: const InputDecoration(labelText: 'Title')),
+                    decoration:
+                        InputDecoration(labelText: context.tr('Title'))),
                 TextField(
                     controller: location,
-                    decoration: const InputDecoration(labelText: 'Location')),
+                    decoration:
+                        InputDecoration(labelText: context.tr('Location'))),
                 TextField(
                     controller: link,
                     decoration:
-                        const InputDecoration(labelText: 'Meeting link')),
+                        InputDecoration(labelText: context.tr('Meeting link'))),
                 const SizedBox(height: AppShape.space3),
                 TextButton.icon(
                   icon: const Icon(LucideIcons.calendar),
@@ -690,10 +696,10 @@ class _ApplicantDetailsState extends ConsumerState<_ApplicantDetails> {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel')),
+                child: Text(context.tr('Cancel'))),
             TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Schedule')),
+                child: Text(context.tr('Schedule'))),
           ],
         ),
       ),

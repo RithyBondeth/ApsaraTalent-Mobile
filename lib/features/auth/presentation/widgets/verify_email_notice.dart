@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -23,7 +24,10 @@ class VerifyEmailNotice extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authSessionProvider).value?.user;
     final email = user?.email;
-    if (user == null || user.isEmailVerified || email == null || email.isEmpty) {
+    if (user == null ||
+        user.isEmailVerified ||
+        email == null ||
+        email.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -41,9 +45,12 @@ class VerifyEmailNotice extends ConsumerWidget {
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(color: t.warningAccent, width: 3),
-                top: BorderSide(color: t.warningBorder, width: AppShape.hairline),
-                right: BorderSide(color: t.warningBorder, width: AppShape.hairline),
-                bottom: BorderSide(color: t.warningBorder, width: AppShape.hairline),
+                top: BorderSide(
+                    color: t.warningBorder, width: AppShape.hairline),
+                right: BorderSide(
+                    color: t.warningBorder, width: AppShape.hairline),
+                bottom: BorderSide(
+                    color: t.warningBorder, width: AppShape.hairline),
               ),
             ),
             child: Row(
@@ -55,7 +62,7 @@ class VerifyEmailNotice extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Verify your email',
+                        context.tr('Verify your email'),
                         style: AppTypography.small.copyWith(
                           color: t.foreground,
                           fontWeight: FontWeight.w600,
@@ -63,7 +70,9 @@ class VerifyEmailNotice extends ConsumerWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        "You'll need it to log in again. We'll send a code to $email.",
+                        context.tr(
+                            "You'll need it to log in again. We'll send a code to {0}.",
+                            {'0': email}),
                         style: AppTypography.tiny.copyWith(
                           color: t.mutedForeground,
                           height: 1.4,
@@ -72,7 +81,8 @@ class VerifyEmailNotice extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Icon(LucideIcons.chevronRight, size: 18, color: t.mutedForeground),
+                Icon(LucideIcons.chevronRight,
+                    size: 18, color: t.mutedForeground),
               ],
             ),
           ),

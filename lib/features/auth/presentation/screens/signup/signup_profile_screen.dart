@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/features/resume_import/presentation/resume_import_button.dart';
 import 'package:apsaratalent_mobile/features/career_scope/providers/career_scope_provider.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
@@ -188,9 +189,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
 
     if (isEmployee ? !_employeeValid : !_companyValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Some details are missing — check the highlighted fields.')),
+        SnackBar(
+            content: Text(context.tr(
+                'Some details are missing — check the highlighted fields.'))),
       );
       return;
     }
@@ -341,13 +342,14 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           }.entries)
             if (entry.value.isNotEmpty)
               ExpansionTile(
-                title: Text('${entry.key} from resume (${entry.value.length})'),
+                title: Text(context.tr("{0} from resume ({1})",
+                    {'0': entry.key, '1': entry.value.length})),
                 children: [
                   for (final row in entry.value)
                     ListTile(
                       title: Text(row.values.join(' · ')),
                       trailing: IconButton(
-                          tooltip: 'Remove imported entry',
+                          tooltip: context.tr('Remove imported entry'),
                           icon: const Icon(Icons.close),
                           onPressed: () =>
                               setState(() => entry.value.remove(row))),
@@ -396,8 +398,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             Expanded(
               child: AppInput(
                 controller: _firstname,
-                labelText: 'First name',
-                hintText: 'First name',
+                labelText: context.tr('First name'),
+                hintText: context.tr('First name'),
                 textInputAction: TextInputAction.next,
                 autofillHints: const [AutofillHints.givenName],
                 errorText: _required(_firstname.text, 'First name', max: 50),
@@ -408,8 +410,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             Expanded(
               child: AppInput(
                 controller: _lastname,
-                labelText: 'Last name',
-                hintText: 'Last name',
+                labelText: context.tr('Last name'),
+                hintText: context.tr('Last name'),
                 textInputAction: TextInputAction.next,
                 autofillHints: const [AutofillHints.familyName],
                 errorText: _required(_lastname.text, 'Last name', max: 50),
@@ -421,8 +423,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _username,
-          labelText: 'Username',
-          hintText: 'How you appear to companies',
+          labelText: context.tr('Username'),
+          hintText: context.tr('How you appear to companies'),
           prefixIcon: LucideIcons.atSign,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.username],
@@ -436,8 +438,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           children: [
             Expanded(
               child: AppPickerField(
-                labelText: 'Gender',
-                hintText: 'Choose',
+                labelText: context.tr('Gender'),
+                hintText: context.tr('Choose'),
                 value: _labelOf(SignupOptions.genders, _gender),
                 errorText: _requiredChoice(_gender, 'gender'),
                 onTap: () => _pickOne('Gender', SignupOptions.genders, _gender,
@@ -447,8 +449,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             const SizedBox(width: AppShape.space2),
             Expanded(
               child: AppPickerField(
-                labelText: 'Date of birth',
-                hintText: 'Choose',
+                labelText: context.tr('Date of birth'),
+                hintText: context.tr('Choose'),
                 value: _dob == null
                     ? null
                     : MaterialLocalizations.of(context).formatShortDate(_dob!),
@@ -460,8 +462,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         ),
         const SizedBox(height: AppShape.space4),
         AppPickerField(
-          labelText: 'Location',
-          hintText: 'Where you are based',
+          labelText: context.tr('Location'),
+          hintText: context.tr('Where you are based'),
           prefixIcon: LucideIcons.mapPin,
           value: _location,
           errorText: _requiredChoice(_location, 'a location'),
@@ -470,8 +472,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _job,
-          labelText: 'Profession',
-          hintText: 'e.g. Frontend Developer',
+          labelText: context.tr('Profession'),
+          hintText: context.tr('e.g. Frontend Developer'),
           prefixIcon: LucideIcons.briefcase,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.jobTitle],
@@ -484,8 +486,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
           children: [
             Expanded(
               child: AppPickerField(
-                labelText: 'Experience',
-                hintText: 'Choose',
+                labelText: context.tr('Experience'),
+                hintText: context.tr('Choose'),
                 value: _labelOf(SignupOptions.yearsOfExperience, _experience),
                 errorText: _requiredChoice(_experience, 'one'),
                 onTap: () => _pickOne(
@@ -498,8 +500,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             const SizedBox(width: AppShape.space2),
             Expanded(
               child: AppPickerField(
-                labelText: 'Availability',
-                hintText: 'Choose',
+                labelText: context.tr('Availability'),
+                hintText: context.tr('Choose'),
                 value: _labelOf(SignupOptions.availability, _availability),
                 errorText: _requiredChoice(_availability, 'one'),
                 onTap: () => _pickOne(
@@ -514,8 +516,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _description,
-          labelText: 'About you',
-          hintText: 'A few lines on what you do and what you are looking for',
+          labelText: context.tr('About you'),
+          hintText: context
+              .tr('A few lines on what you do and what you are looking for'),
           maxLines: 4,
           minLines: 3,
           errorText: _required(_description.text, 'A description', max: 1000),
@@ -523,8 +526,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         ),
         const SizedBox(height: AppShape.space4),
         AppTagInput(
-          labelText: 'Skills',
-          hintText: 'e.g. React, then press +',
+          labelText: context.tr('Skills'),
+          hintText: context.tr('e.g. React, then press +'),
           tags: _skills,
           errorText:
               _submitted && _skills.isEmpty ? 'Add at least one skill' : null,
@@ -535,8 +538,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
   List<Widget> _companyFields() => [
         AppInput(
           controller: _companyName,
-          labelText: 'Company name',
-          hintText: 'Company name',
+          labelText: context.tr('Company name'),
+          hintText: context.tr('Company name'),
           prefixIcon: LucideIcons.building2,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.organizationName],
@@ -546,8 +549,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _industry,
-          labelText: 'Industry',
-          hintText: 'e.g. Financial Services',
+          labelText: context.tr('Industry'),
+          hintText: context.tr('e.g. Financial Services'),
           prefixIcon: LucideIcons.factory,
           textInputAction: TextInputAction.next,
           errorText: _required(_industry.text, 'Industry', max: 100),
@@ -555,8 +558,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         ),
         const SizedBox(height: AppShape.space4),
         AppPickerField(
-          labelText: 'Location',
-          hintText: 'Where the company is based',
+          labelText: context.tr('Location'),
+          hintText: context.tr('Where the company is based'),
           prefixIcon: LucideIcons.mapPin,
           value: _location,
           errorText: _requiredChoice(_location, 'a location'),
@@ -569,8 +572,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             Expanded(
               child: AppInput(
                 controller: _companySize,
-                labelText: 'Employees',
-                hintText: 'e.g. 50',
+                labelText: context.tr('Employees'),
+                hintText: context.tr('e.g. 50'),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 errorText: _submitted && (_sizeValue ?? 0) <= 0
@@ -582,8 +585,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
             const SizedBox(width: AppShape.space2),
             Expanded(
               child: AppPickerField(
-                labelText: 'Founded',
-                hintText: 'Year',
+                labelText: context.tr('Founded'),
+                hintText: context.tr('Year'),
                 value: _foundedYear?.toString(),
                 errorText: _requiredChoice(_foundedYear, 'a year'),
                 onTap: _pickFoundedYear,
@@ -593,8 +596,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         ),
         const SizedBox(height: AppShape.space4),
         AppPickerField(
-          labelText: 'Company type (optional)',
-          hintText: 'Choose',
+          labelText: context.tr('Company type (optional)'),
+          hintText: context.tr('Choose'),
           value: _labelOf(SignupOptions.companyTypes, _companyType),
           onTap: () => _pickOne('Company type', SignupOptions.companyTypes,
               _companyType, (v) => _companyType = v),
@@ -602,8 +605,8 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _website,
-          labelText: 'Website (optional)',
-          hintText: 'https://example.com',
+          labelText: context.tr('Website (optional)'),
+          hintText: context.tr('https://example.com'),
           prefixIcon: LucideIcons.globe,
           keyboardType: TextInputType.url,
           textInputAction: TextInputAction.next,
@@ -614,8 +617,9 @@ class _SignupProfileScreenState extends ConsumerState<SignupProfileScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _description,
-          labelText: 'About the company',
-          hintText: 'What you do, and what it is like to work there',
+          labelText: context.tr('About the company'),
+          hintText:
+              context.tr('What you do, and what it is like to work there'),
           maxLines: 4,
           minLines: 3,
           errorText: _required(_description.text, 'A description', max: 1000),
@@ -644,8 +648,8 @@ class _CareerScopes extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppPickerField(
-          labelText: 'Career scopes',
-          hintText: 'The fields you work in',
+          labelText: context.tr('Career scopes'),
+          hintText: context.tr('The fields you work in'),
           prefixIcon: LucideIcons.compass,
           value: selected.isEmpty ? null : '${selected.length} selected',
           errorText: errorText,

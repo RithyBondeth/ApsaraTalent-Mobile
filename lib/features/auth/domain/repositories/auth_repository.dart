@@ -30,7 +30,8 @@ abstract class AuthRepository {
     required bool remember,
   });
 
-  Future<void> exchangeSocialCode(String code, {required bool remember});
+  Future<void> exchangeSocialCode(String code,
+      {required String codeVerifier, required bool remember});
 
   /// Creates the account and stores the session it issues. A new account is
   /// always remembered: losing it on the next launch, before the user has even

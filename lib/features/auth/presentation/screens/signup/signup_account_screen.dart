@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/validators/email_validator.dart';
 import 'package:apsaratalent_mobile/core/validators/password_validator.dart';
@@ -18,12 +19,15 @@ class SignupAccountScreen extends ConsumerStatefulWidget {
   const SignupAccountScreen({super.key});
 
   @override
-  ConsumerState<SignupAccountScreen> createState() => _SignupAccountScreenState();
+  ConsumerState<SignupAccountScreen> createState() =>
+      _SignupAccountScreenState();
 }
 
 class _SignupAccountScreenState extends ConsumerState<SignupAccountScreen> {
-  late final _email = TextEditingController(text: ref.read(signupProvider).email);
-  late final _phone = TextEditingController(text: ref.read(signupProvider).phone);
+  late final _email =
+      TextEditingController(text: ref.read(signupProvider).email);
+  late final _phone =
+      TextEditingController(text: ref.read(signupProvider).phone);
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   bool _obscure = true;
@@ -81,15 +85,16 @@ class _SignupAccountScreenState extends ConsumerState<SignupAccountScreen> {
       showBack: true,
       showLogo: false,
       title: 'Your sign-in details',
-      subtitle: 'You will sign in with this email. We will send a code to it to '
+      subtitle:
+          'You will sign in with this email. We will send a code to it to '
           'confirm it is yours.',
       children: [
         const StepHeader(step: 2, total: 3),
         const SizedBox(height: AppShape.space5),
         AppInput(
           controller: _email,
-          labelText: 'Email',
-          hintText: 'you@example.com',
+          labelText: context.tr('Email'),
+          hintText: context.tr('you@example.com'),
           prefixIcon: LucideIcons.mail,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -100,21 +105,23 @@ class _SignupAccountScreenState extends ConsumerState<SignupAccountScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _phone,
-          labelText: 'Phone (optional)',
-          hintText: '+855 12 345 678',
+          labelText: context.tr('Phone (optional)'),
+          hintText: context.tr('+855 12 345 678'),
           prefixIcon: LucideIcons.phone,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.telephoneNumber],
-          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]'))],
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9+ ]'))
+          ],
           errorText: _phoneError,
           onChanged: (_) => setState(() {}),
         ),
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _password,
-          labelText: 'Password',
-          hintText: 'Create a password',
+          labelText: context.tr('Password'),
+          hintText: context.tr('Create a password'),
           prefixIcon: LucideIcons.lockKeyhole,
           suffixIcon: _obscure ? LucideIcons.eye : LucideIcons.eyeOff,
           onSuffixTap: () => setState(() => _obscure = !_obscure),
@@ -129,8 +136,8 @@ class _SignupAccountScreenState extends ConsumerState<SignupAccountScreen> {
         const SizedBox(height: AppShape.space4),
         AppInput(
           controller: _confirm,
-          labelText: 'Confirm password',
-          hintText: 'Repeat the password',
+          labelText: context.tr('Confirm password'),
+          hintText: context.tr('Repeat the password'),
           prefixIcon: LucideIcons.lockKeyhole,
           obscureText: _obscure,
           textInputAction: TextInputAction.done,

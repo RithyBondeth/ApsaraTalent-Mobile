@@ -239,9 +239,9 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                     ),
                     if (widget.multi)
                       Text(
-                        widget.max == null
+                        context.tr(widget.max == null
                             ? '${_selected.length} selected'
-                            : '${_selected.length}/${widget.max}',
+                            : '${_selected.length}/${widget.max}'),
                         style: AppTypography.tiny
                             .copyWith(color: t.mutedForeground),
                       ),

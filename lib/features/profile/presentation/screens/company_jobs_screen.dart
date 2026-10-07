@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -18,7 +19,7 @@ class CompanyJobsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileProvider);
     return AppScreen(
-      appBar: AppBar(title: const Text('Open positions')),
+      appBar: AppBar(title: Text(context.tr('Open positions'))),
       onRefresh: () => ref.read(profileProvider.notifier).refresh(),
       children: profile.when(
         loading: () => const [Center(child: CircularProgressIndicator())],
@@ -96,16 +97,17 @@ class CompanyJobsScreen extends ConsumerWidget {
     final accepted = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-                title: const Text('Delete this position?'),
-                content: Text(
-                    '${job.title} will be removed from search and matching.'),
+                title: Text(context.tr('Delete this position?')),
+                content: Text(context.tr(
+                    "{0} will be removed from search and matching.",
+                    {'0': job.title})),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Keep')),
+                      child: Text(context.tr('Keep'))),
                   TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Delete'))
+                      child: Text(context.tr('Delete')))
                 ]));
     if (accepted != true || !context.mounted) return;
     try {
@@ -135,9 +137,11 @@ class _JobCard extends StatelessWidget {
                       fontSize: AppTypography.base))),
           PopupMenuButton<String>(
               onSelected: (v) => v == 'edit' ? onEdit() : onDelete(),
-              itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'edit', child: Text('Edit')),
-                    PopupMenuItem(value: 'delete', child: Text('Delete'))
+              itemBuilder: (_) => [
+                    PopupMenuItem(
+                        value: 'edit', child: Text(context.tr('Edit'))),
+                    PopupMenuItem(
+                        value: 'delete', child: Text(context.tr('Delete')))
                   ])
         ]),
         if (job.type != null || job.workMode != null)
@@ -225,69 +229,76 @@ class _JobEditorState extends State<_JobEditor> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-          title: Text(widget.job == null ? 'Create position' : 'Edit position'),
+          title: Text(context
+              .tr(widget.job == null ? 'Create position' : 'Edit position')),
           content: SizedBox(
               width: 520,
               child: SingleChildScrollView(
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                 AppInput(
                     controller: c['title'],
-                    labelText: 'Job title',
+                    labelText: context.tr('Job title'),
                     errorText: error),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['description'],
-                    labelText: 'Description',
+                    labelText: context.tr('Description'),
                     minLines: 3,
                     maxLines: 5),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['type'],
-                    labelText: 'Employment type',
-                    hintText: 'Full-time'),
+                    labelText: context.tr('Employment type'),
+                    hintText: context.tr('Full-time')),
                 const SizedBox(height: AppShape.space3),
                 DropdownButtonFormField<String>(
                     initialValue: workMode,
-                    decoration: const InputDecoration(
-                        labelText: 'Work mode', border: OutlineInputBorder()),
-                    items: const [
-                      DropdownMenuItem(value: 'onsite', child: Text('On-site')),
-                      DropdownMenuItem(value: 'remote', child: Text('Remote')),
-                      DropdownMenuItem(value: 'hybrid', child: Text('Hybrid'))
+                    decoration: InputDecoration(
+                        labelText: context.tr('Work mode'),
+                        border: OutlineInputBorder()),
+                    items: [
+                      DropdownMenuItem(
+                          value: 'onsite', child: Text(context.tr('On-site'))),
+                      DropdownMenuItem(
+                          value: 'remote', child: Text(context.tr('Remote'))),
+                      DropdownMenuItem(
+                          value: 'hybrid', child: Text(context.tr('Hybrid')))
                     ],
                     onChanged: (v) => workMode = v ?? workMode),
                 const SizedBox(height: AppShape.space3),
-                AppInput(controller: c['location'], labelText: 'Location'),
+                AppInput(
+                    controller: c['location'],
+                    labelText: context.tr('Location')),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['skillsRequired'],
-                    labelText: 'Required skills',
-                    hintText: 'Flutter, Dart, REST APIs'),
+                    labelText: context.tr('Required skills'),
+                    hintText: context.tr('Flutter, Dart, REST APIs')),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['experienceRequired'],
-                    labelText: 'Experience required'),
+                    labelText: context.tr('Experience required')),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['educationRequired'],
-                    labelText: 'Education required'),
+                    labelText: context.tr('Education required')),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['languagesRequired'],
-                    labelText: 'Languages',
-                    hintText: 'Khmer, English'),
+                    labelText: context.tr('Languages'),
+                    hintText: context.tr('Khmer, English')),
                 const SizedBox(height: AppShape.space3),
                 Row(children: [
                   Expanded(
                       child: AppInput(
                           controller: c['salaryMin'],
-                          labelText: 'Minimum salary',
+                          labelText: context.tr('Minimum salary'),
                           keyboardType: TextInputType.number)),
                   const SizedBox(width: AppShape.space2),
                   Expanded(
                       child: AppInput(
                           controller: c['salaryMax'],
-                          labelText: 'Maximum salary',
+                          labelText: context.tr('Maximum salary'),
                           keyboardType: TextInputType.number))
                 ]),
                 const SizedBox(height: AppShape.space3),
@@ -295,25 +306,25 @@ class _JobEditorState extends State<_JobEditor> {
                   Expanded(
                       child: AppInput(
                           controller: c['salaryCurrency'],
-                          labelText: 'Currency')),
+                          labelText: context.tr('Currency'))),
                   const SizedBox(width: AppShape.space2),
                   Expanded(
                       child: AppInput(
                           controller: c['openingsCount'],
-                          labelText: 'Openings',
+                          labelText: context.tr('Openings'),
                           keyboardType: TextInputType.number))
                 ]),
                 const SizedBox(height: AppShape.space3),
                 AppInput(
                     controller: c['expireDate'],
-                    labelText: 'Deadline',
-                    hintText: 'YYYY-MM-DD'),
+                    labelText: context.tr('Deadline'),
+                    hintText: context.tr('YYYY-MM-DD')),
               ]))),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel')),
-            FilledButton(onPressed: _save, child: const Text('Save'))
+                child: Text(context.tr('Cancel'))),
+            FilledButton(onPressed: _save, child: Text(context.tr('Save')))
           ]);
 
   void _save() {

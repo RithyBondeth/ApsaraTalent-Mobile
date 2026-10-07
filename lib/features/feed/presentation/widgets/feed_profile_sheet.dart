@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -110,7 +111,7 @@ class _Sheet extends ConsumerWidget {
                   if (profile.userId case final userId?)
                     IconButton(
                       icon: const Icon(LucideIcons.ellipsisVertical, size: 18),
-                      tooltip: 'Block or report',
+                      tooltip: context.tr('Block or report'),
                       onPressed: () => showModerationSheet(
                         context,
                         ref,
@@ -189,14 +190,16 @@ class _Sheet extends ConsumerWidget {
   static List<(IconData, String)> _facts(FeedProfile profile) =>
       switch (profile) {
         FeedCompany() => [
-            if (profile.location != null) (LucideIcons.mapPin, profile.location!),
+            if (profile.location != null)
+              (LucideIcons.mapPin, profile.location!),
             if (profile.companySize != null)
               (LucideIcons.users, '${profile.companySize} people'),
             if (profile.foundedYear != null)
               (LucideIcons.calendar, 'Founded ${profile.foundedYear}'),
           ],
         FeedEmployee() => [
-            if (profile.location != null) (LucideIcons.mapPin, profile.location!),
+            if (profile.location != null)
+              (LucideIcons.mapPin, profile.location!),
             if (profile.yearsOfExperience != null)
               (LucideIcons.briefcase, profile.yearsOfExperience!),
             if (profile.availability != null)

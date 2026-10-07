@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/core/network/network_providers.dart';
@@ -7,7 +8,7 @@ import 'package:apsaratalent_mobile/features/ai/data/ai_repository.dart';
 final aiRepositoryProvider =
     Provider((ref) => AiRepository(ref.watch(apiClientProvider)));
 final aiQuotaProvider = FutureProvider.autoDispose<AiQuota>((ref) {
-  ref.watch(authSessionProvider.select((s) => s.value?.user?.id));
+  ref.watch(authSessionProvider.select((s) => s.valueOrNull?.user?.id));
   return ref.watch(aiRepositoryProvider).quota();
 });
 
@@ -28,13 +29,14 @@ class AiQuotaPanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final usage = ref.watch(aiQuotaProvider);
     return usage.when(
-      loading: () => const Text('Checking AI allowance…'),
+      loading: () => Text(context.tr('Checking AI allowance…')),
       error: (_, __) => Row(children: [
-        const Expanded(
-            child: Text('AI allowance unavailable. Retry to check usage.')),
+        Expanded(
+            child: Text(
+                context.tr('AI allowance unavailable. Retry to check usage.'))),
         TextButton(
             onPressed: () => ref.invalidate(aiQuotaProvider),
-            child: const Text('Retry')),
+            child: Text(context.tr('Retry'))),
       ]),
       data: (q) {
         final local = q.resetsAt.toLocal();
@@ -42,12 +44,21 @@ class AiQuotaPanel extends ConsumerWidget {
         return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
               child: Text(expired
-                  ? 'AI allowance reset. Refresh to see current usage.'
-                  : '${q.remaining} of ${q.limit} AI requests remaining today'
-                      '${cvGeneration ? '\n${q.cvRemaining} of ${q.cvLimit} CV generations remaining' : ''}'
-                      '\nResets ${local.toString().substring(0, 16)} (local time)')),
+                  ? context
+                      .tr('AI allowance reset. Refresh to see current usage.')
+                  : '${context.tr('{0} of {1} AI requests remaining today', {
+                          '0': q.remaining,
+                          '1': q.limit
+                        })}'
+                      '${cvGeneration ? '\n${context.tr('{0} of {1} CV generations remaining', {
+                              '0': q.cvRemaining,
+                              '1': q.cvLimit
+                            })}' : ''}'
+                      '\n${context.tr('Resets {0} (local time)', {
+                          '0': local.toString().substring(0, 16)
+                        })}')),
           IconButton(
-              tooltip: 'Refresh AI allowance',
+              tooltip: context.tr('Refresh AI allowance'),
               onPressed: () => ref.invalidate(aiQuotaProvider),
               icon: const Icon(Icons.refresh)),
         ]);
