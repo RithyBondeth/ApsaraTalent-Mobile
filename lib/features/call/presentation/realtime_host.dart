@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
 import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
+import 'package:apsaratalent_mobile/features/match/providers/match_realtime_provider.dart';
 import '../providers/call_controller.dart';
 
 /// Above the router so incoming calls are visible on any signed-in page.
@@ -56,6 +57,7 @@ class _RealtimeState extends ConsumerState<_SignedInRealtime>
   @override
   Widget build(BuildContext context) {
     ref.watch(chatControllerProvider);
+    ref.watch(matchRealtimeSyncProvider);
     final call = ref.watch(callControllerProvider);
     return Stack(children: [
       widget.child,

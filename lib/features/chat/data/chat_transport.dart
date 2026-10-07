@@ -18,6 +18,28 @@ abstract class ChatTransport {
 /// a timed-out message may already be persisted and must not be sent twice.
 class SocketChatTransport implements ChatTransport {
   SocketChatTransport(this.api, this.session);
+
+  /// Every event the gateway pushes that this app acts on, spelt exactly as
+  /// the gateway emits it. A name that differs by a word is never delivered:
+  /// this list once said `unmatched` while the gateway sends `unmatchUpdate`.
+  static const serverEvents = [
+    'newMessage',
+    'messageRead',
+    'userTyping',
+    'userStatus',
+    'messageReaction',
+    'messageEdited',
+    'messageDeleted',
+    'incomingCall',
+    'callAnswered',
+    'remoteIceCandidate',
+    'callDeclined',
+    'callEnded',
+    'unmatchUpdate',
+    'badgeIncrement',
+    'interviewUpdate',
+  ];
+
   final ApiClient api;
   final SessionStore session;
   final _events = StreamController<ChatEvent>.broadcast();
@@ -73,21 +95,7 @@ class SocketChatTransport implements ChatTransport {
         _failPending(message);
         _events.add(ChatEvent('error', message));
       });
-      for (final event in [
-        'newMessage',
-        'messageRead',
-        'userTyping',
-        'userStatus',
-        'messageReaction',
-        'messageEdited',
-        'messageDeleted',
-        'incomingCall',
-        'callAnswered',
-        'remoteIceCandidate',
-        'callDeclined',
-        'callEnded',
-        'unmatched'
-      ]) {
+      for (final event in serverEvents) {
         socket.on(event, (data) => _events.add(ChatEvent(event, data)));
       }
       socket.connect();
