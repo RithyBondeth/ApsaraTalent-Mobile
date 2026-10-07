@@ -1,3 +1,6 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
+import 'resume_ai_tools_screen.dart';
+import 'resume_design_screen.dart';
 import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -170,16 +173,16 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
       final discard = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-                title: const Text('Discard local changes?'),
-                content: const Text(
-                    'These changes have not been saved to your account.'),
+                title: Text(context.tr('Discard local changes?')),
+                content: Text(context
+                    .tr('These changes have not been saved to your account.')),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: const Text('Cancel')),
+                      child: Text(context.tr('Cancel'))),
                   TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Discard'))
+                      child: Text(context.tr('Discard')))
                 ],
               ));
       if (!mounted || discard != true) return;
@@ -232,6 +235,65 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
       _error = null;
       _saveError = null;
     });
+  }
+
+  Future<void> _tools({bool fromText = false, bool design = false}) async {
+    final result = await Navigator.of(context).push<Map<String, dynamic>>(
+        MaterialPageRoute(
+            builder: (_) => design
+                ? ResumeDesignScreen(draft: _draft!)
+                : ResumeAiToolsScreen(draft: _draft!, fromText: fromText)));
+    if (!mounted || result == null) return;
+    setState(() {
+      _draft = result;
+      if (_draft!['design'] == null) _draft!.remove('design');
+    });
+    await _persistDraft();
+  }
+
+  Future<void> _reloadSaved() async {
+    final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+                title: Text(context.tr('Discard edits and reload?')),
+                content: Text(context.tr(
+                    'This replaces local edits with the latest saved version.')),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text(context.tr('Cancel'))),
+                  TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: Text(context.tr('Reload')))
+                ]));
+    if (confirmed != true || !mounted || _draftId == null) return;
+    setState(() => _savingDraft = true);
+    try {
+      final record = await ref.read(resumeRepositoryProvider).draft(_draftId!);
+      final profile = ref.read(profileProvider).value;
+      if (profile is EmployeeProfile) {
+        await ref.read(resumeDraftStoreProvider).clear(profile.id);
+        await ref.read(resumeDraftStoreProvider).clearRecovery(profile.id);
+      }
+      if (!mounted) return;
+      setState(() {
+        _draft = Map<String, dynamic>.from(record['content'] as Map);
+        _revision = record['revision'] as int;
+        _name = record['name'] as String;
+        _unsynced = false;
+        _saved = true;
+        _restored = false;
+        _saveError = null;
+      });
+    } catch (e) {
+      if (mounted) {
+        setState(() => _saveError = _message(e));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _savingDraft = false);
+      }
+    }
   }
 
   Future<void> _rename() async {
@@ -289,7 +351,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
     final result = await showDialog<Map<String, String>>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
+        title: Text(context.tr(title)),
         content: SizedBox(
             width: 480,
             child: SingleChildScrollView(
@@ -299,7 +361,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: TextField(
                       controller: e.value,
-                      decoration: InputDecoration(labelText: e.key),
+                      decoration: InputDecoration(labelText: context.tr(e.key)),
                       minLines: 1,
                       maxLines: 5,
                       maxLength: limits[e.key] ?? 5000),
@@ -308,13 +370,13 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel')),
+              child: Text(context.tr('Cancel'))),
           TextButton(
               onPressed: () => Navigator.pop(context, {
                     for (final e in controllers.entries)
                       e.key: e.value.text.trim()
                   }),
-              child: const Text('Save')),
+              child: Text(context.tr('Save'))),
         ],
       ),
     );
@@ -436,7 +498,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                   ? null
                   : _myResumes,
           icon: const Icon(Icons.folder_outlined),
-          label: const Text('My resumes')),
+          label: Text(context.tr('My resumes'))),
       if (_loading) const Center(child: CircularProgressIndicator()),
       if (_error != null)
         PageState(
@@ -461,7 +523,12 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
         if (!_saved || _unsynced)
           TextButton(
               onPressed: _savingDraft || _busy ? null : _persistDraft,
-              child: Text(_unsynced ? 'Retry save' : 'Save resume')),
+              child:
+                  Text(context.tr(_unsynced ? 'Retry save' : 'Save resume'))),
+        if (_saveError != null && _revision != null)
+          TextButton(
+              onPressed: _savingDraft || _busy ? null : _reloadSaved,
+              child: Text(context.tr('Reload saved resume'))),
         if (_saveError != null)
           TextButton(
               onPressed: _savingDraft || _busy
@@ -471,16 +538,16 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                       _revision = null;
                       _persistDraft();
                     },
-              child: const Text('Save as new resume')),
+              child: Text(context.tr('Save as new resume'))),
         if (_restored)
           AppSurface(
             child: Row(children: [
-              const Expanded(
-                  child:
-                      Text('Local draft recovered. Save it to your account.')),
+              Expanded(
+                  child: Text(context
+                      .tr('Local draft recovered. Save it to your account.'))),
               TextButton(
                   onPressed: _savingDraft || _busy ? null : _clearDraft,
-                  child: const Text('Start over')),
+                  child: Text(context.tr('Start over'))),
             ]),
           ),
         if (_savingDraft) const LinearProgressIndicator(minHeight: 2),
@@ -493,7 +560,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                     _templates.any((t) => t['templateKey'] == draft['template'])
                         ? draft['template'] as String
                         : null,
-                decoration: const InputDecoration(labelText: 'Template'),
+                decoration: InputDecoration(labelText: context.tr('Template')),
                 isExpanded: true,
                 items: [
                   for (final t in _templates)
@@ -506,7 +573,6 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                   if (value != null) {
                     setState(() {
                       draft['template'] = value;
-                      draft.remove('design');
                     });
                     _persistDraft();
                   }
@@ -514,22 +580,23 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
               ),
               const SizedBox(height: 16),
               ListTile(
-                  title: const Text('Personal details'),
+                  title: Text(context.tr('Personal details')),
                   subtitle: Text('${draft['personalInfo']['fullName']}'),
                   trailing: const Icon(Icons.edit_outlined),
                   onTap: _personal),
               ListTile(
-                  title: Text(_generated ? 'Summary · AI draft' : 'Summary'),
+                  title: Text(context
+                      .tr(_generated ? 'Summary · AI draft' : 'Summary')),
                   subtitle: Text('${draft['summary'] ?? 'Add a summary'}',
                       maxLines: 3, overflow: TextOverflow.ellipsis),
                   onTap: () => _text('summary', 'Summary')),
               ListTile(
-                  title: const Text('Education'),
+                  title: Text(context.tr('Education')),
                   subtitle: Text('${draft['education'] ?? ''}',
                       maxLines: 3, overflow: TextOverflow.ellipsis),
                   onTap: () => _text('education', 'Education')),
               ListTile(
-                  title: const Text('Skills'),
+                  title: Text(context.tr('Skills')),
                   subtitle: Text((draft['skills'] as List).join(', '),
                       maxLines: 3, overflow: TextOverflow.ellipsis),
                   onTap: () =>
@@ -541,7 +608,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                   subtitle: Text('${draft['experience'][i]['company']}'),
                   onTap: () => _experience(i),
                   trailing: IconButton(
-                    tooltip: 'Remove experience',
+                    tooltip: context.tr('Remove experience'),
                     icon: const Icon(Icons.delete_outline),
                     onPressed: () => setState(() {
                       (draft['experience'] as List).removeAt(i);
@@ -553,13 +620,30 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                 TextButton.icon(
                     onPressed: () => _experience(),
                     icon: const Icon(Icons.add),
-                    label: const Text('Add experience')),
+                    label: Text(context.tr('Add experience'))),
             ])),
         const SizedBox(height: 16),
-        const Text(
-            'AI rewrites your resume content. Review generated details before exporting.'),
+        Text(context.tr(
+            'AI rewrites your resume content. Review generated details before exporting.')),
         const SizedBox(height: 12),
         const AiQuotaPanel(cvGeneration: true),
+        AppButton(
+            label: 'Resume from text',
+            variant: AppButtonVariant.outline,
+            onPressed:
+                _busy || _savingDraft ? null : () => _tools(fromText: true)),
+        const SizedBox(height: 12),
+        AppButton(
+            label: 'Optimize resume',
+            variant: AppButtonVariant.outline,
+            onPressed: _busy || _savingDraft ? null : () => _tools()),
+        const SizedBox(height: 12),
+        AppButton(
+            label: 'Resume design',
+            variant: AppButtonVariant.outline,
+            onPressed:
+                _busy || _savingDraft ? null : () => _tools(design: true)),
+        const SizedBox(height: 12),
         AppButton(
             label: 'Generate AI draft',
             variant: AppButtonVariant.outline,
@@ -567,7 +651,7 @@ class _ResumeBuilderScreenState extends ConsumerState<ResumeBuilderScreen> {
                     _savingDraft ||
                     (ref
                             .watch(aiQuotaProvider)
-                            .value
+                            .valueOrNull
                             ?.exhausted(cvGeneration: true) ??
                         false)
                 ? null

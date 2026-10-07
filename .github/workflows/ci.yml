@@ -45,6 +45,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check generated API client
+        run: node scripts/contracts/generate-clients.mjs --check
+
+      - name: Check Khmer product copy
+        run: dart run tool/check_localization.dart
+
       - name: Analyze
         run: flutter analyze
 

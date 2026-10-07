@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -19,7 +20,7 @@ class InterviewScheduleScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final interviews = ref.watch(employeeInterviewsProvider);
     return AppScreen(
-      appBar: AppBar(title: const Text('Interviews')),
+      appBar: AppBar(title: Text(context.tr('Interviews'))),
       onRefresh: () async {
         ref.invalidate(employeeInterviewsProvider);
         await ref.read(employeeInterviewsProvider.future);
@@ -86,9 +87,9 @@ class _InterviewCardState extends ConsumerState<_InterviewCard> {
       ref.invalidate(employeeInterviewsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(status == InterviewStatus.accepted
+            content: Text(context.tr(status == InterviewStatus.accepted
                 ? 'Interview accepted.'
-                : 'Interview declined.')));
+                : 'Interview declined.'))));
       }
     } on ApiException catch (error) {
       if (mounted) {
@@ -142,8 +143,8 @@ class _InterviewCardState extends ConsumerState<_InterviewCard> {
             onPressed: () async {
               await Clipboard.setData(ClipboardData(text: link));
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Meeting link copied.')));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(context.tr('Meeting link copied.'))));
               }
             }),
       ],

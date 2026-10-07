@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'dart:io';
 
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
@@ -64,7 +65,7 @@ class _SupportReportScreenState extends ConsumerState<SupportReportScreen> {
 
   @override
   Widget build(BuildContext context) => AppScreen(
-        appBar: AppBar(title: const Text('Support')),
+        appBar: AppBar(title: Text(context.tr('Support'))),
         children: [
           const PageBanner(
               eyebrow: 'Support',
@@ -75,7 +76,7 @@ class _SupportReportScreenState extends ConsumerState<SupportReportScreen> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                Text('Category',
+                Text(context.tr('Category'),
                     style: AppTypography.label
                         .copyWith(color: context.tokens.foreground)),
                 const SizedBox(height: AppShape.space2),
@@ -95,9 +96,9 @@ class _SupportReportScreenState extends ConsumerState<SupportReportScreen> {
                 const SizedBox(height: AppShape.space4),
                 AppInput(
                   controller: _details,
-                  labelText: 'What happened?',
-                  hintText:
-                      'Include the steps you took and what you expected to happen.',
+                  labelText: context.tr('What happened?'),
+                  hintText: context.tr(
+                      'Include the steps you took and what you expected to happen.'),
                   minLines: 5,
                   maxLines: 8,
                   enabled: !_sending,

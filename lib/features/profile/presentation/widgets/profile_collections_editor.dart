@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -117,7 +118,7 @@ class ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
             AppTagInput(
               tags:
                   _skills.map((item) => item.name).whereType<String>().toList(),
-              hintText: 'Add a skill',
+              hintText: context.tr('Add a skill'),
               onChanged: _updateSkills,
             ),
             const SectionTitle(title: 'Work history'),
@@ -157,14 +158,14 @@ class ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
           ),
           AppTagInput(
             tags: _scopes.map((item) => item.name).whereType<String>().toList(),
-            hintText: 'Add a career scope',
+            hintText: context.tr('Add a career scope'),
             onChanged: _updateScopes,
           ),
           if (widget.careerScopeOptions.isNotEmpty)
             TextButton.icon(
               onPressed: _chooseCatalogScopes,
               icon: const Icon(LucideIcons.listChecks),
-              label: const Text('Choose from career-scope catalog'),
+              label: Text(context.tr('Choose from career-scope catalog')),
             ),
           const SectionTitle(title: 'Social links'),
           _records(
@@ -234,12 +235,12 @@ class ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
               ),
             ),
             IconButton(
-              tooltip: 'Edit',
+              tooltip: context.tr('Edit'),
               onPressed: onEdit,
               icon: const Icon(LucideIcons.pencil, size: 18),
             ),
             IconButton(
-              tooltip: 'Remove',
+              tooltip: context.tr('Remove'),
               onPressed: onRemove,
               icon: const Icon(LucideIcons.trash2, size: 18),
             ),
@@ -422,14 +423,14 @@ class ProfileCollectionsEditorState extends State<ProfileCollectionsEditor> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.tr('Cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(
               context,
               controllers.map((controller) => controller.text).toList(),
             ),
-            child: const Text('Save'),
+            child: Text(context.tr('Save')),
           ),
         ],
       ),

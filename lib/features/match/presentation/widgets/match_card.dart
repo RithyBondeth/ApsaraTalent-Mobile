@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -153,7 +154,7 @@ class _Fit extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Match score',
+                context.tr('Match score'),
                 style: AppTypography.tiny.copyWith(color: t.mutedForeground),
               ),
             ),
@@ -176,7 +177,8 @@ class _Fit extends StatelessWidget {
         if (match.skillScore > 0) ...[
           const SizedBox(height: AppShape.space2),
           Text(
-            '${match.skillScore}% of it from overlapping skills',
+            context.tr(
+                "{0}% of it from overlapping skills", {'0': match.skillScore}),
             style: AppTypography.tiny.copyWith(color: t.mutedForeground),
           ),
         ],

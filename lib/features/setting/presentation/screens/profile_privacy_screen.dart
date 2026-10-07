@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -17,7 +18,7 @@ class ProfilePrivacyScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(profilePrivacyProvider);
     return AppScreen(
-      appBar: AppBar(title: const Text('Profile privacy')),
+      appBar: AppBar(title: Text(context.tr('Profile privacy'))),
       onRefresh: () => ref.read(profilePrivacyProvider.notifier).refresh(),
       children: [
         const PageBanner(
@@ -46,14 +47,14 @@ class ProfilePrivacyScreen extends ConsumerWidget {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Browse privately',
+                      Text(context.tr('Browse privately'),
                           style: AppTypography.label
                               .copyWith(color: context.tokens.foreground)),
                       const SizedBox(height: 2),
                       Text(
-                        data.browsePrivately
+                        context.tr(data.browsePrivately
                             ? 'Other members will not see your identity in their profile viewers.'
-                            : 'Other members may see that you viewed their profile.',
+                            : 'Other members may see that you viewed their profile.'),
                         style: AppTypography.tiny
                             .copyWith(color: context.tokens.mutedForeground),
                       ),
@@ -92,7 +93,7 @@ class ProfilePrivacyScreen extends ConsumerWidget {
               const SectionTitle(title: 'Recent viewers'),
               if (data.recentViewers.isEmpty)
                 AppSurface(
-                    child: Text('No recent profile viewers yet.',
+                    child: Text(context.tr('No recent profile viewers yet.'),
                         style: AppTypography.small
                             .copyWith(color: context.tokens.mutedForeground)))
               else

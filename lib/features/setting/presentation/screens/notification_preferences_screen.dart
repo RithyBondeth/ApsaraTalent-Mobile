@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class NotificationPreferencesScreen extends ConsumerWidget {
     final notifier = ref.read(notificationPreferencesProvider.notifier);
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Notifications')),
+      appBar: AppBar(title: Text(context.tr('Notifications'))),
       onRefresh: () async {
         try {
           await notifier.refresh();
@@ -69,7 +70,6 @@ class NotificationPreferencesScreen extends ConsumerWidget {
         subtitle: 'Each switch saves on its own. Security messages are always '
             'sent.',
       ),
-
       const SectionTitle(
         title: 'Channels',
         subtitle: 'Turning one off silences every category below it',
@@ -102,7 +102,6 @@ class NotificationPreferencesScreen extends ConsumerWidget {
           ],
         ),
       ),
-
       const SectionTitle(
         title: 'Categories',
         subtitle: 'What each kind of notification may use',

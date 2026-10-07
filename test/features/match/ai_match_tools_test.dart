@@ -38,13 +38,23 @@ void main() {
     expect(http.requests.single.queryParameters, {'lang': 'en'});
   });
 
-  test('parses streamed skill-gap NDJSON', () async {
+  test('parses gateway SSE containing split skill-gap JSON records', () async {
     const ndjson = '{"t":"matched","skill":"Flutter"}\n'
         '{"t":"missing","skill":"Docker","criticality":"high","positions":["Mobile Engineer"],"tip":"Practice for ~2 weeks"}\n'
         '{"t":"summary","overallGap":"small","estimatedWeeks":2,"topPriority":"Learn Docker"}\n';
-    final http = FakeHttp(
-        (_) async => ResponseBody.fromBytes(utf8.encode(ndjson), 200, headers: {
-              Headers.contentTypeHeader: ['application/x-ndjson']
+    final http = FakeHttp((_) async => ResponseBody.fromBytes(
+            utf8.encode('data: ${jsonEncode({
+                  't': 'chunk',
+                  'v': ndjson.substring(0, 15)
+                })}\n\n'
+                'data: ${jsonEncode({
+                  't': 'chunk',
+                  'v': ndjson.substring(15)
+                })}\n\n'
+                'data: {"t":"done"}\n\n'),
+            200,
+            headers: {
+              Headers.contentTypeHeader: ['text/event-stream']
             }));
     final result = await repositoryFor(http).skillGap('employee', 'company');
     expect(result.matchedSkills, ['Flutter']);

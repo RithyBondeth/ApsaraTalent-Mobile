@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -54,7 +55,7 @@ class FeedProfileCard extends StatelessWidget {
                 Icon(LucideIcons.sparkles, size: 12, color: t.mutedForeground),
                 const SizedBox(width: AppShape.space1),
                 Text(
-                  'RECOMMENDED',
+                  context.tr('RECOMMENDED'),
                   style: AppTypography.eyebrow.copyWith(
                     color: t.mutedForeground,
                   ),

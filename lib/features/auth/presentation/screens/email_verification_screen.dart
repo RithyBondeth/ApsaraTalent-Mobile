@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/constants/app_constant.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -39,7 +40,8 @@ class EmailVerificationScreen extends ConsumerStatefulWidget {
       _EmailVerificationScreenState();
 }
 
-class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScreen> {
+class _EmailVerificationScreenState
+    extends ConsumerState<EmailVerificationScreen> {
   @override
   void initState() {
     super.initState();
@@ -66,15 +68,19 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
       ref.read(otpProvider.notifier).clear();
       return;
     }
-    final signedIn = ref.read(authSessionProvider).value?.isAuthenticated ?? false;
+    final signedIn =
+        ref.read(authSessionProvider).value?.isAuthenticated ?? false;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          signedIn ? 'Email verified. Welcome to Apsara Talent.' : 'Email verified. You can log in now.',
+          context.tr(signedIn
+              ? 'Email verified. Welcome to Apsara Talent.'
+              : 'Email verified. You can log in now.'),
         ),
       ),
     );
-    context.router.replaceAll([if (signedIn) const MainRoute() else const LoginRoute()]);
+    context.router
+        .replaceAll([if (signedIn) const MainRoute() else const LoginRoute()]);
   }
 
   @override
@@ -104,13 +110,16 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
           fullWidth: true,
           size: AppButtonSize.lg,
           loading: flow.isLoading,
-          onPressed: code.isComplete && !flow.isLoading ? () => _verify(code.otp) : null,
+          onPressed: code.isComplete && !flow.isLoading
+              ? () => _verify(code.otp)
+              : null,
         ),
         const SizedBox(height: AppShape.space4),
         Center(
           child: state.resendIn > 0
               ? Text(
-                  'You can request a new code in ${state.resendIn}s',
+                  context.tr("You can request a new code in {0}s",
+                      {'0': state.resendIn}),
                   style: AppTypography.small.copyWith(color: t.mutedForeground),
                 )
               : AppButton(
@@ -118,14 +127,18 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
                   variant: AppButtonVariant.link,
                   onPressed: flow.isLoading
                       ? null
-                      : () => ref.read(emailVerificationProvider.notifier).resend(widget.email),
+                      : () => ref
+                          .read(emailVerificationProvider.notifier)
+                          .resend(widget.email),
                 ),
         ),
         const SizedBox(height: AppShape.space4),
         Text(
-          'Codes can take a minute to arrive. Check your spam folder too.',
+          context.tr(
+              'Codes can take a minute to arrive. Check your spam folder too.'),
           textAlign: TextAlign.center,
-          style: AppTypography.tiny.copyWith(color: t.mutedForeground, height: 1.5),
+          style: AppTypography.tiny
+              .copyWith(color: t.mutedForeground, height: 1.5),
         ),
         if (widget.fromSignup) ...[
           const SizedBox(height: AppShape.space5),

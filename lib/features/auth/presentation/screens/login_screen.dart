@@ -215,7 +215,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         // Credentials Section
         AppInput(
-          hintText: 'Email',
+          hintText: context.tr('Email'),
           prefixIcon: LucideIcons.mail,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -226,7 +226,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         const SizedBox(height: AppShape.space3),
         AppInput(
           controller: _password,
-          hintText: 'Password',
+          hintText: context.tr('Password'),
           prefixIcon: LucideIcons.lockKeyhole,
           suffixIcon: _obscurePassword ? LucideIcons.eye : LucideIcons.eyeOff,
           onSuffixTap: () =>

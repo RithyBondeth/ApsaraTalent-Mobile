@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:apsaratalent_mobile/core/network/ai_stream.dart';
 import 'dart:typed_data';
 
 import 'package:apsaratalent_mobile/core/constants/apis/match_api_constant.dart';
@@ -91,15 +92,7 @@ class AiMatchToolsRepository {
     var overall = 'unknown';
     var weeks = 0;
     var priority = '';
-    await for (final line in body.stream
-        .cast<List<int>>()
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())) {
-      final text = line.trim();
-      if (text.isEmpty) continue;
-      final decoded = jsonDecode(text);
-      if (decoded is! Map) continue;
-      final row = decoded.cast<String, dynamic>();
+    await for (final row in aiJsonRecords(body.stream.cast<List<int>>())) {
       switch (row['t']) {
         case 'matched':
           final skill = '${row['skill'] ?? ''}'.trim();

@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +56,7 @@ class ApplicationScreen extends ConsumerWidget {
     final notifier = ref.read(applicationsProvider.notifier);
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Applications')),
+      appBar: AppBar(title: Text(context.tr('Applications'))),
       onRefresh: () async {
         try {
           await notifier.refresh();
@@ -141,21 +142,20 @@ class ApplicationScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Withdraw this application?'),
+        title: Text(context.tr('Withdraw this application?')),
         content: Text(
-          'You are telling the company you are no longer interested in '
-          '\$role. The application stays in this list, marked withdrawn. '
-          'Applying again revives this same application rather than starting '
-          'a second one.',
+          context.tr(
+              'You are telling the company you are no longer interested in {0}. The application stays in this list, marked withdrawn. Applying again revives this same application rather than starting a second one.',
+              {'0': role}),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep it'),
+            child: Text(context.tr('Keep it')),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Withdraw'),
+            child: Text(context.tr('Withdraw')),
           ),
         ],
       ),

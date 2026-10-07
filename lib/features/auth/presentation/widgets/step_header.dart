@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -20,7 +21,7 @@ class StepHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'STEP $step OF $total',
+            context.tr("STEP {0} OF {1}", {'0': step, '1': total}),
             style: AppTypography.eyebrow.copyWith(color: t.mutedForeground),
           ),
           const SizedBox(height: AppShape.space2),
@@ -28,7 +29,8 @@ class StepHeader extends StatelessWidget {
             children: [
               for (var i = 1; i <= total; i++) ...[
                 Expanded(
-                  child: Container(height: 4, color: i <= step ? t.primary : t.muted),
+                  child: Container(
+                      height: 4, color: i <= step ? t.primary : t.muted),
                 ),
                 if (i < total) const SizedBox(width: AppShape.space1),
               ],

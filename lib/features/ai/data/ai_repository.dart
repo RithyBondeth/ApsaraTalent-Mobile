@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:apsaratalent_mobile/core/network/ai_stream.dart';
 import 'package:dio/dio.dart';
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
@@ -95,21 +95,11 @@ class AiRepository {
 /// A partial stream is never committed as a completed draft.
 Future<String> readBioStream(Stream<List<int>> stream) async {
   final text = StringBuffer();
-  var done = false;
   try {
-    await for (final line
-        in stream.transform(utf8.decoder).transform(const LineSplitter())) {
-      if (!line.startsWith('data:')) continue;
-      final event = jsonDecode(line.substring(5).trim());
-      if (event is! Map) throw const FormatException();
-      if (event['t'] == 'error') throw const FormatException();
-      if (event['t'] == 'chunk' && event['v'] is String) text.write(event['v']);
-      if (event['t'] == 'done') {
-        done = true;
-        break;
-      }
+    await for (final chunk in aiTextChunks(stream)) {
+      text.write(chunk);
     }
-    if (!done || text.toString().trim().isEmpty) throw const FormatException();
+    if (text.toString().trim().isEmpty) throw const FormatException();
     return text.toString().trim();
   } catch (_) {
     throw ApiException(

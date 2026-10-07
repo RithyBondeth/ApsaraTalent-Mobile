@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
@@ -46,7 +47,7 @@ class MatchMeter extends StatelessWidget {
         if (showLabel) ...[
           const SizedBox(width: AppShape.space2),
           Text(
-            '$score% match',
+            context.tr("{0}% match", {'0': score}),
             style: AppTypography.tiny.copyWith(
               color: t.mutedForeground,
               fontWeight: FontWeight.w600,

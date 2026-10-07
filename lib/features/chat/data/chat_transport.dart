@@ -86,7 +86,10 @@ class SocketChatTransport implements ChatTransport {
         'remoteIceCandidate',
         'callDeclined',
         'callEnded',
-        'unmatched'
+        'newNotification',
+        'badgeIncrement',
+        'interviewUpdate',
+        'unmatchUpdate'
       ]) {
         socket.on(event, (data) => _events.add(ChatEvent(event, data)));
       }

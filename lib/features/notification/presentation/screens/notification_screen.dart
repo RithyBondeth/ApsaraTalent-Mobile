@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,7 +41,7 @@ class NotificationScreen extends ConsumerWidget {
       },
       child: AppScreen(
         appBar: AppBar(
-          title: const Text('Notifications'),
+          title: Text(context.tr('Notifications')),
           actions: [
             if ((state?.unread ?? 0) > 0)
               TextButton(
@@ -48,12 +49,12 @@ class NotificationScreen extends ConsumerWidget {
                   context,
                   () => notifier.markAllRead(),
                 ),
-                child: const Text('Mark all read'),
+                child: Text(context.tr('Mark all read')),
               ),
             if ((state?.items.length ?? 0) > 0)
               IconButton(
                 icon: const Icon(LucideIcons.trash2, size: 18),
-                tooltip: 'Clear all',
+                tooltip: context.tr('Clear all'),
                 onPressed: () => _confirmClear(context, ref),
               ),
           ],
@@ -196,19 +197,20 @@ class NotificationScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear all notifications?'),
-        content: const Text(
-          'Every notification is deleted for good. What they were about — '
-          'your matches, applications and interviews — is not affected.',
+        title: Text(context.tr('Clear all notifications?')),
+        content: Text(
+          context.tr(
+              'Every notification is deleted for good. What they were about — '
+              'your matches, applications and interviews — is not affected.'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep them'),
+            child: Text(context.tr('Keep them')),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Clear all'),
+            child: Text(context.tr('Clear all')),
           ),
         ],
       ),
@@ -321,7 +323,7 @@ class _NotificationRow extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(LucideIcons.x, size: 16),
-            tooltip: 'Delete',
+            tooltip: context.tr('Delete'),
             onPressed: busy ? null : onDelete,
           ),
         ],

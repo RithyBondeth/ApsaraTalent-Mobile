@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +36,8 @@ class ProfileScreen extends ConsumerWidget {
         : ref.watch(viewedProfileProvider(viewedProfile!));
 
     return AppScreen(
-      appBar: AppBar(title: Text(own ? 'Profile' : 'Matched profile')),
+      appBar:
+          AppBar(title: Text(context.tr(own ? 'Profile' : 'Matched profile'))),
       onRefresh: () async {
         try {
           if (own) {
@@ -263,7 +265,7 @@ class _CompletionCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Profile completion',
+                  context.tr('Profile completion'),
                   style: AppTypography.label.copyWith(color: t.foreground),
                 ),
               ),

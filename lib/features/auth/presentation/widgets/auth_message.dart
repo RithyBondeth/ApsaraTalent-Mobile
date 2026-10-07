@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
@@ -11,9 +12,12 @@ enum EAuthMessageKind { error, success, info }
 class AuthMessage extends StatelessWidget {
   const AuthMessage({super.key, required this.kind, required this.message});
 
-  const AuthMessage.error(this.message, {super.key}) : kind = EAuthMessageKind.error;
-  const AuthMessage.success(this.message, {super.key}) : kind = EAuthMessageKind.success;
-  const AuthMessage.info(this.message, {super.key}) : kind = EAuthMessageKind.info;
+  const AuthMessage.error(this.message, {super.key})
+      : kind = EAuthMessageKind.error;
+  const AuthMessage.success(this.message, {super.key})
+      : kind = EAuthMessageKind.success;
+  const AuthMessage.info(this.message, {super.key})
+      : kind = EAuthMessageKind.info;
 
   final EAuthMessageKind kind;
   final String message;
@@ -57,7 +61,7 @@ class AuthMessage extends StatelessWidget {
             const SizedBox(width: AppShape.space2),
             Expanded(
               child: Text(
-                message,
+                context.tr(message),
                 style: AppTypography.small.copyWith(color: ink, height: 1.4),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/features/ai/presentation/ai_quota.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
@@ -119,7 +120,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
       _Tool.interview => _questions != null
     };
     return AppScreen(
-      appBar: AppBar(title: const Text('AI match tools')),
+      appBar: AppBar(title: Text(context.tr('AI match tools'))),
       children: [
         PageBanner(
           eyebrow: 'AI match tools',
@@ -142,8 +143,8 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
         if (_tool == _Tool.interview)
           AppInput(
               controller: _round,
-              labelText: 'Interview round (optional)',
-              hintText: 'Technical round, HR interview…',
+              labelText: context.tr('Interview round (optional)'),
+              hintText: context.tr('Technical round, HR interview…'),
               enabled: !_loading),
         if (!generated && !_loading && _error == null)
           AppSurface(
@@ -160,7 +161,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
               child: Column(children: [
             const CircularProgressIndicator(),
             const SizedBox(height: AppShape.space3),
-            Text('Analyzing both profiles…',
+            Text(context.tr('Analyzing both profiles…'),
                 style: AppTypography.small
                     .copyWith(color: context.tokens.mutedForeground)),
           ])),
@@ -171,9 +172,10 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
               description:
                   error is ApiException ? error.message : 'Please try again.',
               actionLabel: 'Try again',
-              onAction: (ref.watch(aiQuotaProvider).value?.exhausted() ?? false)
-                  ? null
-                  : _generate),
+              onAction:
+                  (ref.watch(aiQuotaProvider).valueOrNull?.exhausted() ?? false)
+                      ? null
+                      : _generate),
         if (!_loading && _error == null) ..._results(),
         if (_tool == _Tool.interview &&
             _questions != null &&
@@ -195,11 +197,12 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
                   ? AppButtonVariant.outline
                   : AppButtonVariant.primary,
               onPressed:
-                  (ref.watch(aiQuotaProvider).value?.exhausted() ?? false)
+                  (ref.watch(aiQuotaProvider).valueOrNull?.exhausted() ?? false)
                       ? null
                       : _generate),
         Text(
-            'AI suggestions can be incomplete. Review them against the role and your own experience.',
+            context.tr(
+                'AI suggestions can be incomplete. Review them against the role and your own experience.'),
             textAlign: TextAlign.center,
             style: AppTypography.tiny
                 .copyWith(color: context.tokens.mutedForeground)),
@@ -288,7 +291,10 @@ class _SkillGapView extends StatelessWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-              '${value.overallGap.toUpperCase()} GAP · ~${value.estimatedWeeks} weeks',
+              context.tr("{0} GAP · ~{1} weeks", {
+                '0': value.overallGap.toUpperCase(),
+                '1': value.estimatedWeeks
+              }),
               style: AppTypography.label
                   .copyWith(color: context.tokens.foreground)),
           if (value.topPriority.isNotEmpty) ...[
@@ -347,7 +353,9 @@ class _InterviewView extends StatelessWidget {
                         style: AppTypography.small
                             .copyWith(color: context.tokens.mutedForeground)),
                     const SizedBox(height: AppShape.space3),
-                    Text('${questions[i].category} · Answer tip',
+                    Text(
+                        context.tr(
+                            "{0} · Answer tip", {'0': questions[i].category}),
                         style: AppTypography.tiny
                             .copyWith(color: context.tokens.primary)),
                     const SizedBox(height: AppShape.space1),

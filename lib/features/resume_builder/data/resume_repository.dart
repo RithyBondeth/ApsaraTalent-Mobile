@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/network/generated/gateway_api.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:uuid/uuid.dart';
@@ -46,31 +47,32 @@ class ResumeRepository {
   ResumeRepository(this.client);
   final ApiClient client;
   Future<List<Map<String, dynamic>>> drafts() async =>
-      ((await client.get('/resume/drafts')).data as List)
+      ((await GatewayApi(client).resumeDraftControllerList()).data as List)
           .map((e) => Map<String, dynamic>.from(e as Map))
           .toList();
 
   Future<Map<String, dynamic>> draft(String id) async =>
       Map<String, dynamic>.from(
-          (await client.get('/resume/drafts/$id')).data as Map);
+          (await GatewayApi(client).resumeDraftControllerRead(id: id)).data
+              as Map);
 
   Future<Map<String, dynamic>> saveDraft(
       String name, Map<String, dynamic> content,
       {String? id, int? revision}) async {
-    final body = {
-      'name': name,
-      'content': content,
-      if (revision == null) 'id': id ?? const Uuid().v4(),
-      if (revision != null) 'revision': revision
-    };
+    final api = GatewayApi(client);
     final response = revision == null
-        ? await client.post('/resume/drafts', data: body)
-        : await client.put('/resume/drafts/$id', data: body);
+        ? await api.resumeDraftControllerCreate(
+            body: ApiCreateResumeDraftDTO(
+                name: name, content: content, id: id ?? const Uuid().v4()))
+        : await api.resumeDraftControllerUpdate(
+            id: id!,
+            body: ApiUpdateResumeDraftDTO(
+                name: name, content: content, revision: revision));
     return Map<String, dynamic>.from(response.data as Map);
   }
 
   Future<void> deleteDraft(String id) async {
-    await client.delete('/resume/drafts/$id');
+    await GatewayApi(client).resumeDraftControllerRemove(id: id);
   }
 
   Future<List<Map<String, dynamic>>> templates() async {
@@ -82,9 +84,10 @@ class ResumeRepository {
   }
 
   Future<Map<String, dynamic>> generate(Map<String, dynamic> draft) async {
-    final data = (await client.post('/resume/generate',
-            data: draft,
-            options: Options(receiveTimeout: const Duration(minutes: 3))))
+    final data = (await GatewayApi(client)
+            .resumeBuilderControllerGenerateResume(
+                body: ApiBuildResumeDTO.fromJson(draft),
+                options: Options(receiveTimeout: const Duration(minutes: 3))))
         .data;
     if (data is! Map ||
         data['experience'] is! List ||
@@ -94,17 +97,77 @@ class ResumeRepository {
               'The generated resume could not be read. Your draft is unchanged.');
     }
     return {
+      ...draft,
       ...Map<String, dynamic>.from(data),
       'personalInfo': draft['personalInfo'],
-      'template': draft['template']
+      'template': draft['template'],
+      if (draft.containsKey('design')) 'design': draft['design'],
+      if (draft.containsKey('sectionOrder'))
+        'sectionOrder': draft['sectionOrder'],
     };
   }
 
+  Future<Map<String, dynamic>> generateFromText(
+      String text, String template) async {
+    final data = (await GatewayApi(client)
+            .resumeBuilderControllerGenerateResumeFromText(
+                body: ApiGenerateResumeFromTextDTO(
+                    sourceText: text.trim(), template: template),
+                options: Options(receiveTimeout: const Duration(minutes: 3))))
+        .data;
+    if (data is! Map ||
+        data['personalInfo'] is! Map ||
+        data['skills'] is! List ||
+        data['experience'] is! List) {
+      throw ApiException(
+          message:
+              'The generated resume could not be read. Your draft is unchanged.');
+    }
+    return {...Map<String, dynamic>.from(data), 'template': template};
+  }
+
+  Future<Map<String, dynamic>> optimize(Map<String, dynamic> draft) async {
+    final data = (await GatewayApi(client)
+            .resumeBuilderControllerOptimizeResume(
+                body: ApiOptimizeResumeDTO.fromJson(draft),
+                options: Options(receiveTimeout: const Duration(minutes: 3))))
+        .data;
+    if (data is! Map ||
+        data['overallFeedback'] is! String ||
+        data['suggestedSummary'] is! String ||
+        data['suggestedSkills'] is! List ||
+        data['experienceSuggestions'] is! List ||
+        (data['suggestedSkills'] as List).any((v) => v is! String) ||
+        (data['experienceSuggestions'] as List).any((v) =>
+            v is! Map ||
+            v['index'] is! int ||
+            v['index'] < 0 ||
+            v['index'] >= (draft['experience'] as List).length ||
+            v['improvedDescription'] is! String ||
+            v['improvedAchievements'] is! List ||
+            (v['improvedAchievements'] as List).any((a) => a is! String))) {
+      throw ApiException(
+          message:
+              'The suggestions could not be read. Your draft is unchanged.');
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Uint8List> coverLetterPdf(Map<String, dynamic> data) async => _pdf(
+      (await GatewayApi(client).resumeBuilderControllerGenerateCoverLetterPdf(
+              body: ApiGenerateCoverLetterPdfDTO.fromJson(data),
+              options: Options(receiveTimeout: const Duration(minutes: 3))))
+          .data);
+
   Future<Uint8List> build(Map<String, dynamic> draft) async {
-    final data = (await client.post('/resume/build-resume',
-            data: draft,
+    final data = (await GatewayApi(client).resumeBuilderControllerBuildResume(
+            body: ApiBuildResumeDTO.fromJson(draft),
             options: Options(receiveTimeout: const Duration(minutes: 3))))
         .data;
+    return _pdf(data);
+  }
+
+  Uint8List _pdf(dynamic data) {
     try {
       if (data is! Map || data['mimeType'] != 'application/pdf') {
         throw const FormatException();

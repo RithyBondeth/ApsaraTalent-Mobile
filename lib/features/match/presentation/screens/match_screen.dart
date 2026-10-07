@@ -1,3 +1,4 @@
+import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/features/chat/providers/chat_controller.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:auto_route/auto_route.dart';
@@ -42,7 +43,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     }
 
     return AppScreen(
-      appBar: AppBar(title: const Text('Matches')),
+      appBar: AppBar(title: Text(context.tr('Matches'))),
       onRefresh: () async {
         try {
           await notifier.refresh();
@@ -177,20 +178,21 @@ class _MatchScreenState extends ConsumerState<MatchScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('End this match?'),
+        title: Text(context.tr('End this match?')),
         content: Text(
-          'You and $name will no longer be matched. This also undoes both '
-          'your likes, so they return to your feed, and it cancels any '
-          'interviews scheduled between you.',
+          context.tr(
+              'You and $name will no longer be matched. This also undoes both '
+              'your likes, so they return to your feed, and it cancels any '
+              'interviews scheduled between you.'),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep it'),
+            child: Text(context.tr('Keep it')),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Unmatch'),
+            child: Text(context.tr('Unmatch')),
           ),
         ],
       ),
