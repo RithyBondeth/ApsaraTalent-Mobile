@@ -7,7 +7,9 @@ import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/network/api_exception.dart';
 import 'package:apsaratalent_mobile/core/themes/app_shape.dart';
 import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
+import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_actions.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_card.dart';
+import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
 import 'package:apsaratalent_mobile/features/saved_search/domain/entities/saved_search.dart';
 import 'package:apsaratalent_mobile/features/saved_search/providers/saved_search_notifier.dart';
 import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
@@ -283,6 +285,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ];
     }
 
+    // Saved and pending state live on the feed, so a save made here shows
+    // there too. Only a company searches talent, so only it needs the feed.
+    final feed =
+        state.mode == SearchMode.talent ? ref.watch(feedProvider).value : null;
+
     return [
       if (state.usedFallback) const _FallbackNotice(),
       _ResultCount(state: state),
@@ -298,11 +305,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           FeedProfileCard(
             key: ValueKey('talent-${person.id}'),
             profile: person,
-            saved: false,
-            busy: false,
-            onTap: () {},
-            onSave: () {},
-            onView: () {},
+            saved: feed?.isSaved(person.id) ?? false,
+            busy: feed?.isPending(person.id) ?? false,
+            onTap: () => openFeedProfile(context, ref, person),
+            onSave: () => saveFeedProfile(context, ref, person),
+            onView: () => openFeedProfile(context, ref, person),
           ),
       if (state.isLoadingMore) const FeedProfileCardSkeleton(),
     ];
