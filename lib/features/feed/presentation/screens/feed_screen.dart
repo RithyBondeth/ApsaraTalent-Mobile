@@ -13,7 +13,7 @@ import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session
 import 'package:apsaratalent_mobile/features/feed/domain/entities/feed_profile.dart';
 import 'package:apsaratalent_mobile/features/feed/domain/repositories/feed_repository.dart';
 import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_card.dart';
-import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_sheet.dart';
+import 'package:apsaratalent_mobile/features/feed/presentation/widgets/feed_profile_actions.dart';
 import 'package:apsaratalent_mobile/features/feed/providers/feed_notifier.dart';
 import 'package:apsaratalent_mobile/features/match/providers/match_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
@@ -172,22 +172,10 @@ class FeedScreen extends ConsumerWidget {
           recommended: recommended,
           saved: state.isSaved(profile.id),
           busy: state.isPending(profile.id),
-          onTap: () => showFeedProfileSheet(
-            context,
-            profile: profile,
-            actionState: (ref) {
-              final feed = ref.watch(feedProvider).value;
-              return (
-                saved: feed?.isSaved(profile.id) ?? false,
-                busy: feed?.isPending(profile.id) ?? false,
-              );
-            },
-            onSave: () => _save(context, ref, profile),
-            onLike: () => _like(context, ref, profile),
-          ),
-          onSave: () => _save(context, ref, profile),
-          onLike: () => _like(context, ref, profile),
-          onView: () => {},
+          onTap: () => openFeedProfile(context, ref, profile),
+          onSave: () => saveFeedProfile(context, ref, profile),
+          onLike: () => likeFeedProfile(context, ref, profile),
+          onView: () => openFeedProfile(context, ref, profile),
         );
     return [
       _banner(state.viewer.role, state),
@@ -244,57 +232,6 @@ class FeedScreen extends ConsumerWidget {
   Future<void> _refresh(BuildContext context, WidgetRef ref) async {
     try {
       await ref.read(feedProvider.notifier).refresh();
-    } on ApiException catch (e) {
-      if (context.mounted) _snack(context, e.message);
-    }
-  }
-
-  Future<void> _like(
-    BuildContext context,
-    WidgetRef ref,
-    FeedProfile profile,
-  ) async {
-    try {
-      final outcome = await ref.read(feedProvider.notifier).like(profile);
-      if (!context.mounted) return;
-      if (outcome == FeedLikeOutcome.matched) {
-        // This used to be a dead end: the app announced a match and had
-        // nowhere to send anyone.
-        ref.invalidate(matchCountProvider);
-        _snack(
-          context,
-          "It's a match! You and ${profile.displayName} liked each other.",
-          action: SnackBarAction(
-            label: 'View',
-            onPressed: () => context.router.push(const MatchRoute()),
-          ),
-        );
-        return;
-      }
-      _snack(
-        context,
-        'You liked ${profile.displayName}. '
-        "You'll match if they like you back.",
-      );
-    } on ApiException catch (e) {
-      if (context.mounted) _snack(context, e.message);
-    }
-  }
-
-  Future<void> _save(
-    BuildContext context,
-    WidgetRef ref,
-    FeedProfile profile,
-  ) async {
-    try {
-      final saved = await ref.read(feedProvider.notifier).toggleSave(profile);
-      if (!context.mounted) return;
-      _snack(
-        context,
-        saved
-            ? 'Saved ${profile.displayName}.'
-            : 'Removed ${profile.displayName} from saved.',
-      );
     } on ApiException catch (e) {
       if (context.mounted) _snack(context, e.message);
     }
