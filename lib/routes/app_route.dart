@@ -1,4 +1,8 @@
 import 'package:apsaratalent_mobile/features/chat/presentation/screens/conversation_screen.dart';
+import 'package:apsaratalent_mobile/features/admin/presentation/admin_screen.dart';
+import 'package:apsaratalent_mobile/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:apsaratalent_mobile/features/resources/presentation/resources_screen.dart';
+import 'package:apsaratalent_mobile/features/setting/presentation/screens/unsubscribe_screen.dart';
 import 'package:apsaratalent_mobile/features/chat/domain/chat_models.dart';
 import 'package:apsaratalent_mobile/core/constants/route_path_contant.dart';
 import 'package:apsaratalent_mobile/features/application/presentation/screens/application_screen.dart';
@@ -57,6 +61,8 @@ class AppRouter extends RootStackRouter {
         ),
 
         // Auth routes
+        AutoRoute(page: ResourcesRoute.page, path: '/resources'),
+        AutoRoute(page: UnsubscribeRoute.page, path: '/unsubscribe'),
         AutoRoute(
           page: LoginRoute.page,
           path: RoutePathConstant.loginPath,
@@ -128,6 +134,14 @@ class AppRouter extends RootStackRouter {
 
         // Detail routes — pushed over the tabs, not into them.
         AutoRoute(
+            page: AdminRoute.page,
+            path: '/admin',
+            guards: [_authGuard.forAdmin]),
+        AutoRoute(
+            page: DashboardRoute.page,
+            path: '/dashboard',
+            guards: [_authGuard]),
+        AutoRoute(
             page: ConversationRoute.page,
             path: '/conversation',
             guards: [_authGuard]),
@@ -159,7 +173,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: JobDetailRoute.page,
           path: RoutePathConstant.jobDetailPath,
-          guards: [_authGuard],
         ),
         AutoRoute(
           page: TwoFactorSettingsRoute.page,

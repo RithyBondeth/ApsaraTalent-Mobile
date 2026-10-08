@@ -26,6 +26,7 @@ class SavedSearchRepositoryImpl implements SavedSearchRepository {
     required String name,
     required String keyword,
     List<String> careerScopes = const [],
+    Map<String, dynamic> filters = const {},
     SearchFrequency frequency = SearchFrequency.weekly,
   }) =>
       _guard('Could not save that search.', () async {
@@ -34,7 +35,8 @@ class SavedSearchRepositoryImpl implements SavedSearchRepository {
           // The same shape the search screen sends as query parameters. This is
           // a JSON body, so the list-format trap on search does not apply.
           'filters': {
-            'keyword': keyword.trim(),
+            ...filters,
+            if (keyword.trim().length >= 2) 'keyword': keyword.trim(),
             if (careerScopes.isNotEmpty) 'careerScopes': careerScopes,
           },
           'frequency': frequency.name,

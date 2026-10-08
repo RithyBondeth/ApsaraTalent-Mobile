@@ -47,7 +47,7 @@ class RoutePathConstant {
   static String profilePath = '/profile';
   static String applicationPath = '/application';
   static String favoritePath = '/favorite';
-  static String jobDetailPath = '/job';
+  static String jobDetailPath = '/jobs/:jobId';
   static String twoFactorSettingsPath = '/settings/two-factor';
   static String notificationPreferencesPath = '/settings/notifications';
   static String savedSearchesPath = '/saved-searches';

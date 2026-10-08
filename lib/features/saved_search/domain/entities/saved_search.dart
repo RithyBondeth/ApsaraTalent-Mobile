@@ -21,10 +21,8 @@ enum SearchFrequency {
 
 /// A search someone kept.
 ///
-/// The API stores `filters` as whatever search DTO it was given. Mobile search
-/// only ever sends a keyword and, when narrowing, career scopes — so those are
-/// the two read back. A search saved on the web with other filters still loads
-/// and lists; running it here applies what this app's search understands.
+/// The full query snapshot travels between web and mobile, including advanced
+/// filters. Keyword and career scopes remain convenient accessors.
 class SavedSearch {
   const SavedSearch({
     required this.id,
@@ -34,17 +32,36 @@ class SavedSearch {
     this.careerScopes = const [],
     this.createdAt,
     this.hasOtherFilters = false,
+    this.filters = const {},
   });
 
   factory SavedSearch.fromJson(Map<String, dynamic> json) {
     final filters = json['filters'];
     final map = filters is Map ? filters.cast<String, dynamic>() : const {};
-    const understood = {'keyword', 'careerScopes'};
+    const understood = {
+      'keyword',
+      'careerScopes',
+      'location',
+      'jobType',
+      'experienceLevel',
+      'educationRequired',
+      'companySizeMin',
+      'companySizeMax',
+      'salaryMin',
+      'salaryMax',
+      'workMode',
+      'postedDateFrom',
+      'postedDateTo',
+      'sortBy',
+      'sortOrder',
+      'excludeCompanyIds'
+    };
     return SavedSearch(
       id: '${json['id']}',
       name: jsonText(json['name']) ?? 'Saved search',
       frequency: SearchFrequency.fromKey(jsonText(json['frequency'])),
       keyword: jsonText(map['keyword']),
+      filters: Map<String, dynamic>.unmodifiable(map),
       careerScopes: jsonStrings(map['careerScopes']),
       createdAt: DateTime.tryParse(jsonText(json['createdAt']) ?? ''),
       // So the list can say "plus filters set on the web" rather than
@@ -62,6 +79,7 @@ class SavedSearch {
   final List<String> careerScopes;
   final DateTime? createdAt;
   final bool hasOtherFilters;
+  final Map<String, dynamic> filters;
 
   bool get isNarrowed => careerScopes.isNotEmpty;
 
@@ -73,6 +91,7 @@ class SavedSearch {
         careerScopes: careerScopes,
         createdAt: createdAt,
         hasOtherFilters: hasOtherFilters,
+        filters: filters,
       );
 }
 

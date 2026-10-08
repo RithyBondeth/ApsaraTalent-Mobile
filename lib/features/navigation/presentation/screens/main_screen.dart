@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:apsaratalent_mobile/features/admin/presentation/admin_screen.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
@@ -12,6 +15,9 @@ class MainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(authSessionProvider).value?.user?.role == EUserRole.admin) {
+      return const AdminScreen();
+    }
     return AutoTabsScaffold(
       backgroundColor: context.tokens.background,
       routes: const [

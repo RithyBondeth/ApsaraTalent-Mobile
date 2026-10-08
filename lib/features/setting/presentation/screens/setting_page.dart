@@ -105,6 +105,19 @@ class SettingScreen extends ConsumerWidget {
         const SectionTitle(title: 'Activity'),
         _SettingGroup(
           children: [
+            if (user?.role == EUserRole.admin)
+              _SettingRow(
+                  icon: LucideIcons.shieldCheck,
+                  label: 'Administration',
+                  value: 'Accounts, reports and job moderation',
+                  onTap: () => context.router.push(const AdminRoute())),
+            if (user?.role == EUserRole.employee ||
+                user?.role == EUserRole.company)
+              _SettingRow(
+                  icon: LucideIcons.chartNoAxesCombined,
+                  label: 'Dashboard',
+                  value: 'Matches, activity and profile visibility',
+                  onTap: () => context.router.push(const DashboardRoute())),
             if (user?.role == EUserRole.company)
               _SettingRow(
                 icon: LucideIcons.briefcaseBusiness,
@@ -193,6 +206,11 @@ class SettingScreen extends ConsumerWidget {
               value: 'Report a problem',
               onTap: () => context.router.push(const SupportReportRoute()),
             ),
+            _SettingRow(
+                icon: LucideIcons.bookOpen,
+                label: 'Help and resources',
+                value: 'Guides, safety, terms and privacy',
+                onTap: () => context.router.push(ResourcesRoute())),
             _SettingRow(
               icon: LucideIcons.database,
               label: 'Account data',

@@ -39,6 +39,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
   AiMatchExplanation? _explanation;
   SkillGapAnalysis? _gaps;
   List<InterviewQuestion>? _questions;
+  List<InterviewQuestion> _questionPreview = const [];
   bool _exporting = false;
   final _round = TextEditingController();
 
@@ -52,6 +53,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
     setState(() {
       _loading = true;
       _error = null;
+      _questionPreview = const [];
     });
     final repository = ref.read(aiMatchToolsRepositoryProvider);
     try {
@@ -59,23 +61,32 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
         switch (_tool) {
           case _Tool.explanation:
             final result = await repository.explanation(
-                widget.employeeId, widget.companyId);
+                widget.employeeId, widget.companyId,
+                lang: Localizations.localeOf(context).languageCode);
             if (mounted) setState(() => _explanation = result);
           case _Tool.gaps:
-            final result =
-                await repository.skillGap(widget.employeeId, widget.companyId);
+            final result = await repository.skillGap(
+                widget.employeeId, widget.companyId,
+                lang: Localizations.localeOf(context).languageCode);
             if (mounted) setState(() => _gaps = result);
           case _Tool.interview:
-            final result = await repository.interviewPrep(
+            final result = await repository.interviewPrepStream(
                 widget.employeeId, widget.companyId,
-                interviewTitle: _round.text);
+                interviewTitle: _round.text, onQuestions: (questions) {
+              if (mounted) setState(() => _questionPreview = questions);
+            });
             if (mounted) setState(() => _questions = result);
         }
       });
     } catch (error) {
       if (mounted) setState(() => _error = error);
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _questionPreview = const [];
+        });
+      }
     }
   }
 
@@ -135,6 +146,18 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
           ],
         ),
         const AiQuotaPanel(),
+        if (_loading && _questionPreview.isNotEmpty)
+          AppSurface(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                Text(context.tr('Generating interview questions…')),
+                for (final question in _questionPreview)
+                  Text(Localizations.localeOf(context).languageCode == 'km' &&
+                          question.questionKm.isNotEmpty
+                      ? question.questionKm
+                      : question.question),
+              ])),
         Wrap(spacing: AppShape.space2, runSpacing: AppShape.space2, children: [
           _choice(_Tool.explanation, 'Why this match'),
           _choice(_Tool.gaps, 'Skill gaps'),
@@ -211,7 +234,7 @@ class _AiMatchToolsScreenState extends ConsumerState<AiMatchToolsScreen> {
   }
 
   Widget _choice(_Tool tool, String label) => ChoiceChip(
-      label: Text(label),
+      label: Text(context.tr(label)),
       selected: _tool == tool,
       onSelected: _loading
           ? null

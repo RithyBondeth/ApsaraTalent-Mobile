@@ -68,6 +68,7 @@ class RecordingSearchRepository implements SearchRepository {
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) async {
     this.keyword = keyword;
     this.careerScopes = careerScopes;
@@ -79,6 +80,7 @@ class RecordingSearchRepository implements SearchRepository {
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) async =>
       SearchResults.empty();
 

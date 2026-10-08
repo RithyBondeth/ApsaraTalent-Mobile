@@ -142,7 +142,10 @@ void main() {
                 initialText: 'Keep my draft'))));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Polish draft'));
-    await tester.tap(find.text('Polish draft'));
+    await tester.runAsync(() async {
+      await tester.tap(find.text('Polish draft'));
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
     await tester.pumpAndSettle();
     expect(find.text('Keep my draft'), findsOneWidget);
     expect(find.text('Writing unavailable'), findsOneWidget);
@@ -177,11 +180,14 @@ void main() {
   testWidgets('generated text is returned only after explicit use',
       (tester) async {
     String? accepted;
-    final repo = AiRepository(client(FakeHttp((r) async => jsonResponse(
-        200,
-        r.path == '/ai/quota'
-            ? quotaData()
-            : {'coverLetter': 'Generated letter'}))));
+    final repo = AiRepository(client(FakeHttp((r) async => r.path == '/ai/quota'
+        ? jsonResponse(200, quotaData())
+        : ResponseBody.fromString(
+            'data: {"t":"chunk","v":"Generated letter"}\n\ndata: {"t":"done"}\n\n',
+            200,
+            headers: {
+                Headers.contentTypeHeader: ['text/event-stream']
+              }))));
     await tester.pumpWidget(ProviderScope(
         overrides: [
           aiRepositoryProvider.overrideWithValue(repo),
@@ -203,7 +209,10 @@ void main() {
     await tester.tap(find.text('Open writer'));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Generate cover letter'));
-    await tester.tap(find.text('Generate cover letter'));
+    await tester.runAsync(() async {
+      await tester.tap(find.text('Generate cover letter'));
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
     await tester.pumpAndSettle();
     expect(accepted, isNull);
     expect(find.text('Generated letter'), findsOneWidget);

@@ -7,6 +7,7 @@ abstract class SavedSearchRepository {
     required String name,
     required String keyword,
     List<String> careerScopes,
+    Map<String, dynamic> filters,
     SearchFrequency frequency,
   });
 

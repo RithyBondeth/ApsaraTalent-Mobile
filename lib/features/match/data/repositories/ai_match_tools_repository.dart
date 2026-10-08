@@ -76,6 +76,37 @@ class AiMatchToolsRepository {
         .toList();
   }
 
+  Future<List<InterviewQuestion>> interviewPrepStream(String eid, String cid,
+      {String? interviewTitle,
+      void Function(List<InterviewQuestion>)? onQuestions}) async {
+    final response = await _client.get('${apiAiInterviewPrep(eid, cid)}/stream',
+        queryParameters: {
+          if (interviewTitle != null && interviewTitle.trim().isNotEmpty)
+            'interviewTitle': interviewTitle.trim()
+        },
+        options: Options(
+            responseType: ResponseType.stream,
+            receiveTimeout: const Duration(minutes: 3)));
+    final body = response.data;
+    if (body is! ResponseBody) {
+      throw ApiException(message: 'The AI response could not be read.');
+    }
+    final questions = <InterviewQuestion>[];
+    await for (final row in aiJsonRecords(body.stream.cast<List<int>>())) {
+      if (row['question'] is! String ||
+          row['tip'] is! String ||
+          (row['question'] as String).trim().isEmpty) {
+        throw ApiException(message: 'The AI response could not be read.');
+      }
+      questions.add(InterviewQuestion.fromJson(row));
+      onQuestions?.call(List.unmodifiable(questions));
+    }
+    if (questions.isEmpty) {
+      throw ApiException(message: 'The AI response could not be read.');
+    }
+    return questions;
+  }
+
   Future<SkillGapAnalysis> skillGap(String eid, String cid,
       {String lang = 'en'}) async {
     final response = await _client.get(

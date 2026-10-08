@@ -5,6 +5,7 @@ import 'package:apsaratalent_mobile/core/network/api_interceptors.dart';
 import 'package:apsaratalent_mobile/core/session/session_store.dart';
 import 'package:apsaratalent_mobile/core/session/token_refresher.dart';
 import 'package:dio/dio.dart';
+import 'dart:convert';
 
 /// The app's HTTP client. Obtain it from `apiClientProvider`.
 ///
@@ -106,6 +107,23 @@ class ApiClient {
     try {
       return await request();
     } on DioException catch (e) {
+      // Dio leaves error bodies as streams when the successful response was
+      // requested as SSE. Decode the gateway's JSON refusal before mapping it
+      // so quota, validation and service errors remain readable.
+      final body = e.response?.data;
+      if (body is ResponseBody) {
+        try {
+          final bytes = <int>[];
+          await for (final chunk
+              in body.stream.timeout(const Duration(seconds: 5))) {
+            if (bytes.length + chunk.length > 65536) break;
+            bytes.addAll(chunk);
+          }
+          e.response?.data = jsonDecode(utf8.decode(bytes));
+        } catch (_) {
+          // An invalid error body still maps to the original HTTP status.
+        }
+      }
       throw _handleError(e);
     }
   }

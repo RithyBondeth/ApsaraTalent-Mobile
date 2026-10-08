@@ -5,6 +5,7 @@ import 'package:apsaratalent_mobile/core/themes/app_typography.dart';
 import 'package:apsaratalent_mobile/core/extensions/context_extensions.dart';
 import 'package:apsaratalent_mobile/core/localization/app_localizations.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/app_logo.dart';
+import 'package:apsaratalent_mobile/features/resources/presentation/resources_screen.dart';
 
 /// The frame every auth screen sits in: mark, headline, standfirst, content.
 ///
@@ -87,6 +88,20 @@ class AuthScaffold extends StatelessWidget {
                 const SizedBox(height: AppShape.space6),
                 footer!,
               ],
+              const SizedBox(height: AppShape.space4),
+              Wrap(alignment: WrapAlignment.center, children: [
+                for (final entry in const {
+                  'terms': 'Terms of Service',
+                  'privacy': 'Privacy Policy',
+                  'support': 'Help and resources'
+                }.entries)
+                  TextButton(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  ResourcesScreen(document: entry.key))),
+                      child: Text(context.tr(entry.value))),
+              ]),
             ],
           ),
         ),

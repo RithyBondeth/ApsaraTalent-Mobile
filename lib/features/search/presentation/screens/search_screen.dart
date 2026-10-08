@@ -15,6 +15,7 @@ import 'package:apsaratalent_mobile/features/saved_search/domain/entities/saved_
 import 'package:apsaratalent_mobile/features/saved_search/providers/saved_search_notifier.dart';
 import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
+import 'package:apsaratalent_mobile/features/search/presentation/search_filters_screen.dart';
 import 'package:apsaratalent_mobile/shared/widgets/cards/job_card.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 
@@ -95,6 +96,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             onChanged: notifier.onKeyword,
             onSubmitted: (_) => notifier.run(),
           ),
+          AppButton(
+              label: 'Search filters',
+              icon: LucideIcons.slidersHorizontal,
+              variant: AppButtonVariant.outline,
+              onPressed: () async {
+                final filters = await Navigator.of(context)
+                    .push<Map<String, dynamic>>(MaterialPageRoute(
+                        builder: (_) => SearchFiltersScreen(
+                            jobs: jobs, filters: state.filters)));
+                if (filters != null && mounted) {
+                  await notifier.setFilters(filters);
+                }
+              }),
           if (jobs)
             Row(
               children: [
@@ -111,7 +125,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   child: AppButton(
                     label: 'Save search',
                     icon: LucideIcons.bookmarkPlus,
-                    onPressed: state.keyword.trim().isEmpty
+                    onPressed: !state.hasQuery
                         ? null
                         : () => _saveSearch(context, state),
                   ),
@@ -136,7 +150,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Future<void> _saveSearch(BuildContext context, SearchState search) async {
-    final name = TextEditingController(text: search.keyword.trim());
+    final name = TextEditingController(
+        text: search.keyword.trim().isEmpty
+            ? context.tr('Saved search')
+            : search.keyword.trim());
     var frequency = SearchFrequency.weekly;
     var saving = false;
     String? error;
@@ -167,7 +184,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   for (final option in SearchFrequency.values)
                     DropdownMenuItem(
                       value: option,
-                      child: Text(option.label),
+                      child: Text(context.tr(option.label)),
                     ),
                 ],
                 onChanged: saving
@@ -180,7 +197,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ),
               const SizedBox(height: AppShape.space2),
               Text(
-                frequency.description,
+                context.tr(frequency.description),
                 style: AppTypography.tiny.copyWith(
                   color: context.tokens.mutedForeground,
                 ),
@@ -211,6 +228,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               name: value,
                               keyword: search.keyword,
                               careerScopes: search.careerScopes,
+                              filters: search.filters,
                               frequency: frequency,
                             );
                         if (context.mounted) Navigator.of(context).pop();
@@ -248,7 +266,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   List<Widget> _results(BuildContext context, SearchState state) {
-    if (state.keyword.trim().isEmpty) {
+    if (!state.hasQuery) {
       return [
         PageState(
           variant: PageStateVariant.empty,
