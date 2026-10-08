@@ -107,12 +107,14 @@ class SavedSearchesNotifier
     required String name,
     required String keyword,
     List<String> careerScopes = const [],
+    Map<String, dynamic> filters = const {},
     SearchFrequency frequency = SearchFrequency.weekly,
   }) async {
     final created = await _repository.create(
       name: name,
       keyword: keyword,
       careerScopes: careerScopes,
+      filters: filters,
       frequency: frequency,
     );
     final current = state.value;

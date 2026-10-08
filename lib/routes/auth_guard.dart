@@ -1,4 +1,5 @@
 import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_state.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
 import 'package:apsaratalent_mobile/routes/app_route.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// A session still being restored sends the navigation to the splash, which
 /// finishes the restore and routes from there.
 class AuthGuard extends AutoRouteGuard {
-  AuthGuard(this._readSession);
+  AuthGuard(this._readSession, {this.adminOnly = false});
+
+  final bool adminOnly;
+  AuthGuard get forAdmin => AuthGuard(_readSession, adminOnly: true);
 
   final AsyncValue<AuthSessionState> Function() _readSession;
 
@@ -19,6 +23,13 @@ class AuthGuard extends AutoRouteGuard {
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     final session = _readSession();
     if (session.value?.isAuthenticated == true) {
+      if (adminOnly && session.value?.user?.role != EUserRole.admin) {
+        resolver.next(false);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          router.root.replaceAll([const MainRoute()]);
+        });
+        return;
+      }
       resolver.next();
       return;
     }

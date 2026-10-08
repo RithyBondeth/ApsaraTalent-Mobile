@@ -1,0 +1,1757 @@
+{
+  "version": 1,
+  "documents": {
+    "terms": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Terms of Service",
+        "updatedOn": "March 24, 2026",
+        "statUpdated": "last updated",
+        "statSections": "sections",
+        "statReading": "reading time",
+        "readingTime": "~7 min",
+        "tocHeading": "Contents",
+        "intro": "These Terms of Service govern your access to and use of Apsara Talent — a talent-matching platform connecting skilled professionals with companies across Cambodia. By creating an account or using any part of the platform, you agree to these terms.",
+        "callout": "Please read these terms carefully before using Apsara Talent. If you do not agree, you may not access or use the platform.",
+        "toc": [
+          {
+            "id": "acceptance",
+            "label": "Acceptance of Terms"
+          },
+          {
+            "id": "eligibility",
+            "label": "Eligibility"
+          },
+          {
+            "id": "account-types",
+            "label": "Account Types"
+          },
+          {
+            "id": "registration",
+            "label": "Account Registration"
+          },
+          {
+            "id": "acceptable-use",
+            "label": "Acceptable Use"
+          },
+          {
+            "id": "prohibited",
+            "label": "Prohibited Conduct"
+          },
+          {
+            "id": "content",
+            "label": "User Content"
+          },
+          {
+            "id": "ai-features",
+            "label": "AI Features"
+          },
+          {
+            "id": "ip",
+            "label": "Intellectual Property"
+          },
+          {
+            "id": "privacy",
+            "label": "Privacy"
+          },
+          {
+            "id": "disclaimers",
+            "label": "Disclaimers"
+          },
+          {
+            "id": "liability",
+            "label": "Limitation of Liability"
+          },
+          {
+            "id": "termination",
+            "label": "Termination"
+          },
+          {
+            "id": "governing-law",
+            "label": "Governing Law"
+          },
+          {
+            "id": "changes",
+            "label": "Changes to Terms"
+          },
+          {
+            "id": "contact",
+            "label": "Contact Us"
+          }
+        ],
+        "s1": {
+          "title": "Acceptance of Terms",
+          "p1": "By registering for an account, clicking \"I agree,\" or otherwise accessing or using Apsara Talent, you confirm that you have read, understood, and agreed to be bound by these Terms of Service and our",
+          "privacyLink": "Privacy Policy",
+          "p1suffix": ", which is incorporated herein by reference.",
+          "p2": "If you are accepting these terms on behalf of a company or other legal entity, you represent that you have the authority to bind that entity to these terms."
+        },
+        "s2": {
+          "title": "Eligibility",
+          "intro": "To use Apsara Talent, you must:",
+          "bullets": [
+            "Be at least 18 years of age.",
+            "Have the legal capacity to enter into a binding contract.",
+            "Not be prohibited from using the platform under applicable law.",
+            "Not have had a previous account terminated by Apsara Talent for violations of these terms."
+          ],
+          "note": "By using the platform, you represent and warrant that all of the above conditions are met."
+        },
+        "s3": {
+          "title": "Account Types",
+          "intro": "Apsara Talent offers two distinct account types:",
+          "type1Title": "👤 Employee / Freelancer Account",
+          "type1": "For individuals seeking employment, freelance work, or internship opportunities. You will create a professional profile showcasing your skills, experience, education, and availability. Your profile is visible to registered Company accounts for the purpose of talent discovery.",
+          "type2Title": "🏢 Company / Employer Account",
+          "type2": "For businesses and organisations seeking to hire or engage talent. You will create a company profile including your industry, open positions, company values, and benefits. Your profile is visible to registered Employee accounts for the purpose of talent discovery.",
+          "note": "Each user may maintain only one account per account type. Creating multiple accounts to circumvent restrictions is prohibited."
+        },
+        "s4": {
+          "title": "Account Registration",
+          "intro": "When registering an account you agree to:",
+          "bullets": [
+            "Provide accurate, current, and complete information about yourself or your company.",
+            "Maintain and promptly update your information to keep it accurate.",
+            "Keep your password confidential and not share it with any third party.",
+            "Notify us immediately if you suspect unauthorised access to your account.",
+            "Accept responsibility for all activities that occur under your account."
+          ],
+          "note": "You may register using an email address and password, or via social login through Google, Facebook, LinkedIn, or GitHub. By using social login, you also agree to the terms of those respective providers."
+        },
+        "s5": {
+          "title": "Acceptable Use",
+          "intro": "You agree to use Apsara Talent only for its intended purpose of professional talent matching and for lawful purposes consistent with these terms. Specifically, you agree to:",
+          "bullets": [
+            "Keep your profile information truthful, accurate, and professional.",
+            "Use the messaging feature only to communicate in good faith about legitimate employment or hiring opportunities.",
+            "Respect other users' privacy and treat all parties with professionalism.",
+            "Comply with all applicable Cambodian laws and regulations."
+          ]
+        },
+        "s6": {
+          "title": "Prohibited Conduct",
+          "intro": "The following conduct is strictly prohibited on Apsara Talent:",
+          "bullets": [
+            "Impersonating another person, company, or entity.",
+            "Posting false, misleading, or fraudulent job listings or candidate profiles.",
+            "Harassment, discrimination, or abusive behaviour toward other users via the messaging system or any other feature.",
+            "Sending unsolicited commercial messages (spam) through the platform.",
+            "Scraping, crawling, or harvesting user data from the platform using automated tools.",
+            "Attempting to reverse-engineer, decompile, or compromise the security of the platform.",
+            "Using the platform to distribute malware, phishing content, or any other malicious material.",
+            "Circumventing or attempting to circumvent any access controls or security features.",
+            "Creating accounts for the purpose of manipulating search rankings or the matching algorithm."
+          ],
+          "note": "Violations may result in immediate account suspension or permanent termination, and may be reported to relevant authorities."
+        },
+        "s7": {
+          "title": "User Content",
+          "p1": "You retain ownership of all content you submit to Apsara Talent, including your profile information, photos, resume, cover letter, and messages.",
+          "p2": "By submitting content, you grant Apsara Talent a worldwide, non-exclusive, royalty-free licence to store, display, and process your content solely for the purpose of operating and improving the platform. We do not claim ownership of your content.",
+          "p3": "You are solely responsible for the content you submit and represent that:",
+          "bullets": [
+            "You own the content or have the right to share it.",
+            "The content does not infringe any third party's intellectual property, privacy, or other rights.",
+            "The content is accurate and not misleading."
+          ]
+        },
+        "s8": {
+          "title": "AI Features (Resume Builder)",
+          "intro": "Apsara Talent provides an AI-powered Resume Builder feature designed to assist you in drafting and formatting your professional resume.",
+          "bullets": [
+            "AI-generated content is provided as a starting point and may contain errors, inaccuracies, or outdated information. You are responsible for reviewing and verifying all AI-generated content before using it.",
+            "Do not rely solely on AI-generated content for important decisions. Always review the output critically.",
+            "By using the AI Resume Builder, your profile data is processed by our AI systems to generate suggestions.",
+            "Apsara Talent does not guarantee any specific outcomes (e.g. job offers) resulting from use of the Resume Builder."
+          ]
+        },
+        "s9": {
+          "title": "Intellectual Property",
+          "p1": "All elements of the Apsara Talent platform — including the brand name, logo, software, design, code, and proprietary algorithms — are the intellectual property of Apsara Talent and are protected by applicable intellectual property laws.",
+          "p2": "You are granted a limited, non-exclusive, non-transferable, revocable licence to access and use the platform for its intended purpose. You may not copy, modify, distribute, sell, or create derivative works from any part of the platform without our prior written consent."
+        },
+        "s10": {
+          "title": "Privacy",
+          "p1": "Your use of Apsara Talent is also governed by our",
+          "privacyLink": "Privacy Policy",
+          "p1suffix": ", which is incorporated into these Terms of Service by reference. By using the platform, you consent to the collection and use of your information as described in the Privacy Policy."
+        },
+        "s11": {
+          "title": "Disclaimers",
+          "p1intro": "Apsara Talent is a platform that facilitates connections between job seekers and employers. We are not a recruitment agency, staffing firm, or employer. We do not make or participate in hiring decisions.",
+          "p1strong": "platform",
+          "bullets": [
+            "We do not guarantee that any job seeker will find employment, or that any company will find suitable candidates through the platform.",
+            "We do not verify the accuracy of user-provided information, including job titles, skills, or company details. Users are encouraged to conduct their own due diligence.",
+            "The platform is provided \"as is\" and \"as available\" without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, or non-infringement.",
+            "We do not guarantee uninterrupted, error-free service and reserve the right to perform maintenance that may temporarily affect availability."
+          ]
+        },
+        "s12": {
+          "title": "Limitation of Liability",
+          "intro": "To the maximum extent permitted by applicable law, Apsara Talent and its officers, employees, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the platform, including but not limited to:",
+          "bullets": [
+            "Loss of employment opportunities or business.",
+            "Reliance on inaccurate information provided by other users.",
+            "Unauthorised access to your account resulting from your failure to maintain password security.",
+            "Any conduct or content of third parties on the platform."
+          ],
+          "note": "Our total aggregate liability to you for any claim shall not exceed the amount you paid us (if any) in the twelve months prior to the event giving rise to the claim."
+        },
+        "s13": {
+          "title": "Termination",
+          "byYou": "By you: You may delete your account at any time through your profile settings. Upon deletion, your data will be handled as described in our Privacy Policy.",
+          "byYouStrong": "By you:",
+          "byUs": "By us: We reserve the right to suspend or terminate your account at any time, with or without notice, for any of the following reasons:",
+          "byUsStrong": "By us:",
+          "bullets": [
+            "Violation of these Terms of Service.",
+            "Fraudulent, deceptive, or harmful behaviour.",
+            "Inactivity for an extended period.",
+            "Legal obligation or regulatory requirement."
+          ],
+          "note": "Upon termination, your right to access the platform immediately ceases. Provisions of these terms that by their nature should survive termination will remain in effect."
+        },
+        "s14": {
+          "title": "Governing Law",
+          "p1strong": "Kingdom of Cambodia",
+          "p1": ", without regard to conflict-of-law principles.",
+          "p1prefix": "These Terms of Service shall be governed by and construed in accordance with the laws of the",
+          "p2": "Any disputes arising from or relating to these terms or your use of Apsara Talent shall be subject to the exclusive jurisdiction of the competent courts of Phnom Penh, Cambodia. You waive any objection to the jurisdiction or venue of such courts."
+        },
+        "s15": {
+          "title": "Changes to Terms",
+          "p1": "We may modify these Terms of Service at any time. We will provide notice of material changes by updating the \"Last updated\" date and, where appropriate, notifying registered users by email or in-app notification.",
+          "p2": "Your continued use of Apsara Talent after the effective date of any updated terms constitutes your acceptance of those changes. If you do not agree to the updated terms, you must stop using the platform and delete your account."
+        },
+        "s16": {
+          "title": "Contact Us",
+          "intro": "If you have questions or concerns about these Terms of Service, please contact us:",
+          "address": "Phnom Penh, Cambodia"
+        }
+      },
+      "km": {
+        "back": "ត្រឡប់",
+        "pageTitle": "លក្ខខណ្ឌនៃការប្រើប្រាស់",
+        "updatedOn": "២៤ មីនា ២០២៦",
+        "statUpdated": "ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ",
+        "statSections": "ផ្នែក",
+        "statReading": "រយៈពេលអាន",
+        "readingTime": "~៧ នាទី",
+        "tocHeading": "មាតិកា",
+        "intro": "លក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះគ្រប់គ្រងការចូលប្រើ និងការប្រើប្រាស់ Apsara Talent — វេទិកាផ្គូផ្គងទេព្យោសម្បទាដែលភ្ជាប់អ្នកជំនាញជំនាញជាមួយក្រុមហ៊ុននៅទូទាំងប្រទេសកម្ពុជា។ តាមរយៈការបង្កើតគណនី ឬការប្រើប្រាស់ផ្នែកណាមួយនៃវេទិកា អ្នកយល់ព្រមនឹងលក្ខខណ្ឌទាំងនេះ។",
+        "callout": "សូមអានលក្ខខណ្ឌទាំងនេះដោយប្រុងប្រយ័ត្នមុនប្រើ Apsara Talent។ ប្រសិនបើអ្នកមិនយល់ព្រម អ្នកមិនអាចចូលប្រើ ឬប្រើប្រាស់វេទិកាឡើយ។",
+        "toc": [
+          {
+            "id": "acceptance",
+            "label": "ការទទួលស្គាល់លក្ខខណ្ឌ"
+          },
+          {
+            "id": "eligibility",
+            "label": "លក្ខណៈសម្បត្តិ"
+          },
+          {
+            "id": "account-types",
+            "label": "ប្រភេទគណនី"
+          },
+          {
+            "id": "registration",
+            "label": "ការចុះឈ្មោះគណនី"
+          },
+          {
+            "id": "acceptable-use",
+            "label": "ការប្រើប្រាស់ត្រឹមត្រូវ"
+          },
+          {
+            "id": "prohibited",
+            "label": "អាកប្បកិរិយាហាមឃាត់"
+          },
+          {
+            "id": "content",
+            "label": "មាតិការបស់អ្នកប្រើ"
+          },
+          {
+            "id": "ai-features",
+            "label": "មុខងារ AI"
+          },
+          {
+            "id": "ip",
+            "label": "កម្មសិទ្ធិបញ្ញា"
+          },
+          {
+            "id": "privacy",
+            "label": "ភាពឯកជន"
+          },
+          {
+            "id": "disclaimers",
+            "label": "ការបដិសេធ"
+          },
+          {
+            "id": "liability",
+            "label": "ការកំណត់ការទទួលខុសត្រូវ"
+          },
+          {
+            "id": "termination",
+            "label": "ការបញ្ចប់"
+          },
+          {
+            "id": "governing-law",
+            "label": "ច្បាប់គ្រប់គ្រង"
+          },
+          {
+            "id": "changes",
+            "label": "ការផ្លាស់ប្តូរលក្ខខណ្ឌ"
+          },
+          {
+            "id": "contact",
+            "label": "ទំនាក់ទំនងពួកយើង"
+          }
+        ],
+        "s1": {
+          "title": "ការទទួលស្គាល់លក្ខខណ្ឌ",
+          "p1": "តាមរយៈការចុះឈ្មោះគណនី ចុច \"ខ្ញុំយល់ព្រម\" ឬការចូលប្រើ ឬប្រើប្រាស់ Apsara Talent តាមរបៀបផ្សេង អ្នកបញ្ជាក់ថាអ្នកបានអាន យល់ និងយល់ព្រមជាប់ចំណងដោយលក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះ និង",
+          "privacyLink": "គោលការណ៍ភាពឯកជន",
+          "p1suffix": "របស់យើង ដែលត្រូវបានបញ្ចូលនៅទីនេះជាឯកសារយោង",
+          "p2": "ប្រសិនបើអ្នកទទួលស្គាល់លក្ខខណ្ឌទាំងនេះក្នុងនាមក្រុមហ៊ុន ឬអង្គភាពផ្លូវច្បាប់ផ្សេង អ្នកតំណាងថាអ្នកមានសិទ្ធិអំណាចក្នុងការចាប់ចំណងអង្គភាពនោះដោយលក្ខខណ្ឌទាំងនេះ"
+        },
+        "s2": {
+          "title": "លក្ខណៈសម្បត្តិ",
+          "intro": "ដើម្បីប្រើ Apsara Talent អ្នកត្រូវ:",
+          "bullets": [
+            "មានអាយុយ៉ាងហោចណាស់ ១៨ ឆ្នាំ",
+            "មានសមត្ថភាពផ្លូវច្បាប់ក្នុងការចូលទៅក្នុងកិច្ចសន្យាដែលជាប់ចំណង",
+            "មិនត្រូវបានហាមឃាត់ពីការប្រើប្រាស់វេទិកាក្រោមច្បាប់ដែលអនុវត្ត",
+            "មិនធ្លាប់ត្រូវបានបញ្ចប់គណនីពីមុនដោយ Apsara Talent ដោយសារការរំលោភលក្ខខណ្ឌទាំងនេះ"
+          ],
+          "note": "តាមរយៈការប្រើប្រាស់វេទិកា អ្នកតំណាង និងធានាថាលក្ខខណ្ឌទាំងអស់ខាងលើបានបំពេញ"
+        },
+        "s3": {
+          "title": "ប្រភេទគណនី",
+          "intro": "Apsara Talent ផ្តល់ប្រភេទគណនីពីរប្រភេទ:",
+          "type1Title": "👤 គណនីនិយោជិត / Freelancer",
+          "type1": "សម្រាប់បុគ្គលដែលស្វែងរកការងារ ការងារ Freelance ឬឱកាសហាត់ការ។ អ្នកនឹងបង្កើតប្រវត្តិរូបវិជ្ជាជីវៈដែលបង្ហាញជំនាញ បទពិសោធ ការសិក្សា និងភាពទំនេររបស់អ្នក។ ប្រវត្តិរូបរបស់អ្នកអាចមើលឃើញដោយគណនីក្រុមហ៊ុនដែលបានចុះឈ្មោះ ដើម្បីស្វែងរកទេព្យោសម្បទា",
+          "type2Title": "🏢 គណនីក្រុមហ៊ុន / និយោជក",
+          "type2": "សម្រាប់អាជីវកម្ម និងអង្គភាពដែលស្វែងរកជ្រើសរើស ឬចូលរួមជាមួយទេព្យោសម្បទា។ អ្នកនឹងបង្កើតប្រវត្តិរូបក្រុមហ៊ុន រួមមានឧស្សាហកម្ម មុខតំណែងការងារ តម្លៃ និងអត្ថប្រយោជន៍ក្រុមហ៊ុន។ ប្រវត្តិរូបរបស់អ្នកអាចមើលឃើញដោយគណនីនិយោជិតដែលបានចុះឈ្មោះ ដើម្បីស្វែងរកទេព្យោសម្បទា",
+          "note": "អ្នកប្រើប្រាស់នីមួយៗអាចរក្សាគណនីតែមួយប្រភេទប៉ុណ្ណោះ។ ការបង្កើតគណនីច្រើនដើម្បីរំលងការដាក់កំហិតត្រូវបានហាមឃាត់"
+        },
+        "s4": {
+          "title": "ការចុះឈ្មោះគណនី",
+          "intro": "នៅពេលចុះឈ្មោះគណនី អ្នកយល់ព្រម:",
+          "bullets": [
+            "ផ្តល់ព័ត៌មានដែលត្រឹមត្រូវ បច្ចុប្បន្ន និងពេញលេញអំពីខ្លួនអ្នក ឬក្រុមហ៊ុនរបស់អ្នក",
+            "រក្សា និងធ្វើបច្ចុប្បន្នភាពព័ត៌មានរបស់អ្នកភ្លាមៗ ដើម្បីរក្សាឱ្យវាត្រឹមត្រូវ",
+            "រក្សាជាសម្ងាត់ពាក្យសម្ងាត់ហើយមិនចែករំលែកជាមួយភាគីទីបីណាមួយ",
+            "ជូនដំណឹងពួកយើងភ្លាមៗ ប្រសិនបើអ្នកសង្ស័យការចូលប្រើដោយគ្មានការអនុញ្ញាតចំពោះគណនីរបស់អ្នក",
+            "ទទួលខុសត្រូវចំពោះសកម្មភាពទាំងអស់ដែលកើតឡើងក្រោមគណនីរបស់អ្នក"
+          ],
+          "note": "អ្នកអាចចុះឈ្មោះដោយប្រើអ៊ីមែល និងពាក្យសម្ងាត់ ឬតាម Social Login ដែលភ្ជាប់ Google, Facebook, LinkedIn ឬ GitHub។ តាមរយៈការប្រើ Social Login អ្នកក៏យល់ព្រមនឹងលក្ខខណ្ឌរបស់អ្នកផ្តល់ទាំងនោះផងដែរ"
+        },
+        "s5": {
+          "title": "ការប្រើប្រាស់ត្រឹមត្រូវ",
+          "intro": "អ្នកយល់ព្រមប្រើ Apsara Talent តែសម្រាប់គោលបំណងផ្គូផ្គងទេព្យោសម្បទាវិជ្ជាជីវៈ និងគោលបំណងស្របច្បាប់ស្របនឹងលក្ខខណ្ឌទាំងនេះ។ ជាពិសេស អ្នកយល់ព្រម:",
+          "bullets": [
+            "រក្សាព័ត៌មានប្រវត្តិរូបរបស់អ្នកឱ្យពិតប្រាកដ ត្រឹមត្រូវ និងជាវិជ្ជាជីវៈ",
+            "ប្រើមុខងារផ្ញើសារតែដើម្បីទំនាក់ទំនងដោយស្មោះត្រង់អំពីឱកាសការងារ ឬការជ្រើសរើសសម្ភារៈស្របច្បាប់",
+            "គោរពភាពឯកជនរបស់អ្នកប្រើប្រាស់ផ្សេង ហើយចាត់ទុកគ្រប់ភាគីជាវិជ្ជាជីវៈ",
+            "អនុលោមតាមច្បាប់ និងបទប្បញ្ញត្តិកម្ពុជាដែលអនុវត្ត"
+          ]
+        },
+        "s6": {
+          "title": "អាកប្បកិរិយាហាមឃាត់",
+          "intro": "អាកប្បកិរិយាខាងក្រោមត្រូវបានហាមឃាត់យ៉ាងតឹងរ៉ឹងនៅ Apsara Talent:",
+          "bullets": [
+            "ក្លែងបន្លំជាបុគ្គល ក្រុមហ៊ុន ឬអង្គភាពផ្សេង",
+            "ចុះផ្សាយការផ្សាយការងារ ឬប្រវត្តិរូបបេក្ខជនក្លែងបន្លំ បញ្ចោតបំភ្លៃ ឬក្លែងក្លាយ",
+            "ការបៀតបៀន ការរើសអើង ឬអាកប្បកិរិយាបំពានចំពោះអ្នកប្រើប្រាស់ផ្សេងតាមប្រព័ន្ធផ្ញើសារ ឬមុខងារផ្សេង",
+            "ការផ្ញើសារពាណិជ្ជកម្មដែលមិនបានស្នើសុំ (Spam) តាមរយៈវេទិកា",
+            "ការ Scrape, Crawl ឬប្រមូលទិន្នន័យអ្នកប្រើប្រាស់ពីវេទិកាដោយប្រើឧបករណ៍ស្វ័យប្រវត្ដ",
+            "ការព្យាយាម Reverse-Engineer, Decompile ឬប្រកួតប្រជែងទៅនឹងសុវត្ថិភាពវេទិកា",
+            "ការប្រើប្រាស់វេទិកាដើម្បីចែកចាយ Malware, Phishing ឬសម្ភារៈព្យាបាទ",
+            "ការរំលង ឬព្យាយាមរំលងការគ្រប់គ្រងការចូលប្រើ ឬមុខងារសុវត្ថិភាព",
+            "ការបង្កើតគណនីដើម្បី操纵 ចំណាត់ថ្នាក់ការស្វែងរក ឬក្បួន Matching"
+          ],
+          "note": "ការរំលោភអាចនាំឱ្យផ្អាក ឬបញ្ចប់គណនីភ្លាមៗ ហើយអាចត្រូវបានរាយការណ៍ទៅអាជ្ញាធរពាក់ព័ន្ធ"
+        },
+        "s7": {
+          "title": "មាតិការបស់អ្នកប្រើ",
+          "p1": "អ្នករក្សាម្ចាស់កម្មសិទ្ធិលើមាតិកាទាំងអស់ដែលអ្នកដាក់ជូន Apsara Talent រួមមានព័ត៌មានប្រវត្តិរូប រូបភាព Resume, Cover Letter និងសារ",
+          "p2": "តាមរយៈការដាក់ជូនមាតិកា អ្នកផ្តល់ Apsara Talent នូវអាជ្ញាបណ្ណទូទាំងពិភពលោក មិនផ្តាច់មុខ មិនគិតថ្លៃ ដើម្បីរក្សាទុក បង្ហាញ និងដំណើរការមាតិការបស់អ្នក តែសម្រាប់គោលបំណងដំណើរការ និងធ្វើឱ្យប្រសើរវេទិកា។ យើងមិនទាមទារម្ចាស់កម្មសិទ្ធិលើមាតិការបស់អ្នកឡើយ",
+          "p3": "អ្នកទទួលខុសត្រូវតែម្នាក់ចំពោះមាតិកាដែលអ្នកដាក់ជូន ហើយតំណាងថា:",
+          "bullets": [
+            "អ្នកជាម្ចាស់មាតិកា ឬមានសិទ្ធិក្នុងការចែករំលែកវា",
+            "មាតិកាមិនរំលោភកម្មសិទ្ធិបញ្ញា ភាពឯកជន ឬសិទ្ធិផ្សេងៗរបស់ភាគីទីបីឡើយ",
+            "មាតិកាមានភាពត្រឹមត្រូវ និងមិនបញ្ចោតបំភ្លៃ"
+          ]
+        },
+        "s8": {
+          "title": "មុខងារ AI (Resume Builder)",
+          "intro": "Apsara Talent ផ្តល់មុខងារ AI Resume Builder ដែលរចនាឡើងដើម្បីជួយអ្នកក្នុងការបង្ហាញ និងធ្វើទ្រង់ទ្រាយ Resume វិជ្ជាជីវៈរបស់អ្នក",
+          "bullets": [
+            "មាតិកាដែលបង្កើតដោយ AI ត្រូវបានផ្តល់ជាចំណុចចាប់ផ្ដើម ហើយអាចមានកំហុស ភាពមិនត្រឹមត្រូវ ឬព័ត៌មានហួសសម័យ។ អ្នកទទួលខុសត្រូវក្នុងការពិនិត្យ និងផ្ទៀងផ្ទាត់មាតិកាដែល AI បង្កើតទាំងអស់មុនប្រើ",
+            "កុំពឹងផ្អែកតែលើមាតិកា AI សម្រាប់ការសម្រេចចិត្តសំខាន់ៗ។ តែងតែពិនិត្យ Output ជាមួយការទស្សនៈរិះគន់",
+            "តាមរយៈការប្រើ AI Resume Builder ទិន្នន័យប្រវត្តិរូបរបស់អ្នកត្រូវបានដំណើរការដោយប្រព័ន្ធ AI របស់យើង ដើម្បីបង្កើតការណែនាំ",
+            "Apsara Talent មិនធានាលទ្ធផលជាក់លាក់ណាមួយ (ឧ. ការផ្តល់ការងារ) ដែលបណ្តាលពីការប្រើ Resume Builder"
+          ]
+        },
+        "s9": {
+          "title": "កម្មសិទ្ធិបញ្ញា",
+          "p1": "ធាតុទាំងអស់នៃវេទិកា Apsara Talent — រួមមានឈ្មោះម៉ាក ស្លាក Software ការរចនា Code និងក្បួន Proprietary — ជាកម្មសិទ្ធិបញ្ញារបស់ Apsara Talent ហើយត្រូវបានការពារដោយច្បាប់កម្មសិទ្ធិបញ្ញាដែលអនុវត្ត",
+          "p2": "អ្នកត្រូវបានផ្តល់អាជ្ញាបណ្ណមានកំណត់ មិនផ្តាច់មុខ មិនអាចផ្ទេរ អាចដករំលង ដើម្បីចូលប្រើ និងប្រើប្រាស់វេទិកាសម្រាប់គោលបំណងដែលបានកំណត់។ អ្នកមិនអាចចម្លង កែប្រែ ចែកចាយ លក់ ឬបង្កើតស្នាដៃដឺរីវ៉ាទីវ ពីផ្នែកណាមួយនៃវេទិកាដោយគ្មានការយល់ព្រមជាលាយលក្ខណ៍អក្សររបស់យើង"
+        },
+        "s10": {
+          "title": "ភាពឯកជន",
+          "p1": "ការប្រើប្រាស់ Apsara Talent របស់អ្នកក៏ត្រូវបានគ្រប់គ្រងដោយ",
+          "privacyLink": "គោលការណ៍ភាពឯកជន",
+          "p1suffix": "របស់យើង ដែលត្រូវបានបញ្ចូលក្នុងលក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះជាឯកសារយោង។ តាមរយៈការប្រើប្រាស់វេទិកា អ្នកយល់ព្រមនឹងការប្រមូល និងការប្រើប្រាស់ព័ត៌មានរបស់អ្នកដូចបានពិពណ៌នានៅក្នុងគោលការណ៍ភាពឯកជន"
+        },
+        "s11": {
+          "title": "ការបដិសេធ",
+          "p1intro": "Apsara Talent ជាវេទិកាដែលជួយសម្រួលការតភ្ជាប់រវាងអ្នកស្វែងរកការងារ និងនិយោជក។ យើងមិនមែនជាភ្នាក់ងារជ្រើសរើស ក្រុមហ៊ុន Staffing ឬនិយោជកឡើយ។ យើងមិនធ្វើ ឬចូលរួមក្នុងការសម្រេចចិត្តជ្រើសរើស",
+          "p1strong": "វេទិកា",
+          "bullets": [
+            "យើងមិនធានាថាអ្នកស្វែងរកការងារណាម្នាក់នឹងរកបានការងារ ឬក្រុមហ៊ុនណាមួយនឹងរកបានបេក្ខជនដែលសមស្របតាមរយៈវេទិកា",
+            "យើងមិនផ្ទៀងផ្ទាត់ភាពត្រឹមត្រូវនៃព័ត៌មានដែលអ្នកប្រើប្រាស់ផ្តល់ រួមមានចំណងជើងការងារ ជំនាញ ឬព័ត៌មានក្រុមហ៊ុន។ អ្នកប្រើប្រាស់ត្រូវបានលើកទឹកចិត្តឱ្យធ្វើការ Due Diligence ផ្ទាល់ខ្លួន",
+            "វេទិកាត្រូវបានផ្តល់ \"ដូចដែលវា\" និង \"ដូចដែលមាន\" ដោយគ្មានការធានាណាមួយ ដោយពង្រាយ ឬស្ម័គ្រចិត្ត",
+            "យើងមិនធានាការ Service ដែលមិនមានការរំខាន ឬគ្មានកំហុស ហើយរក្សាសិទ្ធិក្នុងការធ្វើ Maintenance ដែលអាចប៉ះពាល់ភ្លោះពេលខ្លះ"
+          ]
+        },
+        "s12": {
+          "title": "ការកំណត់ការទទួលខុសត្រូវ",
+          "intro": "ក្នុងវិសាលភាពអតិបរមាដែលបានអនុញ្ញាតដោយច្បាប់ Apsara Talent និងមន្ត្រី បុគ្គលិក និងសម្ព័ន្ធរបស់ខ្លួន នឹងមិនទទួលខុសត្រូវចំពោះការខូចខាតដោយប្រយោល ចៃដន្យ ពិសេស ជាបន្ត ឬជំនាត់ ដែលបណ្តាលពីការប្រើប្រាស់ ឬអសមត្ថភាពក្នុងការប្រើប្រាស់វេទិកា រួមមានប៉ុន្តែមិនកំណត់ចំពោះ:",
+          "bullets": [
+            "ការបាត់បង់ឱកាសការងារ ឬអាជីវកម្ម",
+            "ការពឹងផ្អែកលើព័ត៌មានមិនត្រឹមត្រូវដែលផ្តល់ដោយអ្នកប្រើប្រាស់ផ្សេង",
+            "ការចូលប្រើដោយគ្មានការអនុញ្ញាតចំពោះគណនីរបស់អ្នក ដែលបណ្តាលពីការខកខានរក្សាសុវត្ថិភាពពាក្យសម្ងាត់",
+            "អាកប្បកិរិយា ឬមាតិកាណាមួយរបស់ភាគីទីបីនៅលើវេទិកា"
+          ],
+          "note": "ការទទួលខុសត្រូវសរុបរបស់យើងចំពោះការទាមទារណាមួយ នឹងមិនលើសពីចំនួនដែលអ្នកបានបង់យើង (ប្រសិនបើមាន) ក្នុងអំឡុង ១២ ខែមុនព្រឹត្តិការណ៍ដែលបង្ករការទាមទារ"
+        },
+        "s13": {
+          "title": "ការបញ្ចប់",
+          "byYou": "ដោយអ្នក: អ្នកអាចលុបគណនីរបស់អ្នកនៅពេលណាក៏បាន តាមរយៈការកំណត់ប្រវត្តិរូបរបស់អ្នក។ បន្ទាប់ពីការលុប ទិន្នន័យរបស់អ្នកនឹងត្រូវបានដោះស្រាយដូចបានពិពណ៌នានៅក្នុងគោលការណ៍ភាពឯកជន",
+          "byYouStrong": "ដោយអ្នក:",
+          "byUs": "ដោយយើង: យើងរក្សាសិទ្ធិក្នុងការផ្អាក ឬបញ្ចប់គណនីរបស់អ្នកនៅពេលណាក៏បាន ជាមួយ ឬគ្មានការជូនដំណឹង ដោយសារហេតុផលណាមួយខាងក្រោម:",
+          "byUsStrong": "ដោយយើង:",
+          "bullets": [
+            "ការរំលោភលក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះ",
+            "អាកប្បកិរិយាក្លែងបន្លំ បំភ្លៃ ឬបង្ករគ្រោះថ្នាក់",
+            "ភាពដល់ជើងម្ខាងយូរ",
+            "កាតព្វកិច្ចផ្លូវច្បាប់ ឬតម្រូវការបទប្បញ្ញត្តិ"
+          ],
+          "note": "នៅពេលបញ្ចប់ សិទ្ធិរបស់អ្នកក្នុងការចូលប្រើវេទិកាបញ្ចប់ភ្លាមៗ។ បទប្បញ្ញត្តិនៃលក្ខខណ្ឌទាំងនេះ ដែលតាមធម្មជាតិគួរតែរស់រានក្រោយការបញ្ចប់ នឹងនៅតែมีeffect"
+        },
+        "s14": {
+          "title": "ច្បាប់គ្រប់គ្រង",
+          "p1strong": "ព្រះរាជាណាចក្រកម្ពុជា",
+          "p1": "ដោយគ្មានការពិចារណាចំពោះគោលការណ៍ជម្លោះច្បាប់",
+          "p1prefix": "លក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះត្រូវបានគ្រប់គ្រង និងបកស្រាយស្របតាមច្បាប់នៃ",
+          "p2": "វិវាទណាមួយដែលបណ្តាល ឬទាក់ទងនឹងលក្ខខណ្ឌទាំងនេះ ឬការប្រើប្រាស់ Apsara Talent របស់អ្នក នឹងស្ថិតក្រោម Jurisdiction ផ្តាច់មុខនៃតុលាការដែលមានសមត្ថកិច្ចនៃភ្នំពេញ ប្រទេសកម្ពុជា។ អ្នកលះបង់ការជំទាស់ណាមួយចំពោះ Jurisdiction ឬទីកន្លែងនៃតុលាការបែបនេះ"
+        },
+        "s15": {
+          "title": "ការផ្លាស់ប្តូរលក្ខខណ្ឌ",
+          "p1": "យើងអាចកែប្រែលក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះនៅពេលណាក៏បាន។ យើងនឹងផ្តល់ការជូនដំណឹងអំពីការផ្លាស់ប្តូរសំខាន់ដោយធ្វើបច្ចុប្បន្នភាពកាលបរិច្ឆេទ \"ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ\" ហើយទីកន្លែងដែលសមស្រប ជូនដំណឹងដល់អ្នកប្រើប្រាស់ដែលបានចុះឈ្មោះតាមអ៊ីមែល ឬការជូនដំណឹងក្នុងកម្មវិធី",
+          "p2": "ការប្រើប្រាស់ Apsara Talent ជានិច្ចរបស់អ្នកក្រោយពេលមានប្រសិទ្ធភាពនៃលក្ខខណ្ឌដែលបានធ្វើបច្ចុប្បន្នភាព ស្មើនឹងការទទួលស្គាល់ការផ្លាស់ប្តូររបស់អ្នក។ ប្រសិនបើអ្នកមិនយល់ព្រមនឹងលក្ខខណ្ឌដែលបានធ្វើបច្ចុប្បន្នភាព អ្នកត្រូវឈប់ប្រើប្រាស់វេទិកា ហើយលុបគណនីរបស់អ្នក"
+        },
+        "s16": {
+          "title": "ទំនាក់ទំនងពួកយើង",
+          "intro": "ប្រសិនបើអ្នកមានសំណួរ ឬការព្រួយបារម្ភអំពីលក្ខខណ្ឌនៃការប្រើប្រាស់ទាំងនេះ សូមទំនាក់ទំនងពួកយើង:",
+          "address": "ភ្នំពេញ, កម្ពុជា"
+        }
+      }
+    },
+    "privacy": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Privacy Policy",
+        "updatedOn": "March 24, 2026",
+        "statUpdated": "last updated",
+        "statSections": "sections",
+        "statReading": "reading time",
+        "readingTime": "~5 min",
+        "tocHeading": "Contents",
+        "intro": "At Apsara Talent, we are committed to protecting your personal information. This Privacy Policy explains what data we collect, why we collect it, and how we use and safeguard it when you use our talent-matching platform.",
+        "introCompany": "Apsara Talent",
+        "toc": [
+          {
+            "id": "information-we-collect",
+            "label": "Information We Collect"
+          },
+          {
+            "id": "how-we-use",
+            "label": "How We Use Your Information"
+          },
+          {
+            "id": "how-we-share",
+            "label": "How We Share Your Information"
+          },
+          {
+            "id": "third-party",
+            "label": "Third-Party Services"
+          },
+          {
+            "id": "data-retention",
+            "label": "Data Retention"
+          },
+          {
+            "id": "security",
+            "label": "Security"
+          },
+          {
+            "id": "your-rights",
+            "label": "Your Rights"
+          },
+          {
+            "id": "cookies",
+            "label": "Cookies & Storage"
+          },
+          {
+            "id": "children",
+            "label": "Children's Privacy"
+          },
+          {
+            "id": "changes",
+            "label": "Changes to This Policy"
+          },
+          {
+            "id": "contact",
+            "label": "Contact Us"
+          }
+        ],
+        "s1": {
+          "title": "Information We Collect",
+          "intro": "We collect information you provide directly, information generated by your use of the platform, and information from third-party services you connect.",
+          "g1Title": "Account & Identity",
+          "g1": [
+            "Full name, username, email address, and phone number",
+            "Date of birth and gender (employees)",
+            "Profile photo / avatar and, for companies, a cover image",
+            "Password (stored as a secure hash — we never store it in plain text)",
+            "Social login identifiers from Google, Facebook, LinkedIn, or GitHub when you choose those sign-in methods"
+          ],
+          "g2Title": "Professional Information (Employees)",
+          "g2": [
+            "Job title, years of experience, availability type, and career scopes",
+            "Skills, work experience history, and educational background",
+            "Resume and cover letter files you upload",
+            "Social profile links (LinkedIn, GitHub, website, etc.)",
+            "Location (province/city in Cambodia)"
+          ],
+          "g3Title": "Company Information",
+          "g3": [
+            "Company name, industry, size, founded year, and description",
+            "Open job positions, available interview times, and company values/benefits",
+            "Company location and contact details",
+            "Company gallery images"
+          ],
+          "g4Title": "Usage & Technical Data",
+          "g4": [
+            "Pages visited, features used, and interactions within the platform",
+            "Chat messages exchanged between users on the platform",
+            "Favorites and matching actions (saves, likes, swipes)",
+            "Push notification device token for delivering notifications",
+            "Last login time, login method, and IP address",
+            "Browser type, operating system, and device identifiers"
+          ]
+        },
+        "s2": {
+          "title": "How We Use Your Information",
+          "bullets": [
+            "To create, verify, and maintain your account",
+            "To power the talent-matching algorithm that surfaces relevant employees to companies and vice versa",
+            "To enable real-time messaging between matched users",
+            "To send push notifications about new matches, messages, and platform updates",
+            "To generate AI-assisted resume drafts via the Resume Builder feature",
+            "To personalise your feed and search results based on your profile and activity",
+            "To detect fraud, enforce our Terms of Service, and maintain platform security",
+            "To send transactional emails such as email verification, password reset, and account activity alerts",
+            "To improve and develop new features through aggregated, anonymised analytics"
+          ],
+          "note": "We do not sell your personal data to third parties or use it for unrelated advertising purposes.",
+          "notePrefix": "We do ",
+          "noteStrong": "not",
+          "noteSuffix": " sell your personal data to third parties or use it for unrelated advertising purposes."
+        },
+        "s3": {
+          "title": "How We Share Your Information",
+          "intro": "We do not sell or rent your personal data. We share information only in the following limited circumstances:",
+          "bullets": [
+            {
+              "label": "With other users:",
+              "text": "Your public profile (name, job, skills, location, availability, description) is visible to the other user type — employees can be seen by companies and companies can be seen by employees — to facilitate matching and hiring."
+            },
+            {
+              "label": "With service providers:",
+              "text": "We use trusted infrastructure providers (cloud hosting, database, email delivery) who process data on our behalf under strict data processing agreements."
+            },
+            {
+              "label": "With social login providers:",
+              "text": "When you authenticate via Google, Facebook, LinkedIn, or GitHub, those services receive information according to their own privacy policies."
+            },
+            {
+              "label": "For legal compliance:",
+              "text": "We may disclose data when required by Cambodian law, court orders, or to protect the rights and safety of our users."
+            },
+            {
+              "label": "During business transfers:",
+              "text": "In the event of a merger, acquisition, or asset sale, your data may be transferred to the successor entity."
+            }
+          ]
+        },
+        "s4": {
+          "title": "Third-Party Services",
+          "intro": "Apsara Talent integrates the following third-party services. Each has its own privacy policy that governs their use of your data:",
+          "bullets": [
+            {
+              "label": "Google Firebase:",
+              "text": "Used for push notification delivery (Firebase Cloud Messaging). Your device token is stored securely and used solely for notifications."
+            },
+            {
+              "label": "Google OAuth / Google Sign-In:",
+              "text": "Optional authentication method. We receive your name, email, and profile picture from Google if you choose this option."
+            },
+            {
+              "label": "Facebook Login:",
+              "text": "Optional authentication method governed by Meta's Data Policy."
+            },
+            {
+              "label": "LinkedIn OAuth:",
+              "text": "Optional authentication for professional identity verification."
+            },
+            {
+              "label": "GitHub OAuth:",
+              "text": "Optional authentication for technical professionals."
+            },
+            {
+              "label": "Cloud Infrastructure (Railway):",
+              "text": "Our API and database are hosted on Railway. Data is processed in secure, industry-standard data centers."
+            }
+          ]
+        },
+        "s5": {
+          "title": "Data Retention",
+          "intro": "We retain your personal data for as long as your account is active or as needed to provide you with our services.",
+          "bullets": [
+            "Account data is retained for the lifetime of your account.",
+            "Chat messages are stored to provide a persistent messaging history. You may delete individual conversations.",
+            "After account deletion, we retain certain data for up to 30 days before permanent erasure to allow for account recovery, except where longer retention is required by law.",
+            "Anonymised, aggregated analytics data may be retained indefinitely as it cannot be linked to any individual."
+          ]
+        },
+        "s6": {
+          "title": "Security",
+          "intro": "We implement industry-standard security measures to protect your data:",
+          "bullets": [
+            "All data is transmitted over HTTPS/TLS encryption.",
+            "Passwords are hashed using a strong one-way algorithm and are never stored in plain text.",
+            "Optional Two-Factor Authentication (2FA) is available to add an extra layer of account security.",
+            "Access to personal data is restricted to authorised personnel only.",
+            "We perform regular security reviews of our infrastructure."
+          ],
+          "note": "While we take every reasonable precaution, no method of transmission over the internet is 100% secure. We encourage you to use a strong, unique password and enable 2FA."
+        },
+        "s7": {
+          "title": "Your Rights",
+          "intro": "You have the following rights with respect to your personal data:",
+          "bullets": [
+            {
+              "label": "Access:",
+              "text": "Request a copy of the personal data we hold about you."
+            },
+            {
+              "label": "Correction:",
+              "text": "Update or correct inaccurate information via your profile settings at any time."
+            },
+            {
+              "label": "Deletion:",
+              "text": "Request deletion of your account and personal data."
+            },
+            {
+              "label": "Portability:",
+              "text": "Request an export of your data in a structured, machine-readable format."
+            },
+            {
+              "label": "Objection:",
+              "text": "Object to the processing of your data for specific purposes."
+            },
+            {
+              "label": "Withdraw Consent:",
+              "text": "Withdraw consent for optional data processing at any time without affecting prior processing."
+            }
+          ],
+          "note": "To exercise any of these rights, please contact us at",
+          "email": "privacy@apsaratalent.com",
+          "noteSuffix": ". We will respond within 30 days."
+        },
+        "s8": {
+          "title": "Cookies & Local Storage",
+          "intro": "We use browser cookies and local storage to:",
+          "bullets": [
+            "Maintain your authentication session securely.",
+            "Remember your theme preference (light / dark / system).",
+            "Remember your language preference (English / ភាសាខ្មែរ).",
+            "Store cached data locally to improve page load performance."
+          ],
+          "note": "We do not use third-party advertising cookies. You can clear cookies and local storage via your browser settings at any time, though this will sign you out of your account."
+        },
+        "s9": {
+          "title": "Children's Privacy",
+          "text": "Apsara Talent is intended for users who are 18 years of age or older. We do not knowingly collect personal information from individuals under 18. If we become aware that a user is under 18, we will promptly delete their account and associated data. If you believe a minor has registered an account, please contact us immediately."
+        },
+        "s10": {
+          "title": "Changes to This Policy",
+          "intro": "We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will:",
+          "bullets": [
+            "Update the \"Last updated\" date at the top of this page.",
+            "Send a notification to registered users via email or in-app notification."
+          ],
+          "note": "Your continued use of Apsara Talent after the effective date of the updated policy constitutes your acceptance of the changes."
+        },
+        "s11": {
+          "title": "Contact Us",
+          "intro": "If you have questions, concerns, or requests regarding this Privacy Policy or your personal data, please reach out:",
+          "address": "Phnom Penh, Cambodia"
+        }
+      },
+      "km": {
+        "back": "ត្រឡប់",
+        "pageTitle": "គោលការណ៍ភាពឯកជន",
+        "updatedOn": "២៤ មីនា ២០២៦",
+        "statUpdated": "ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ",
+        "statSections": "ផ្នែក",
+        "statReading": "រយៈពេលអាន",
+        "readingTime": "~៥ នាទី",
+        "tocHeading": "មាតិកា",
+        "intro": "នៅ Apsara Talent យើងប្តេជ្ញាចិត្តក្នុងការការពារព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នក។ គោលការណ៍ភាពឯកជននេះពន្យល់ពីទិន្នន័យដែលយើងប្រមូល មូលហេតុដែលយើងប្រមូល និងរបៀបដែលយើងប្រើប្រាស់ និងការពារវានៅពេលអ្នកប្រើប្រាស់វេទិកាផ្គូផ្គងទេព្យោសម្បទារបស់យើង។",
+        "introCompany": "Apsara Talent",
+        "toc": [
+          {
+            "id": "information-we-collect",
+            "label": "ព័ត៌មានដែលយើងប្រមូល"
+          },
+          {
+            "id": "how-we-use",
+            "label": "របៀបដែលយើងប្រើប្រាស់ព័ត៌មានរបស់អ្នក"
+          },
+          {
+            "id": "how-we-share",
+            "label": "របៀបដែលយើងចែករំលែកព័ត៌មានរបស់អ្នក"
+          },
+          {
+            "id": "third-party",
+            "label": "សេវាកម្មភាគីទីបី"
+          },
+          {
+            "id": "data-retention",
+            "label": "ការរក្សាទុកទិន្នន័យ"
+          },
+          {
+            "id": "security",
+            "label": "សុវត្ថិភាព"
+          },
+          {
+            "id": "your-rights",
+            "label": "សិទ្ធិរបស់អ្នក"
+          },
+          {
+            "id": "cookies",
+            "label": "ខូគី និងការផ្ទុកក្នុងស្រុក"
+          },
+          {
+            "id": "children",
+            "label": "ភាពឯកជនរបស់កុមារ"
+          },
+          {
+            "id": "changes",
+            "label": "ការផ្លាស់ប្តូរគោលការណ៍នេះ"
+          },
+          {
+            "id": "contact",
+            "label": "ទំនាក់ទំនងពួកយើង"
+          }
+        ],
+        "s1": {
+          "title": "ព័ត៌មានដែលយើងប្រមូល",
+          "intro": "យើងប្រមូលព័ត៌មានដែលអ្នកផ្តល់ដោយផ្ទាល់ ព័ត៌មានដែលកើតឡើងពីការប្រើប្រាស់វេទិការបស់អ្នក និងព័ត៌មានពីសេវាកម្មភាគីទីបីដែលអ្នកភ្ជាប់។",
+          "g1Title": "គណនី និងអត្តសញ្ញាណ",
+          "g1": [
+            "ឈ្មោះពេញ ឈ្មោះអ្នកប្រើ អ៊ីមែល និងលេខទូរស័ព្ទ",
+            "ថ្ងៃខែឆ្នាំកំណើត និងភេទ (សម្រាប់និយោជិត)",
+            "រូបភាពប្រវត្តិរូប / avatar ហើយសម្រាប់ក្រុមហ៊ុន រូបភាពគ្របដណ្តប់",
+            "ពាក្យសម្ងាត់ (រក្សាទុកជា hash សុវត្ថិភាព — យើងមិនរក្សាទុកជាអក្សរធម្មតាឡើយ)",
+            "អត្តសញ្ញាណ Social Login ពី Google, Facebook, LinkedIn ឬ GitHub នៅពេលអ្នកជ្រើសរើសវិធីចូលទាំងនោះ"
+          ],
+          "g2Title": "ព័ត៌មានវិជ្ជាជីវៈ (និយោជិត)",
+          "g2": [
+            "ức,ចំណងជើងការងារ ឆ្នាំបទពិសោធ ប្រភេទភាពទំនេរ និងវិស័យអាជីព",
+            "ជំនាញ ប្រវត្តិការងារ និងការសិក្សា",
+            "ឯកសារ Resume និង Cover Letter ដែលអ្នកផ្ទុកឡើង",
+            "តំណភ្ជាប់ Social Profile (LinkedIn, GitHub, Website ។ល។)",
+            "ទីតាំង (ខេត្ត/ក្រុង នៅកម្ពុជា)"
+          ],
+          "g3Title": "ព័ត៌មានក្រុមហ៊ុន",
+          "g3": [
+            "ឈ្មោះក្រុមហ៊ុន ឧស្សាហកម្ម ទំហំ ឆ្នាំបង្កើត និងការពិពណ៌នា",
+            "មុខតំណែងការងារបើចំហ ពេលវេលាសំភាស និងតម្លៃ/អត្ថប្រយោជន៍ក្រុមហ៊ុន",
+            "ទីតាំងក្រុមហ៊ុន និងព័ត៌មានទំនាក់ទំនង",
+            "រូបភាពវិចិត្រសាលក្រុមហ៊ុន"
+          ],
+          "g4Title": "ទិន្នន័យការប្រើប្រាស់ និងបច្ចេកទេស",
+          "g4": [
+            "ទំព័រដែលបានចូលមើល មុខងារដែលប្រើ និងអន្តរកម្មក្នុងវេទិកា",
+            "សារជជែកដែលផ្លាស់ប្តូររវាងអ្នកប្រើប្រាស់ក្នុងវេទិកា",
+            "ការចូលចិត្ត និងសកម្មភាពផ្គូផ្គង (រក្សា ចូលចិត្ត ប្រៀប)",
+            "Token ឧបករណ៍សម្រាប់ការជូនដំណឹង Push",
+            "ពេលចូលចុងក្រោយ វិធីចូល និងអាសយដ្ឋាន IP",
+            "ប្រភេទ Browser ប្រព័ន្ធប្រតិបត្តិការ និងកម្មវិធីកំណត់អត្តសញ្ញាណឧបករណ៍"
+          ]
+        },
+        "s2": {
+          "title": "របៀបដែលយើងប្រើប្រាស់ព័ត៌មានរបស់អ្នក",
+          "bullets": [
+            "ដើម្បីបង្កើត ផ្ទៀងផ្ទាត់ និងថែរក្សាគណនីរបស់អ្នក",
+            "ដើម្បីដំណើរការក្បួនអាល់ហ្គោរីតម​ផ្គូផ្គងទេព្យោសម្បទា ដែលបង្ហាញនិយោជិតដែលពាក់ព័ន្ធដល់ក្រុមហ៊ុន និងផ្ទុយ",
+            "ដើម្បីបើកការផ្ញើសារជាក់ស្តែងរវាងអ្នកប្រើប្រាស់ដែលផ្គូផ្គងគ្នា",
+            "ដើម្បីផ្ញើការជូនដំណឹង Push អំពីការផ្គូផ្គងថ្មី សារ និងការអាប់ដេតវេទិកា",
+            "ដើម្បីបង្កើតព្រាង Resume ដោយ AI តាមរយៈមុខងារ Resume Builder",
+            "ដើម្បីធ្វើបុគ្គលិកលក្ខណ Feed និងលទ្ធផលស្វែងរករបស់អ្នកតាមប្រវត្តិរូប និងសកម្មភាព",
+            "ដើម្បីរកឃើញការក្លែងបន្លំ អនុវត្ត Terms of Service និងរក្សាសុវត្ថិភាពវេទិកា",
+            "ដើម្បីផ្ញើអ៊ីមែលប្រតិបត្តិការ ដូចជា ការផ្ទៀងផ្ទាត់អ៊ីមែល ការកំណត់ពាក្យសម្ងាត់ឡើងវិញ និងការជូនដំណឹងអំពីសកម្មភាពគណនី",
+            "ដើម្បីធ្វើឱ្យប្រសើរឡើង និងបង្កើតមុខងារថ្មីតាមរយៈការវិភាគដែលប្រមូលផ្តុំ និងធ្វើអ្វីអនាមិក"
+          ],
+          "note": "",
+          "notePrefix": "យើង",
+          "noteStrong": "មិន",
+          "noteSuffix": "លក់ទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នកទៅភាគីទីបី ឬប្រើប្រាស់វាសម្រាប់គោលបំណងផ្សាយពាណិជ្ជកម្មដែលមិនពាក់ព័ន្ធឡើយ។"
+        },
+        "s3": {
+          "title": "របៀបដែលយើងចែករំលែកព័ត៌មានរបស់អ្នក",
+          "intro": "យើងមិនលក់ ឬជួលទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នកឡើយ។ យើងចែករំលែកព័ត៌មានក្នុងករណីដែលមានកំណត់ខាងក្រោមប៉ុណ្ណោះ:",
+          "bullets": [
+            {
+              "label": "ជាមួយអ្នកប្រើប្រាស់ផ្សេង:",
+              "text": "ប្រវត្តិរូបសាធារណៈរបស់អ្នក (ឈ្មោះ ការងារ ជំនាញ ទីតាំង ភាពទំនេរ ការពិពណ៌នា) អាចមើលឃើញដោយប្រភេទអ្នកប្រើប្រាស់ម្ខាងទៀត — និយោជិតអាចត្រូវបានក្រុមហ៊ុនមើលឃើញ ហើយក្រុមហ៊ុនអាចត្រូវបានគេមើលឃើញដោយនិយោជិត — ដើម្បីជួយឱ្យការផ្គូផ្គង និងការជ្រើសរើសសម្ភារៈ"
+            },
+            {
+              "label": "ជាមួយអ្នកផ្តល់សេវា:",
+              "text": "យើងប្រើអ្នកផ្តល់ហេដ្ឋារចនាសម្ព័ន្ធទំុកទុក (ហ៊ីបឌ័រ ទិន្នន័យ ការផ្ញើអ៊ីមែល) ដែលដំណើរការទិន្នន័យក្នុងនាមមយ្យួើងក្រោមកិច្ចព្រមព្រៀងដំណើរការទិន្នន័យយ៉ាងតឹងរ៉ឹង"
+            },
+            {
+              "label": "ជាមួយអ្នកផ្តល់ Social Login:",
+              "text": "នៅពេលអ្នកផ្ទៀងផ្ទាត់តាម Google, Facebook, LinkedIn ឬ GitHub សេវាទាំងនោះទទួលព័ត៌មានតាមគោលការណ៍ភាពឯកជនរបស់ពួកគេ"
+            },
+            {
+              "label": "ដើម្បីអនុលោមច្បាប់:",
+              "text": "យើងអាចបង្ហាញទិន្នន័យនៅពេលតម្រូវដោយច្បាប់កម្ពុជា បញ្ជាតុលាការ ឬដើម្បីការពារសិទ្ធិ និងសុវត្ថិភាពរបស់អ្នកប្រើប្រាស់"
+            },
+            {
+              "label": "នៅពេលផ្ទេរអាជីវកម្ម:",
+              "text": "ក្នុងករណីរួមបញ្ចូល придбання ឬការលក់ទ្រព្យ ទិន្នន័យរបស់អ្នកអាចត្រូវបានផ្ទេរទៅអង្គភាពស្នងតំណែង"
+            }
+          ]
+        },
+        "s4": {
+          "title": "សេវាកម្មភាគីទីបី",
+          "intro": "Apsara Talent រួមបញ្ចូលសេវាកម្មភាគីទីបីខាងក្រោម។ នីមួយៗមានគោលការណ៍ភាពឯកជនផ្ទាល់ខ្លួនដែលគ្រប់គ្រងការប្រើប្រាស់ទិន្នន័យរបស់អ្នក:",
+          "bullets": [
+            {
+              "label": "Google Firebase:",
+              "text": "ប្រើសម្រាប់ការជូនដំណឹង Push (Firebase Cloud Messaging)។ Token ឧបករណ៍របស់អ្នកត្រូវបានរក្សាទុកយ៉ាងសុវត្ថិភាព ហើយប្រើតែសម្រាប់ការជូនដំណឹងប៉ុណ្ណោះ"
+            },
+            {
+              "label": "Google OAuth / Google Sign-In:",
+              "text": "វិធីផ្ទៀងផ្ទាត់ជាជម្រើស។ យើងទទួលឈ្មោះ អ៊ីមែល និងរូបភាពប្រវត្តិរូបពី Google ប្រសិនបើអ្នកជ្រើសរើសជម្រើសនេះ"
+            },
+            {
+              "label": "Facebook Login:",
+              "text": "វិធីផ្ទៀងផ្ទាត់ជាជម្រើស ដែលអនុវត្តដោយ Meta's Data Policy"
+            },
+            {
+              "label": "LinkedIn OAuth:",
+              "text": "ការផ្ទៀងផ្ទាត់ជាជម្រើសសម្រាប់ការផ្ទៀងផ្ទាត់អត្តសញ្ញាណវិជ្ជាជីវៈ"
+            },
+            {
+              "label": "GitHub OAuth:",
+              "text": "ការផ្ទៀងផ្ទាត់ជាជម្រើសសម្រាប់អ្នកជំនាញបច្ចេកទេស"
+            },
+            {
+              "label": "ហេដ្ឋារចនាសម្ព័ន្ធ Cloud (Railway):",
+              "text": "API និងមូលដ្ឋានទិន្នន័យរបស់យើងត្រូវបានបង្ហោះនៅ Railway។ ទិន្នន័យត្រូវបានដំណើរការនៅក្នុងមជ្ឈមណ្ឌលទិន្នន័យដែលមានស្ដង់ដារ"
+            }
+          ]
+        },
+        "s5": {
+          "title": "ការរក្សាទុកទិន្នន័យ",
+          "intro": "យើងរក្សាទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នករហូតដល់គណនីរបស់អ្នកនៅតែសកម្ម ឬតាមដែលត្រូវការដើម្បីផ្តល់សេវាកម្មដល់អ្នក។",
+          "bullets": [
+            "ទិន្នន័យគណនីត្រូវបានរក្សាទុកตลอดអាយុជីវិតគណនីរបស់អ្នក",
+            "សារជជែកត្រូវបានរក្សាទុកដើម្បីផ្តល់ប្រវត្តិការផ្ញើសារជាប់លាប់។ អ្នកអាចលុបការសន្ទនានីមួយៗបាន",
+            "បន្ទាប់ពីការលុបគណនី យើងរក្សាទិន្នន័យខ្លះរហូតដល់ ៣០ ថ្ងៃ មុនការលុបជាអចិន្ត្រៃយ៍ ដើម្បីអនុញ្ញាតឱ្យស្ដារគណនី លើកលែងតែការរក្សាទុករយៈពេលវែងជាងនេះត្រូវបានតម្រូវដោយច្បាប់",
+            "ទិន្នន័យការវិភាគដែលធ្វើអ្វីអនាមិក និងប្រមូលផ្តុំអាចត្រូវបានរក្សាទុកជារៀងរហូត ព្រោះវាមិនអាចភ្ជាប់ទៅបុគ្គលណាម្នាក់បានទេ"
+          ]
+        },
+        "s6": {
+          "title": "សុវត្ថិភាព",
+          "intro": "យើងអនុវត្តវិធានការសុវត្ថិភាពស្ដង់ដារឧស្សាហកម្មដើម្បីការពារទិន្នន័យរបស់អ្នក:",
+          "bullets": [
+            "ទិន្នន័យទាំងអស់ត្រូវបានបញ្ជូនតាមការអ៊ិនគ្រីប HTTPS/TLS",
+            "ពាក្យសម្ងាត់ត្រូវបាន hash ដោយប្រើក្បួន one-way ខ្លាំង ហើយមិនរក្សាទុកជាអក្សរធម្មតាឡើយ",
+            "ការផ្ទៀងផ្ទាត់ Two-Factor (2FA) ជាជម្រើស ដើម្បីបន្ថែមស្រទាប់ការការពារគណនីបន្ថែម",
+            "ការចូលប្រើទិន្នន័យផ្ទាល់ខ្លួនត្រូវបានកំណត់ចំពោះបុគ្គលិកដែលមានការអនុញ្ញាតប៉ុណ្ណោះ",
+            "យើងធ្វើការពិនិត្យសុវត្ថិភាពឱ្យបានទៀងទាត់នៃហេដ្ឋារចនាសម្ព័ន្ធរបស់យើង"
+          ],
+          "note": "ខណៈដែលយើងប្រុងប្រយ័ត្នគ្រប់ការ មិនមានវិធីណាមួយនៃការបញ្ជូនតាមអ៊ីនធឺណិតដែល ១០០% សុវត្ថិភាពទេ។ យើងលើកទឹកចិត្តឱ្យអ្នកប្រើពាក្យសម្ងាត់ខ្លាំង ពិសេស និងបើក 2FA។"
+        },
+        "s7": {
+          "title": "សិទ្ធិរបស់អ្នក",
+          "intro": "អ្នកមានសិទ្ធិខាងក្រោមទាក់ទងទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នក:",
+          "bullets": [
+            {
+              "label": "ការចូលប្រើ:",
+              "text": "ស្នើសុំច្បាប់ចម្លងនៃទិន្នន័យផ្ទាល់ខ្លួនដែលយើងកាន់អំពីអ្នក"
+            },
+            {
+              "label": "ការកែតម្រូវ:",
+              "text": "ធ្វើបច្ចុប្បន្នភាព ឬកែព័ត៌មានមិនត្រឹមត្រូវតាមការកំណត់ប្រវត្តិរូបរបស់អ្នកនៅពេលណាក៏បាន"
+            },
+            {
+              "label": "ការលុប:",
+              "text": "ស្នើសុំការលុបគណនី និងទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នក"
+            },
+            {
+              "label": "ការផ្ទេរ:",
+              "text": "ស្នើសុំការនាំចេញទិន្នន័យរបស់អ្នកក្នុងទម្រង់ដែលអាចអានដោយម៉ាស៊ីន"
+            },
+            {
+              "label": "ការជំទាស់:",
+              "text": "ជំទាស់ការដំណើរការទិន្នន័យរបស់អ្នកសម្រាប់គោលបំណងជាក់លាក់"
+            },
+            {
+              "label": "ដក​ការ​យល់ព្រម:",
+              "text": "ដក​ការ​យល់ព្រម​សម្រាប់​ការ​ដំណើរ​ការ​ទិន្នន័យ​ជា​ជម្រើស​នៅ​ពេល​ណា​ក​ដោយ​មិន​ប៉ះ​ពាល់​ការ​ដំណើរ​ការ​ពី​មុន"
+            }
+          ],
+          "note": "ដើម្បីប្រើសិទ្ធិទាំងនេះ សូមទាក់ទងពួកយើងនៅ",
+          "email": "privacy@apsaratalent.com",
+          "noteSuffix": "។ យើងនឹងឆ្លើយតបក្នុងរយៈពេល ៣០ ថ្ងៃ។"
+        },
+        "s8": {
+          "title": "ខូគី និងការផ្ទុកក្នុងស្រុក",
+          "intro": "យើងប្រើខូគីកម្មវិធីរុករក និងការផ្ទុកក្នុងស្រុកដើម្បី:",
+          "bullets": [
+            "រក្សាការចូលប្រើ Session របស់អ្នកដោយសុវត្ថិភាព",
+            "ចងចាំចំណូលចិត្ត Theme (ភ្លឺ / ងងឹត / ប្រព័ន្ធ) របស់អ្នក",
+            "ចងចាំចំណូលចិត្តភាសា (ភាសាអង់គ្លេស / ភាសាខ្មែរ) របស់អ្នក",
+            "រក្សាទុកទិន្នន័យ Cache ក្នុងស្រុក ដើម្បីធ្វើឱ្យប្រសើរ Performance ការផ្ទុកទំព័រ"
+          ],
+          "note": "យើងមិនប្រើខូគីផ្សាយពាណិជ្ជកម្មភាគីទីបីឡើយ។ អ្នកអាចលុបខូគី និងការផ្ទុកក្នុងស្រុកតាមការកំណត់ Browser របស់អ្នកនៅពេលណាក៏បាន ទោះជាក្តី វានឹងធ្វើឱ្យអ្នកចេញពីគណនី។"
+        },
+        "s9": {
+          "title": "ភាពឯកជនរបស់កុមារ",
+          "text": "Apsara Talent ត្រូវបានរចនាសម្រាប់អ្នកប្រើប្រាស់ដែលមានអាយុ ១៨ ឆ្នាំ ឬលើសពីនេះ។ យើងមិនប្រមូលព័ត៌មានផ្ទាល់ខ្លួនពីបុគ្គលដែលមានអាយុក្រោម ១៨ ឆ្នាំដោយចេតនាឡើយ។ ប្រសិនបើយើងដឹងថាអ្នកប្រើប្រាស់មានអាយុក្រោម ១៨ ឆ្នាំ យើងនឹងលុបគណនី និងទិន្នន័យដែលពាក់ព័ន្ធរបស់ពួកគេឱ្យបានឆាប់រហ័ស។ ប្រសិនបើអ្នកជឿថាកុមារម្នាក់បានចុះឈ្មោះ សូមទាក់ទងពួកយើងភ្លាម។"
+        },
+        "s10": {
+          "title": "ការផ្លាស់ប្តូរគោលការណ៍នេះ",
+          "intro": "យើងអាចធ្វើបច្ចុប្បន្នភាពគោលការណ៍ភាពឯកជននេះពីពេលទៅពេល ដើម្បីឆ្លុះបញ្ចាំងការផ្លាស់ប្តូរនៅក្នុងការអនុវត្ត បច្ចេកវិទ្យា តម្រូវការច្បាប់ ឬកត្តាផ្សេងៗ។ នៅពេលយើងធ្វើការផ្លាស់ប្តូរសំខាន់ យើងនឹង:",
+          "bullets": [
+            "ធ្វើបច្ចុប្បន្នភាពកាលបរិច្ឆេទ \"ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ\" នៅផ្នែកខាងលើទំព័រនេះ",
+            "ផ្ញើការជូនដំណឹងដល់អ្នកប្រើប្រាស់ដែលចុះឈ្មោះតាមអ៊ីមែល ឬការជូនដំណឹងក្នុងកម្មវិធី"
+          ],
+          "note": "ការប្រើប្រាស់ Apsara Talent ជានិច្ចរបស់អ្នកក្រោយពេលមានប្រសិទ្ធភាពនៃគោលការណ៍ដែលបានធ្វើបច្ចុប្បន្នភាព ស្មើនឹងការទទួលស្គាល់ការផ្លាស់ប្តូររបស់អ្នក។"
+        },
+        "s11": {
+          "title": "ទំនាក់ទំនងពួកយើង",
+          "intro": "ប្រសិនបើអ្នកមានសំណួរ ការព្រួយបារម្ភ ឬការស្នើសុំទាក់ទងគោលការណ៍ភាពឯកជននេះ ឬទិន្នន័យផ្ទាល់ខ្លួនរបស់អ្នក សូមទំនាក់ទំនង:",
+          "address": "ភ្នំពេញ, កម្ពុជា"
+        }
+      }
+    },
+    "product": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Our Products",
+        "subtitle": "Apsara Talent gives you everything you need to connect talent with opportunity — on the web, on mobile, and powered by AI.",
+        "tocHeading": "Contents",
+        "toc": [
+          {
+            "id": "mobile-app",
+            "label": "Mobile App"
+          },
+          {
+            "id": "web-platform",
+            "label": "Web Platform"
+          },
+          {
+            "id": "agentic-ai",
+            "label": "Apsara Agentic AI"
+          },
+          {
+            "id": "key-features",
+            "label": "Key Features"
+          }
+        ],
+        "mobileTitle": "Mobile App — iOS & Android",
+        "mobileIntro": "Take Apsara Talent with you everywhere. Our native mobile app is available on both the App Store and Google Play, giving you full access to the platform on the go.",
+        "mobileBullets": [
+          "Browse and apply to jobs directly from your phone",
+          "Receive instant push notifications for matches and messages",
+          "Real-time messaging with employers and candidates",
+          "Manage your profile, resume, and preferences on the go",
+          "Quick swipe-based matching for effortless discovery",
+          "Offline-ready profile viewing and saved jobs"
+        ],
+        "mobileDownload": "Download for free on the App Store (iOS) and Google Play (Android).",
+        "webTitle": "Web Platform",
+        "webIntro": "The Apsara Talent web experience is built for power users — recruiters managing pipelines, professionals crafting resumes, and teams collaborating on hiring decisions.",
+        "webBullets": [
+          "Full-featured dashboard with analytics and insights",
+          "AI-powered resume builder with real-time suggestions",
+          "Advanced search with filters for skills, location, and experience",
+          "Comprehensive company profiles and job postings",
+          "Interview scheduling and management tools",
+          "Real-time messaging powered by Socket.io"
+        ],
+        "aiTitle": "Apsara Agentic AI Assistant",
+        "aiIntro": "Meet your intelligent hiring companion. The Apsara Agentic AI Assistant goes beyond simple automation — it reasons, plans, and acts on your behalf to streamline every step of the talent lifecycle.",
+        "aiBullets": [
+          "Smart candidate-job matching using deep skill analysis",
+          "Automated resume screening and ranking",
+          "Intelligent interview scheduling based on availability",
+          "Personalized job recommendations tailored to your career goals",
+          "AI-generated resume drafts and optimization suggestions",
+          "Proactive alerts for high-compatibility matches",
+          "Natural language Q&A about candidates, roles, and market trends"
+        ],
+        "aiNote": "The Apsara Agentic AI is designed to augment human decision-making, not replace it. Every recommendation comes with clear reasoning so you stay in control.",
+        "featuresTitle": "Key Features Across All Products",
+        "features": [
+          {
+            "title": "Smart Matching",
+            "description": "AI algorithms connect the right talent with the right opportunities based on skills, experience, and preferences."
+          },
+          {
+            "title": "AI Resume Builder",
+            "description": "Create professional, ATS-friendly resumes with AI-powered suggestions and beautiful templates."
+          },
+          {
+            "title": "Real-time Messaging",
+            "description": "Communicate instantly with candidates or employers through our integrated chat system."
+          },
+          {
+            "title": "Company Profiles",
+            "description": "Showcase your company culture, open roles, and team to attract top Cambodian talent."
+          },
+          {
+            "title": "Interview Management",
+            "description": "Schedule, track, and manage interviews seamlessly across mobile and web."
+          },
+          {
+            "title": "Intelligent Insights",
+            "description": "Dashboards and analytics to help you understand hiring trends and optimize your strategy."
+          }
+        ]
+      },
+      "km": {
+        "back": "ត្រឡប់ក្រោយ",
+        "pageTitle": "ផលិតផលរបស់យើង",
+        "subtitle": "Apsara Talent ផ្តល់ឱ្យអ្នកនូវអ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការដើម្បីតភ្ជាប់ទេពកោសល្យជាមួយឱកាស — នៅលើគេហទំព័រ នៅលើទូរសព្ទ និងដំណើរការដោយ AI។",
+        "tocHeading": "មាតិកា",
+        "toc": [
+          {
+            "id": "mobile-app",
+            "label": "កម្មវិធីទូរសព្ទ"
+          },
+          {
+            "id": "web-platform",
+            "label": "គេហទំព័រ"
+          },
+          {
+            "id": "agentic-ai",
+            "label": "Apsara Agentic AI"
+          },
+          {
+            "id": "key-features",
+            "label": "មុខងារសំខាន់ៗ"
+          }
+        ],
+        "mobileTitle": "កម្មវិធីទូរសព្ទ — iOS & Android",
+        "mobileIntro": "យក Apsara Talent ជាមួយអ្នកគ្រប់ទីកន្លែង។ កម្មវិធីទូរសព្ទរបស់យើងមាននៅលើ App Store និង Google Play ផ្តល់ឱ្យអ្នកនូវការចូលប្រើពេញលេញនៅលើវេទិកានៅពេលធ្វើដំណើរ។",
+        "mobileBullets": [
+          "រកមើល និងដាក់ពាក្យសុំការងារដោយផ្ទាល់ពីទូរសព្ទរបស់អ្នក",
+          "ទទួលការជូនដំណឹងភ្លាមៗសម្រាប់ការផ្គូផ្គង និងសារ",
+          "ការផ្ញើសារភ្លាមៗជាមួយនិយោជក និងបេក្ខជន",
+          "គ្រប់គ្រង Profile ប្រវត្តិរូប និងចំណង់ចំណូលចិត្តនៅពេលធ្វើដំណើរ",
+          "ការផ្គូផ្គងដោយ Swipe សម្រាប់ការស្វែងរកដោយងាយស្រួល",
+          "មើល Profile និងការងារដែលបានរក្សាទុកដោយមិនចាំបាច់ភ្ជាប់អ៊ីនធឺណិត"
+        ],
+        "mobileDownload": "ទាញយកដោយឥតគិតថ្លៃនៅលើ App Store (iOS) និង Google Play (Android)។",
+        "webTitle": "គេហទំព័រ",
+        "webIntro": "បទពិសោធន៍គេហទំព័រ Apsara Talent ត្រូវបានបង្កើតឡើងសម្រាប់អ្នកប្រើប្រាស់ជំនាញ — អ្នកជ្រើសរើសបុគ្គលិកដែលគ្រប់គ្រងការជ្រើសរើស អ្នកជំនាញដែលបង្កើត CV និងក្រុមដែលសហការគ្នាលើការសម្រេចចិត្តជ្រើសរើស។",
+        "webBullets": [
+          "ផ្ទាំងគ្រប់គ្រងពេញលេញជាមួយការវិភាគ និងការយល់ដឹង",
+          "ឧបករណ៍បង្កើត CV ដំណើរការដោយ AI ជាមួយការណែនាំក្នុងពេលវេលាជាក់ស្តែង",
+          "ការស្វែងរកកម្រិតខ្ពស់ជាមួយតម្រងសម្រាប់ជំនាញ ទីតាំង និងបទពិសោធន៍",
+          "ព្រូហ្វាល់ក្រុមហ៊ុន និងការប្រកាសការងារពេញលេញ",
+          "ឧបករណ៍កំណត់កាលវិភាគ និងគ្រប់គ្រងការសម្ភាសន៍",
+          "ការផ្ញើសារភ្លាមៗដំណើរការដោយ Socket.io"
+        ],
+        "aiTitle": "Apsara Agentic AI Assistant",
+        "aiIntro": "ជួបជាមួយដៃគូជ្រើសរើសបុគ្គលិកដែលមានបញ្ញា។ Apsara Agentic AI Assistant ទៅហួសពីស្វ័យប្រវត្តិកម្មសាមញ្ញ — វាគិត វាគ្រោង និងធ្វើសកម្មភាពជំនួសអ្នកដើម្បីសម្រួលរាល់ជំហាននៃវដ្តជីវិតទេពកោសល្យ។",
+        "aiBullets": [
+          "ការផ្គូផ្គងបេក្ខជន-ការងារដែលឆ្លាតវៃដោយប្រើការវិភាគជំនាញស៊ីជម្រៅ",
+          "ការពិនិត្យ និងចាត់ថ្នាក់ CV ដោយស្វ័យប្រវត្តិ",
+          "ការកំណត់កាលវិភាគសម្ភាសន៍ដោយឆ្លាតវៃផ្អែកលើភាពទំនេរ",
+          "ការណែនាំការងារផ្ទាល់ខ្លួនដែលសមស្របនឹងគោលដៅអាជីពរបស់អ្នក",
+          "សេចក្តីព្រាង CV និងការណែនាំការបង្កើនប្រសិទ្ធភាពដែលបង្កើតដោយ AI",
+          "ការជូនដំណឹងសកម្មសម្រាប់ការផ្គូផ្គងដែលមានភាពឆបគ្នាខ្ពស់",
+          "សំណួរ-ចម្លើយជាភាសាធម្មជាតិអំពីបេក្ខជន តួនាទី និងនិន្នាការទីផ្សារ"
+        ],
+        "aiNote": "Apsara Agentic AI ត្រូវបានរចនាឡើងដើម្បីបន្ថែមការសម្រេចចិត្តរបស់មនុស្ស មិនមែនជំនួសវាទេ។ រាល់ការណែនាំមកជាមួយហេតុផលច្បាស់លាស់ដើម្បីឱ្យអ្នកនៅតែមានការគ្រប់គ្រង។",
+        "featuresTitle": "មុខងារសំខាន់ៗនៅគ្រប់ផលិតផល",
+        "features": [
+          {
+            "title": "ការផ្គូផ្គងឆ្លាតវៃ",
+            "description": "ក្បួនដោះស្រាយ AI តភ្ជាប់ទេពកោសល្យត្រឹមត្រូវជាមួយឱកាសត្រឹមត្រូវផ្អែកលើជំនាញ បទពិសោធន៍ និងចំណង់ចំណូលចិត្ត។"
+          },
+          {
+            "title": "ឧបករណ៍បង្កើត CV ដោយ AI",
+            "description": "បង្កើត CV វិជ្ជាជីវៈដែលឆបគ្នានឹង ATS ជាមួយការណែនាំពី AI និងគំរូស្រស់ស្អាត។"
+          },
+          {
+            "title": "ការផ្ញើសារភ្លាមៗ",
+            "description": "ទំនាក់ទំនងភ្លាមៗជាមួយបេក្ខជន ឬនិយោជកតាមរយៈប្រព័ន្ធជជែកដែលរួមបញ្ចូលរបស់យើង។"
+          },
+          {
+            "title": "ព្រូហ្វាល់ក្រុមហ៊ុន",
+            "description": "បង្ហាញវប្បធម៌ក្រុមហ៊ុន តួនាទីបើកចំហ និងក្រុមរបស់អ្នកដើម្បីទាក់ទាញទេពកោសល្យកំពូលកម្ពុជា។"
+          },
+          {
+            "title": "គ្រប់គ្រងការសម្ភាសន៍",
+            "description": "កំណត់កាលវិភាគ តាមដាត តិងគ្រប់គ្រងការសម្ភាសត៍យ៉ាងរលូតទាំងតៅលើទូរសព្ទ តិងគេហទំព័រ។"
+          },
+          {
+            "title": "ការយល់ដឹងឆ្លាតវៃ",
+            "description": "ផ្ទាំងគ្រប់គ្រង និងការវិភាគដើម្បីជួយអ្នកយល់ពីនិន្នាការជ្រើសរើស និងបង្កើនប្រសិទ្ធភាពយុទ្ធសាស្ត្ររបស់អ្នក។"
+          }
+        ]
+      }
+    },
+    "learn": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Learn",
+        "subtitle": "Guides, tutorials, and resources to help you get the most out of Apsara Talent — whether you are a job seeker or an employer.",
+        "tocHeading": "Contents",
+        "toc": [
+          {
+            "id": "getting-started",
+            "label": "Getting Started"
+          },
+          {
+            "id": "for-job-seekers",
+            "label": "For Job Seekers"
+          },
+          {
+            "id": "for-employers",
+            "label": "For Employers"
+          },
+          {
+            "id": "using-ai",
+            "label": "Using AI Features"
+          },
+          {
+            "id": "guides",
+            "label": "Guides & Tutorials"
+          }
+        ],
+        "gettingStartedTitle": "Getting Started",
+        "gettingStartedIntro": "New to Apsara Talent? Follow these steps to set up your account and start connecting with opportunities or talent.",
+        "steps": [
+          {
+            "title": "Create Your Account",
+            "description": "Sign up with your email, Google, Facebook, LinkedIn, or GitHub account. Choose whether you are a job seeker or employer."
+          },
+          {
+            "title": "Complete Your Profile",
+            "description": "Add your skills, experience, education, and preferences. A complete profile increases your visibility and matching accuracy."
+          },
+          {
+            "title": "Explore & Connect",
+            "description": "Browse the feed, use smart matching, and start conversations with potential employers or candidates."
+          },
+          {
+            "title": "Download the Mobile App",
+            "description": "Get the Apsara Talent app on iOS or Android to stay connected on the go with push notifications and instant messaging."
+          }
+        ],
+        "jobSeekersTitle": "For Job Seekers",
+        "jobSeekersIntro": "Make the most of your job search with these powerful tools and strategies available on Apsara Talent.",
+        "jobSeekersBullets": [
+          "Build a standout profile — add a professional photo, detailed skills, and a compelling bio",
+          "Use the AI Resume Builder to create polished, ATS-optimized resumes in minutes",
+          "Enable smart matching to receive personalized job recommendations",
+          "Set your preferences for location, salary range, and job type",
+          "Respond to messages promptly — fast replies improve your ranking",
+          "Keep your profile updated as you gain new skills and experience"
+        ],
+        "employersTitle": "For Employers",
+        "employersIntro": "Find and hire the best talent in Cambodia with these tools designed for recruiters and hiring managers.",
+        "employersBullets": [
+          "Create a detailed company profile that showcases your culture and values",
+          "Post clear, well-structured job listings with skill requirements",
+          "Use AI-powered matching to discover candidates you might have missed",
+          "Schedule interviews directly through the platform",
+          "Track your hiring pipeline with the analytics dashboard",
+          "Communicate with candidates via real-time messaging"
+        ],
+        "aiTitle": "Using AI Features",
+        "aiIntro": "Apsara Talent integrates the Apsara Agentic AI Assistant across the entire platform. Here is how to leverage it.",
+        "aiBullets": [
+          "Smart Matching — AI analyzes skills, experience, and preferences to suggest the best matches",
+          "Resume Builder — Get AI-generated suggestions for wording, formatting, and content optimization",
+          "Interview Insights — Receive preparation tips and common questions tailored to each role",
+          "Market Trends — Ask the AI about salary benchmarks, in-demand skills, and hiring patterns in Cambodia",
+          "Proactive Alerts — Enable notifications to get instant updates when high-match opportunities appear"
+        ],
+        "guidesTitle": "Guides & Tutorials",
+        "guides": [
+          {
+            "title": "Optimizing Your Profile",
+            "description": "Step-by-step guide to creating a profile that stands out and attracts the right opportunities."
+          },
+          {
+            "title": "Writing Effective Job Posts",
+            "description": "Best practices for writing job descriptions that attract qualified candidates."
+          },
+          {
+            "title": "Mastering Smart Matching",
+            "description": "How the AI matching algorithm works and how to improve your match score."
+          },
+          {
+            "title": "Mobile App Tips",
+            "description": "Get the most out of the Apsara Talent iOS and Android apps with these power-user tips."
+          },
+          {
+            "title": "AI Resume Builder Guide",
+            "description": "Create professional resumes with AI assistance — from templates to final export."
+          },
+          {
+            "title": "Interview Preparation",
+            "description": "Tools and resources to prepare for interviews and make a great impression."
+          }
+        ]
+      },
+      "km": {
+        "back": "ត្រឡប់ក្រោយ",
+        "pageTitle": "ស្វែងយល់",
+        "subtitle": "ការណែណាំ មេរៀត និងធនធានដើម្បីជួយអ្តក Apsara Talent។",
+        "tocHeading": "មាតិកា",
+        "toc": [
+          {
+            "id": "getting-started",
+            "label": "ចាប់ផ្តើម"
+          },
+          {
+            "id": "for-job-seekers",
+            "label": "សម្រាប់អ្តកស្វែងរកការងារ"
+          },
+          {
+            "id": "for-employers",
+            "label": "សម្រាប់តិយោជក"
+          },
+          {
+            "id": "using-ai",
+            "label": "ការប្រើមុខងារ AI"
+          },
+          {
+            "id": "guides",
+            "label": "ការណែណាំ តិងមេរៀត"
+          }
+        ],
+        "gettingStartedTitle": "ចាប់ផ្តើម",
+        "gettingStartedIntro": "ថ្មីតៅ Apsara Talent? អតុវត្តជំហាតដើម្បីបង្កើតគណតី។",
+        "steps": [
+          {
+            "title": "បង្កើតគណតី",
+            "description": "ចុះឈ្មោះជាមួយ Google, Facebook, LinkedIn ឬ GitHub។"
+          },
+          {
+            "title": "បំពេញព្រូហ្វាល់",
+            "description": "បត្ថែមជំតាញ បតពិសោធត៍ តិងចំណង់ចំណូលចិត្ត។"
+          },
+          {
+            "title": "ស្វែងរក តិងតភ្ជាប់",
+            "description": "រកមើល Feed ប្រើការផ្គូផ្គងឆ្លាតវៃ។"
+          },
+          {
+            "title": "តាញយកកម្មវិធីទូរសព្ទ",
+            "description": "ទាញយក Apsara Talent តៅលើ iOS ឬ Android។"
+          }
+        ],
+        "jobSeekersTitle": "សម្រាប់អ្តកស្វែងរកការងារ",
+        "jobSeekersIntro": "ទាញបាតអត្ថប្រយោជត៍ច្រើតបំផុតពីការស្វែងរកការងារ។",
+        "jobSeekersBullets": [
+          "បង្កើតព្រូហ្វាល់ដែលលេចធ្លោ — រូបថតវិជ្ជាជីវៈ ជំតាញលម្អិត",
+          "ប្រើ AI Resume Builder ដើម្បីបង្កើត CV វិជ្ជាជីវៈ",
+          "បើកការផ្គូផ្គងឆ្លាតវៃដើម្បីទទួលការណែណាំការងារ",
+          "កំណត់ចំណង់ចំណូលចិត្តសម្រាប់ទីតាំង ប្រាក់ខែ តិងប្រភេទការងារ",
+          "ឆ្លើយតបសារភ្លាមៗ — ការឆ្លើយតបលើតធ្វើឱ្យចំណាត់ថ្តាក់កើតឡើង",
+          "រក្សាព្រូហ្វាល់ឱ្យទាត់សម័យតៅពេលអ្តកទទួលជំតាញថ្មី"
+        ],
+        "employersTitle": "សម្រាប់តិយោជក",
+        "employersIntro": "ស្វែងរក តិងជួលទេពកោសល្យល្អបំផុតតៅកម្ពុជា។",
+        "employersBullets": [
+          "បង្កើតព្រូហ្វាល់ក្រុមហ៊ុតលម្អិតដែលបង្ហាញវប្បធម៌",
+          "ប្រកាសការងារច្បាស់លាស់ជាមួយតម្រូវការជំតាញ",
+          "ប្រើការផ្គូផ្គង AI ដើម្បីរកបេក្ខជត",
+          "កំណត់កាលវិភាគសម្ភាសត៍ដោយផ្ទាល់តាមរយៈវេទិកា",
+          "តាមដាតការជ្រើសរើសជាមួយផ្ទាំងគ្រប់គ្រងវិភាគ",
+          "ទំតាក់ទំតងជាមួយបេក្ខជតតាមរយៈការផ្ញើសារភ្លាមៗ"
+        ],
+        "aiTitle": "ការប្រើមុខងារ AI",
+        "aiIntro": "Apsara Talent រួមបញ្ចូល Apsara Agentic AI Assistant តៅទូទាំងវេទិកា។",
+        "aiBullets": [
+          "ការផ្គូផ្គងឆ្លាតវៃ — AI វិភាគជំតាញ បតពិសោធត៍ តិងចំណង់ចំណូលចិត្ត",
+          "ឧបករណ៍បង្កើត CV — ទទួលការណែណាំពី AI សម្រាប់ការសរសេរ តិងទម្រង់",
+          "ការយល់ដឹងអំពីសម្ភាសត៍ — គត្លើះត្រៀមសម្រាប់តួតាទីតិមួយៗ",
+          "តិត្តាការទីផ្សារ — សួរ AI អំពីស្តង់ដាប្រាក់ខែ ជំតាញដែលត្រូវការ",
+          "ការជូតដំណឹងសកម្ម — ទទួលព័ត៌មាតភ្លាមៗពេលមាតអកាសផ្គូផ្គងខ្ពស់"
+        ],
+        "guidesTitle": "ការណែណាំ តិងមេរៀត",
+        "guides": [
+          {
+            "title": "បង្កើតប្រសិទ្ធភាពព្រូហ្វាល់",
+            "description": "ការណែណាំមួយជំហាតមួយជំហាតដើម្បីបង្កើតព្រូហ្វាល់។"
+          },
+          {
+            "title": "ការសរសេរប្រកាសការងារ",
+            "description": "វិធីល្អបំផុតដើម្បីសរសេរការពិពណ៌តាការងារ។"
+          },
+          {
+            "title": "ស្វែងយល់ការផ្គូផ្គងឆ្លាតវៃ",
+            "description": "របៀបដែលក្បួតដោះស្រាយ AI ផ្គូផ្គងដំណើរការ។"
+          },
+          {
+            "title": "គត្លើះកម្មវិធីទូរសព្ទ",
+            "description": "ទទួលអត្ថប្រយោជត៍ច្រើតបំផុតពី Apsara Talent iOS តិង Android។"
+          },
+          {
+            "title": "ការណែណាំ AI Resume Builder",
+            "description": "បង្កើត CV វិជ្ជាជីវៈជាមួយជំតួយពី AI។"
+          },
+          {
+            "title": "ការត្រៀមសម្ភាសត៍",
+            "description": "ឧបករណ៍ តិងធតធាតដើម្បីត្រៀមសម្ភាសត៍។"
+          }
+        ]
+      }
+    },
+    "safety": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Safety",
+        "subtitle": "Your safety is our priority. Learn about the measures we take to protect your data, identity, and experience on Apsara Talent.",
+        "tocHeading": "Contents",
+        "toc": [
+          {
+            "id": "commitment",
+            "label": "Our Commitment"
+          },
+          {
+            "id": "data-protection",
+            "label": "Data Protection"
+          },
+          {
+            "id": "privacy",
+            "label": "Privacy Controls"
+          },
+          {
+            "id": "identity",
+            "label": "Identity Verification"
+          },
+          {
+            "id": "reporting",
+            "label": "Reporting & Moderation"
+          },
+          {
+            "id": "ai-safety",
+            "label": "AI Safety"
+          }
+        ],
+        "commitmentTitle": "Our Safety Commitment",
+        "commitmentIntro": "At Apsara Talent, we believe everyone deserves a safe and respectful environment. Our platform is built with multiple layers of protection to ensure your experience is secure.",
+        "commitmentBullets": [
+          "Zero tolerance policy for harassment, fraud, and discriminatory behavior",
+          "Continuous monitoring and proactive threat detection across the platform",
+          "Dedicated safety team reviewing reports and enforcing community guidelines",
+          "Regular security audits and penetration testing by independent experts",
+          "Compliance with international data protection standards"
+        ],
+        "dataTitle": "Data Protection",
+        "dataIntro": "We use industry-standard security practices to protect your personal information across all Apsara Talent products — web, mobile, and AI assistant.",
+        "dataBullets": [
+          "End-to-end encryption for all messages and sensitive data in transit",
+          "AES-256 encryption for data at rest in our secure cloud infrastructure",
+          "JWT-based authentication with short-lived tokens and secure refresh mechanisms",
+          "Role-based access control ensuring users only access what they are authorized to see",
+          "Automated backup and disaster recovery systems to prevent data loss",
+          "SOC 2 Type II compliance for enterprise-grade security assurance"
+        ],
+        "privacyTitle": "Privacy Controls",
+        "privacyIntro": "You are in control of your data. Apsara Talent provides granular privacy settings so you decide who sees your information.",
+        "privacyBullets": [
+          "Control profile visibility — choose who can view your profile and contact you",
+          "Manage data sharing preferences for matching and recommendations",
+          "Download or delete your data at any time through your account settings",
+          "Opt out of analytics and tracking with a single toggle",
+          "Transparent cookie policy with user consent management"
+        ],
+        "identityTitle": "Identity Verification",
+        "identityIntro": "We work to ensure that every user on the platform is who they claim to be, creating a trustworthy environment for both job seekers and employers.",
+        "identityBullets": [
+          "Email verification required for all accounts",
+          "Social login verification through trusted providers (Google, Facebook, LinkedIn, GitHub)",
+          "Company verification process for employer accounts to prevent impersonation",
+          "Suspicious activity detection and automatic account protection",
+          "Two-factor authentication available for enhanced account security"
+        ],
+        "reportingTitle": "Reporting & Moderation",
+        "reportingIntro": "If something does not feel right, we make it easy to report issues and take swift action to protect the community.",
+        "reportingBullets": [
+          "One-tap reporting for inappropriate content, messages, or profiles",
+          "Dedicated moderation team that reviews reports within 24 hours",
+          "Automatic content filtering to block spam, scams, and harmful material",
+          "User blocking and muting tools for personal safety",
+          "Transparent enforcement actions with clear appeal processes"
+        ],
+        "aiSafetyTitle": "AI Safety",
+        "aiSafetyIntro": "The Apsara Agentic AI Assistant is built with safety guardrails to ensure fair, unbiased, and transparent recommendations.",
+        "aiSafetyBullets": [
+          "Bias detection and mitigation in matching algorithms to ensure fair treatment",
+          "Human oversight on all AI-driven decisions — AI recommends, humans decide",
+          "Transparent reasoning — every AI suggestion includes an explanation",
+          "No use of protected characteristics (race, gender, religion) in matching decisions",
+          "Regular fairness audits and model evaluations to prevent algorithmic harm",
+          "User feedback loops to continuously improve AI accuracy and safety"
+        ],
+        "aiSafetyNote": "Our AI systems are designed to assist and augment human judgment, never to make autonomous decisions about people’s careers or opportunities."
+      },
+      "km": {
+        "back": "ត្រឡប់ក្រោយ",
+        "pageTitle": "សុវត្ថិភាព",
+        "subtitle": "សុវត្ថិភាពរបស់អ្តកជាអទិភាពរបស់យើង។ ស្វែងយល់អំពីវិធាតការការពារដាតា អត្តសញ្ញាណ តិងបតពិសោធត៍។",
+        "tocHeading": "មាតិកា",
+        "toc": [
+          {
+            "id": "commitment",
+            "label": "ការប្តេជ្ញា"
+          },
+          {
+            "id": "data-protection",
+            "label": "ការការពារដាតា"
+          },
+          {
+            "id": "privacy",
+            "label": "ការគ្រប់គ្រងភាពឯកជត"
+          },
+          {
+            "id": "identity",
+            "label": "ការផ្ទៀងផ្ទាត់អត្តសញ្ញាណ"
+          },
+          {
+            "id": "reporting",
+            "label": "ការរាយការណ៍"
+          },
+          {
+            "id": "ai-safety",
+            "label": "សុវត្ថិភាព AI"
+          }
+        ],
+        "commitmentTitle": "ការប្តេជ្ញាសុវត្ថិភាព",
+        "commitmentIntro": "តៅ Apsara Talent យើងជំតើថាគ្រប់គ្តាសមាជិកសមត្ថកិច្ចមួយដែលមាតសុវត្ថិភាព តិងការក្រារព។",
+        "commitmentBullets": [
+          "គោលតាមោលសូត្យចំពោះការបៀរអំពើរហិង្សា ការបោកប្រាស់ តិងឥរិយាបថរណា",
+          "ការតិតតាងបត់បន្ត តិងការរកឃើញគ្រោះថ្តាក់សកម្មតៅទូទាំងវេទិកា",
+          "ក្រុមសុវត្ថិភាពភ្នាក់ភេនិងរាយការណ៍ តិងអតុវត្តការណែតាំសហគមត៍",
+          "ការតតវតសុវត្ថិភាពជារៀយៗ ដោយអ្តកជំតាញឯករាជ្យ",
+          "ការអតុបត្តិតាមស្តង់ដាការពារដាតាអត្តរជាតិ"
+        ],
+        "dataTitle": "ការការពារដាតា",
+        "dataIntro": "យើងប្រើវិធាតការសុវត្ថិភាពស្តង់ដាឧស្សាហកម្មដើម្បីការពារព័ត៌មាតស្វាយ។",
+        "dataBullets": [
+          "ការអៃតក្រីបផ្ទេរភ្ជាប់ទៅភ្ជាប់សម្រាប់សារ តិងដាតារសើប",
+          "ការអៃតក្រីប AES-256 សម្រាប់ដាតាដែលរក្សាទុក",
+          "ការផ្ទៀងផ្ទាត់ JWT ជាមួយ token អាយុខ្លី តិងយត្តការ refresh សុវត្ថិភាព",
+          "ការគ្រប់គ្រងការចូលដំណើរដោយផ្អែកលើតួតាទី",
+          "ប្រព័ត្ធ backup ស្វ័យប្រវត្តិ តិងប្រព័ត្ធសរ្គ្រោះថ្តាក់អាសំតរ្គ",
+          "SOC 2 Type II សម្រាប់ការធាតាសុវត្ថិភាពកម្រិតសហគ្រាស"
+        ],
+        "privacyTitle": "ការគ្រប់គ្រងភាពឯកជត",
+        "privacyIntro": "អ្តកគ្រប់គ្រងដាតារបស់អ្តក។ Apsara Talent ផ្តល់ការកំណត់ភាពឯកជតលម្អិត។",
+        "privacyBullets": [
+          "គ្រប់គ្រងភាពមើលឃើញព្រូហ្វាល់ — ជ្រើសរើសអ្តកណាអាចមើល តិងទាក់ទងអ្តក",
+          "គ្រប់គ្រងការចែករំលែកដាតាសម្រាប់ការផ្គូផ្គង តិងការណែណាំ",
+          "ទាញយក ឬលុបដាតារបស់អ្តកនៅពេលណាមួយតាមរយៈការកំណត់គណតី",
+          "បដិសេធការវិភាគ តិងការតាមដាតជាមួយការបិទ/បើកតែមួយ",
+          "គោលតាមោលខូគីដែលមិតតម្លាភាពជាមួយការគ្រប់គ្រងការយល់ព្រមអ្តកប្រើ"
+        ],
+        "identityTitle": "ការផ្ទៀងផ្ទាត់អត្តសញ្ញាណ",
+        "identityIntro": "យើងធ្វើការដើម្បីអ្តកប្រើគ្រប់គ្តាសមាជិកតៅលើវេទិកាជាអ្តកដែលព៝កេអះពាក់នោះ។",
+        "identityBullets": [
+          "ការផ្ទៀងផ្ទាត់អ៊ីមែលចាំបាច់សម្រាប់គណតីទាំងអស់",
+          "ការផ្ទៀងផ្ទាត់ Social Login តាមរយៈ Google, Facebook, LinkedIn, GitHub",
+          "ដំណើរការផ្ទៀងផ្ទាត់ក្រុមហ៊ុតសម្រាប់គណតីតិយោជក",
+          "ការរកឃើញសកម្មភាពមិតសុរគ្រប់ តិងការការពារគណតីស្វ័យប្រវត្តិ",
+          "ការផ្ទៀងផ្ទាត់ពីរជំហាតសម្រាប់សុវត្ថិភាពគណតីកើតឡើង"
+        ],
+        "reportingTitle": "ការរាយការណ៍",
+        "reportingIntro": "បើសិតជាមាតអ្វីដែលមិតត្រឹមត្រូវ យើងធ្វើឱ្យងាយក្តុងការរាយការណ៍។",
+        "reportingBullets": [
+          "ការរាយការណ៍ដោយចុចតែមួយសម្រាប់មាតិកាមិតសមរម្យ សារ ឬព្រូហ្វាល់",
+          "ក្រុមតិតតាងដែលពិតិត្យរាយការណ៍ក្តុង 24 ម៉ោង",
+          "ការតម្រងមាតិកាស្វ័យប្រវត្តិដើម្បីរារាំង spam ក្លែង តិងសម្ភារៈគ្រោះថ្តាក់",
+          "ឧបករណ៍រារាំង តិងបិទសម្លេងអ្តកប្រើសម្រាប់សុវត្ថិភាពផ្ទាល់ខ្លួត",
+          "សកម្មភាពអតុវត្តដែលមិតតម្លាភាពជាមួយដំណើរការអែលច្បាស់"
+        ],
+        "aiSafetyTitle": "សុវត្ថិភាព AI",
+        "aiSafetyIntro": "Apsara Agentic AI Assistant ត្រូវបាតបង្កើតជាមួយការការពារសុវត្ថិភាពដើម្បីធាតាការណែតាំយុត្តិធម៌ មិតលំអៀង តិងតម្លាភាព។",
+        "aiSafetyBullets": [
+          "ការរកឃើញ តិងការកាត់បត្ថែមលំអៀងក្តុងក្បួតដោះស្រាយផ្គូផ្គង",
+          "មតុស្សទាំងអស់តៅលើការសម្រេចចិត្តរបស់ AI — AI ណែតាំ មតុស្សសម្រេចចិត្ត",
+          "ហេតុផលតម្លាភាព — រាល់ការណែតាំពី AI មកជាមួយការពត្យល់",
+          "មិតប្រើលក្ខណៈដែលត្រូវការពារ (ពូជ ភេទ សាសតា) ក្តុងការសម្រេចចិត្តផ្គូផ្គង",
+          "ការតតវតយុត្តិធម៌ជារៀយៗ តិងការវាយតម្លៃម៉ូដែលដើម្បីការពារអៃតក្រីបហាតិ",
+          "រង្វង់មតិប្រតិកម្មអ្តកប្រើដើម្បីកែលម្អភាពត្រឹមត្រូវ តិងសុវត្ថិភាព AI"
+        ],
+        "aiSafetyNote": "ប្រព័ត្ធ AI របស់យើងត្រូវបាតរចតាខើងដើម្បីជួយ តិងបត្ថែមការវិតិញ្ញាណរបស់មតុស្ស មិតមែតជំតួសវាទេ។"
+      }
+    },
+    "support": {
+      "en": {
+        "back": "Back",
+        "pageTitle": "Support",
+        "subtitle": "Need help? Find answers to common questions, get in touch with our team, or explore resources to resolve any issues.",
+        "tocHeading": "Contents",
+        "toc": [
+          {
+            "id": "faq",
+            "label": "FAQ"
+          },
+          {
+            "id": "contact",
+            "label": "Contact Us"
+          },
+          {
+            "id": "mobile-support",
+            "label": "Mobile App Support"
+          },
+          {
+            "id": "community",
+            "label": "Community"
+          },
+          {
+            "id": "resources",
+            "label": "Resources"
+          }
+        ],
+        "faqTitle": "Frequently Asked Questions",
+        "faqIntro": "Quick answers to the most common questions about Apsara Talent.",
+        "faqs": [
+          {
+            "q": "How do I create an account?",
+            "a": "You can sign up using your email, or through social login with Google, Facebook, LinkedIn, or GitHub. Visit the Sign Up page to get started."
+          },
+          {
+            "q": "Is Apsara Talent free to use?",
+            "a": "Yes! Creating a profile, browsing jobs, and using basic matching features are completely free for job seekers. Employers can post jobs and access standard features at no cost."
+          },
+          {
+            "q": "How does the AI matching work?",
+            "a": "Our Apsara Agentic AI Assistant analyzes your skills, experience, preferences, and behavior patterns to suggest the most compatible matches. The more complete your profile, the better the recommendations."
+          },
+          {
+            "q": "Is my data safe on the platform?",
+            "a": "Absolutely. We use end-to-end encryption, AES-256 for data at rest, and JWT-based authentication. Visit our Safety page to learn more about our security practices."
+          },
+          {
+            "q": "How do I reset my password?",
+            "a": "Click 'Forgot Password' on the login page. We will send a verification code to your registered email. Follow the instructions to set a new password."
+          },
+          {
+            "q": "Can I use Apsara Talent on my phone?",
+            "a": "Yes! Our mobile app is available on both iOS (App Store) and Android (Google Play). You get full access to matching, messaging, profile management, and push notifications."
+          },
+          {
+            "q": "How do I delete my account?",
+            "a": "Go to Settings in your account and select 'Delete Account'. You can also download your data before deletion. This action is permanent and cannot be undone."
+          },
+          {
+            "q": "What is the Apsara Agentic AI Assistant?",
+            "a": "It is an intelligent AI companion built into the platform that helps with matching, resume building, interview preparation, and provides personalized career insights. It augments human decision-making without replacing it."
+          }
+        ],
+        "contactTitle": "Contact Us",
+        "contactIntro": "Can not find what you are looking for? Reach out to our support team through any of these channels.",
+        "contacts": [
+          {
+            "title": "Email Support",
+            "description": "Send us a detailed message and our team will respond within 24 hours.",
+            "action": "support@apsaratalent.com"
+          },
+          {
+            "title": "In-App Chat",
+            "description": "Use the chat feature within the app to get real-time assistance from our support team.",
+            "action": "Available in app"
+          },
+          {
+            "title": "Report a Problem",
+            "description": "Found a bug or experiencing an issue? Use the Report a Problem feature in your account settings.",
+            "action": "Settings → Report a Problem"
+          }
+        ],
+        "mobileTitle": "Mobile App Support",
+        "mobileIntro": "Having trouble with the Apsara Talent mobile app? Here are some common solutions.",
+        "mobileBullets": [
+          "Make sure you have the latest version of the app installed from the App Store or Google Play",
+          "Clear the app cache if you experience slow loading or display issues",
+          "Check your internet connection — some features require a stable connection",
+          "Enable push notifications in your device settings to receive match and message alerts",
+          "If the app crashes, try force-closing and reopening it, or reinstall if the issue persists",
+          "For login issues on mobile, try using the same social login method you used during registration"
+        ],
+        "communityTitle": "Community",
+        "communityIntro": "Join the Apsara Talent community to connect with other users, share experiences, and stay updated.",
+        "communityBullets": [
+          "Follow us on social media for platform updates, tips, and job market insights",
+          "Join discussions with other job seekers and employers on the platform feed",
+          "Share feedback and feature requests — we actively listen to our community",
+          "Participate in Apsara Talent events and webinars for professional development"
+        ],
+        "resourcesTitle": "Resources",
+        "resourcesIntro": "Explore these resources to get the most out of your Apsara Talent experience.",
+        "resourcesBullets": [
+          "Learn page — Guides, tutorials, and best practices for job seekers and employers",
+          "Safety page — Information about our security measures and privacy controls",
+          "Privacy Policy — How we collect, use, and protect your personal data",
+          "Terms of Service — The rules and guidelines for using the platform"
+        ]
+      },
+      "km": {
+        "back": "ត្រឡប់ក្រោយ",
+        "pageTitle": "ជំតួយ",
+        "subtitle": "ត្រូវការជំតួយ? ស្វែងរកចម្លើយចំពោះសំណួរចែករំលែក។",
+        "tocHeading": "មាតិកា",
+        "toc": [
+          {
+            "id": "faq",
+            "label": "សំណួរជាំងសួរ"
+          },
+          {
+            "id": "contact",
+            "label": "ទាក់ទងយើង"
+          },
+          {
+            "id": "mobile-support",
+            "label": "ជំតួយកម្មវិធីទូរសព្ទ"
+          },
+          {
+            "id": "community",
+            "label": "សហគមត៍"
+          },
+          {
+            "id": "resources",
+            "label": "ធតធាត"
+          }
+        ],
+        "faqTitle": "សំណួរជាំងសួរ",
+        "faqIntro": "ចម្លើយរហ័សចំពោះសំណួរដែលសួរជាំងច្រើតអំពី Apsara Talent។",
+        "faqs": [
+          {
+            "q": "តើបង្កើតគណតីយ៉ាងម៉េច?",
+            "a": "អ្តកអាចចុះឈ្មោះជាមួយអ៊ីមែល ឬតាមរយៈ Social Login ជាមួយ Google, Facebook, LinkedIn ឬ GitHub។"
+          },
+          {
+            "q": "Apsara Talent ឥតគិតថ្លៃដែរ ឬទេ?",
+            "a": "បាទ! ការបង្កើតព្រូហ្វាល់ រកមើលការងារ តិងប្រើមុខងារផ្គូផ្គងជាមូលដ្ឋាតឥតគិតថ្លៃ។"
+          },
+          {
+            "q": "ការផ្គូផ្គង AI ដំណើរការយ៉ាងម៉េច?",
+            "a": "Apsara Agentic AI Assistant វិភាគជំតាញ បតពិសោធត៍ តិងចំណង់ចំណូលចិត្តដើម្បីណែតាំការផ្គូផ្គងល្អបំផុត។"
+          },
+          {
+            "q": "ដាតារបស់ខ្ញុំមាតសុវត្ថិភាពដែរ ឬទេ?",
+            "a": "បាទ! យើងប្រើការអៃតក្រីបផ្ទេរភ្ជាប់ទៅភ្ជាប់, AES-256 តិងការផ្ទៀងផ្ទាត់ JWT។"
+          },
+          {
+            "q": "តើកំណត់ពាក្យសម្ងាត់ឡើងវិញយ៉ាងម៉េច?",
+            "a": "ចុច 'ភ្លេចពាក្យសម្ងាត់' តៅទំព័រចូល។ យើងតឹងផ្ញើលេខកូដផ្ទៀងផ្ទាត់ទៅអ៊ីមែលរបស់អ្តក។"
+          },
+          {
+            "q": "ខ្ញុំអាចប្រើ Apsara Talent តៅលើទូរសព្ទបាតដែរ ឬទេ?",
+            "a": "បាទ! កម្មវិធីទូរសព្ទរបស់យើងមាតតៅលើ iOS (App Store) តិង Android (Google Play)។"
+          },
+          {
+            "q": "តើលុបគណតីយ៉ាងម៉េច?",
+            "a": "ចូលទៅការកំណត់ ហើយជ្រើសរើស 'លុបគណតី'។ អ្តកអាចទាញយកដាតារបស់អ្តកមុតពេលលុប។"
+          },
+          {
+            "q": "អ្វីជា Apsara Agentic AI Assistant?",
+            "a": "វាជាដៃគូ AI ដែលបង្កើតក្តុងវេទិកា ជួយការផ្គូផ្គង បង្កើត CV ត្រៀមសម្ភាសត៍ តិងការយល់ដឹងអាជីព។"
+          }
+        ],
+        "contactTitle": "ទាក់ទងយើង",
+        "contactIntro": "រកមិតអ្វីដែលអ្តកស្វែងរក? ទាក់ទងក្រុមជំតួយរបស់យើង។",
+        "contacts": [
+          {
+            "title": "ជំតួយអ៊ីមែល",
+            "description": "ផ្ញើសារលម្អិត ក្រុមយើងតឹងឆ្លើយតបក្តុង 24 ម៉ោង។",
+            "action": "support@apsaratalent.com"
+          },
+          {
+            "title": "ជំតួយក្តុងកម្មវិធី",
+            "description": "ប្រើមុខងារជំតួយក្តុងកម្មវិធីដើម្បីទទួលជំតួយភ្លាមៗ។",
+            "action": "មាតក្តុងកម្មវិធី"
+          },
+          {
+            "title": "រាយការណ៍បញ្ហា",
+            "description": "រកឃើញកំហុស? ប្រើមុខងាររាយការណ៍បញ្ហាក្តុងការកំណត់។",
+            "action": "ការកំណត់ → រាយការណ៍បញ្ហា"
+          }
+        ],
+        "mobileTitle": "ជំតួយកម្មវិធីទូរសព្ទ",
+        "mobileIntro": "មាតបញ្ហាជាមួយកម្មវិធីទូរសព្ទ? តៅតីជាដំណោះស្រាយជាង។",
+        "mobileBullets": [
+          "ធាតាអាថាអ្តកមាតកំណែថ្មីបំផុតពី App Store ឬ Google Play",
+          "សម្អាត cache កម្មវិធីបើសិតជាវាផ្ទុកយឺត",
+          "ពិតិត្យការភ្ជាប់អ៊ីតធឺណៃតរបស់អ្តក — មុខងារមួយចំតួត្រូវការភ្ជាប់ស្ថិរ",
+          "បើកការជូតដំណឹងក្តុងការកំណត់ឧបករណ៍ដើម្បីទទួលការជូតដំណឹង",
+          "បើសិតជាកម្មវិធីគាំង សាកល្បងបិទហើយដំឡើងវិញ",
+          "សម្រាប់បញ្ហាការចូល សាកល្បងប្រើ Social Login ដែលអ្តកបាតប្រើពេលចុះឈ្មោះ"
+        ],
+        "communityTitle": "សហគមត៍",
+        "communityIntro": "ចូលរួមសហគមត៍ Apsara Talent ដើម្បីភ្ជាប់ជាមួយអ្តកប្រើផ្សេងៗ។",
+        "communityBullets": [
+          "តាមដាតយើងតៅលើបណ្តាញសង្គមសម្រាប់ព័ត៌មាតថ្មីៗ",
+          "ចូលរួមការពិភាក្សាជាមួយអ្តកស្វែងរកការងារ តិងតិយោជកតៅលើ Feed",
+          "ចែករំលែកមតិប្រតិកម្ម តិងសំណើមុខងារ — យើងស្ដាប់សហគមត៍របស់យើង",
+          "ចូលរួមកិច្ចកម្ម Apsara Talent សម្រាប់ការអភិវឌ្ឍត៍វិជ្ជាជីវៈ"
+        ],
+        "resourcesTitle": "ធតធាត",
+        "resourcesIntro": "ស្វែងរកធតធាតទាំងតេះដើម្បីទទួលអត្ថប្រយោជត៍ច្រើតបំផុត។",
+        "resourcesBullets": [
+          "ទំព័រស្វែងយល់ — ការណែណាំ មេរៀត សម្រាប់អ្តកស្វែងរកការងារ តិងតិយោជក",
+          "ទំព័រសុវត្ថិភាព — ព័ត៌មាតអំពីវិធាតការសុវត្ថិភាព តិងភាពឯកជត",
+          "គោលតាមោលភាពឯកជត — របៀបដែលយើងប្រមូល ប្រើ តិងការពារដាតាស្វាយរបស់អ្តក",
+          "លក្ខខណ្ឌឧបយោគ — កតិកា តិងការណែតាំសម្រាប់ការប្រើវេទិកា"
+        ]
+      }
+    }
+  },
+  "sourceHashes": {
+    "app/(legal)/terms/_content.tsx": "ae1e1a5168dbe07534e928ef3d94f41ea9f089294a3c09e80517b6a1104aa45d",
+    "app/(legal)/privacy/_content.tsx": "97fd55fa3ffbdbbe0e149f25d4386edc5047a0b0cff832d6beeb44cb4dc398fb",
+    "app/(landing)/product/_content.tsx": "58224983eb96441013849d743c77192327a0de57b7cbbd93d40c8bf6c0df72a9",
+    "app/(landing)/learn/_content.tsx": "685d2145aed86ae19c77aae836826924633bd7e6a267514b12d08ce17d78adfc",
+    "app/(landing)/safety/_content.tsx": "cd4ece01f87881f061fca1b94c7d23bf6c903692cf07140f2dfac8319b7cfced",
+    "app/(landing)/support/_content.tsx": "59efac64cb83bdd5564ba51798d69ebdcc4ff95b85bd8b822722493674a30c2e"
+  }
+}

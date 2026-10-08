@@ -63,6 +63,27 @@ class AiRepository {
       _text('/resume/cover-letter', data);
   Future<String> polish(String text) =>
       _text('/resume/polish-cover-letter', {'coverLetterText': text});
+  Future<String> coverLetterStream(Map<String, dynamic> data,
+          {void Function(String)? onChunk}) =>
+      _stream('/resume/cover-letter/stream', data, onChunk);
+  Future<String> polishStream(String text, {void Function(String)? onChunk}) =>
+      _stream('/resume/polish-cover-letter/stream', {'coverLetterText': text},
+          onChunk);
+  Future<String> _stream(String path, Map<String, dynamic> data,
+      void Function(String)? onChunk) async {
+    final response = await client.post(path,
+        data: data,
+        options: Options(
+            responseType: ResponseType.stream,
+            receiveTimeout: const Duration(minutes: 3)));
+    if (response.data is! ResponseBody) {
+      throw ApiException(message: 'The AI response could not be read.');
+    }
+    return readBioStream(
+        (response.data as ResponseBody).stream.cast<List<int>>(),
+        onChunk: onChunk);
+  }
+
   Future<String> _text(String path, Map<String, dynamic> data) async {
     final result = (await client.post(path,
             data: data,
@@ -77,7 +98,8 @@ class AiRepository {
     return (result['coverLetter'] as String).trim();
   }
 
-  Future<String> refineBio(Map<String, dynamic> data) async {
+  Future<String> refineBio(Map<String, dynamic> data,
+      {void Function(String)? onChunk}) async {
     final response = await client.post('/resume/refine-bio/stream',
         data: data,
         options: Options(
@@ -87,17 +109,19 @@ class AiRepository {
     if (body is! ResponseBody) {
       throw ApiException(message: 'The AI response could not be read.');
     }
-    return readBioStream(body.stream.cast<List<int>>());
+    return readBioStream(body.stream.cast<List<int>>(), onChunk: onChunk);
   }
 }
 
 /// Gateway SSE records can be split anywhere, including within UTF-8 text.
 /// A partial stream is never committed as a completed draft.
-Future<String> readBioStream(Stream<List<int>> stream) async {
+Future<String> readBioStream(Stream<List<int>> stream,
+    {void Function(String)? onChunk}) async {
   final text = StringBuffer();
   try {
     await for (final chunk in aiTextChunks(stream)) {
       text.write(chunk);
+      onChunk?.call(text.toString());
     }
     if (text.toString().trim().isEmpty) throw const FormatException();
     return text.toString().trim();

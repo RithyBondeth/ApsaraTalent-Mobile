@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:apsaratalent_mobile/core/network/api_interceptors.dart';
 
 import 'package:apsaratalent_mobile/core/constants/apis/search_api_constant.dart';
 import 'package:apsaratalent_mobile/core/network/api_client.dart';
@@ -19,20 +20,24 @@ class SearchRepositoryImpl implements SearchRepository {
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) =>
-      _search(apiJobSearch, keyword, careerScopes, page, JobPosting.fromJson);
+      _search(apiJobSearch, keyword, careerScopes, page, filters,
+          JobPosting.fromJson);
 
   @override
   Future<SearchResults<FeedEmployee>> searchTalent({
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) =>
       _search(
         apiEmployeeSearch,
         keyword,
         careerScopes,
         page,
+        filters,
         FeedEmployee.fromJson,
       );
 
@@ -41,6 +46,7 @@ class SearchRepositoryImpl implements SearchRepository {
     String keyword,
     List<String> careerScopes,
     int page,
+    Map<String, dynamic> filters,
     T Function(Map<String, dynamic>) parse,
   ) =>
       _guard('Could not run that search.', () async {
@@ -55,7 +61,8 @@ class SearchRepositoryImpl implements SearchRepository {
             // `keyword`, not `q`. A `q` is accepted and ignored, which
             // returns every posting — a search that looks like it works and
             // filters nothing.
-            'keyword': keyword,
+            ...filters,
+            if (keyword.trim().length >= 2) 'keyword': keyword.trim(),
             'page': page,
             'pageSize': pageSize,
             // Scope names, and only when narrowing was asked for: an empty
@@ -72,7 +79,8 @@ class SearchRepositoryImpl implements SearchRepository {
   @override
   Future<JobPosting> fetchJob(String jobId) =>
       _guard('Could not load that job.', () async {
-        final response = await _client.get(apiPublicJob(jobId));
+        final response = await _client.get(apiPublicJob(jobId),
+            options: Options(extra: SessionInterceptor.publicRequest));
         final data = response.data;
         if (data is! Map) {
           throw ApiException(message: 'Could not read that job.');

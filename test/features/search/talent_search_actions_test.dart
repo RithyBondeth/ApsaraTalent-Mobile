@@ -18,6 +18,7 @@ class TalentSearchRepository implements SearchRepository {
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) async =>
       const SearchResults(
         items: [
@@ -35,6 +36,7 @@ class TalentSearchRepository implements SearchRepository {
     required String keyword,
     List<String> careerScopes = const [],
     int page = 1,
+    Map<String, dynamic> filters = const {},
   }) =>
       throw UnimplementedError('a company searches talent, not jobs');
 

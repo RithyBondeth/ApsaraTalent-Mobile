@@ -12,12 +12,14 @@ abstract class SearchRepository {
     required String keyword,
     List<String> careerScopes,
     int page,
+    Map<String, dynamic> filters,
   });
 
   Future<SearchResults<FeedEmployee>> searchTalent({
     required String keyword,
     List<String> careerScopes,
     int page,
+    Map<String, dynamic> filters,
   });
 
   /// One posting, by id. Public — this is the only route that reads a single

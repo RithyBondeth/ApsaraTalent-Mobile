@@ -14,7 +14,7 @@ part of 'app_route.dart';
 /// [AccountManagementScreen]
 class AccountManagementRoute extends PageRouteInfo<void> {
   const AccountManagementRoute({List<PageRouteInfo>? children})
-    : super(AccountManagementRoute.name, initialChildren: children);
+      : super(AccountManagementRoute.name, initialChildren: children);
 
   static const String name = 'AccountManagementRoute';
 
@@ -22,6 +22,22 @@ class AccountManagementRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const AccountManagementScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [AdminScreen]
+class AdminRoute extends PageRouteInfo<void> {
+  const AdminRoute({List<PageRouteInfo>? children})
+      : super(AdminRoute.name, initialChildren: children);
+
+  static const String name = 'AdminRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const AdminScreen();
     },
   );
 }
@@ -36,15 +52,15 @@ class AiMatchToolsRoute extends PageRouteInfo<AiMatchToolsRouteArgs> {
     required String companyId,
     List<PageRouteInfo>? children,
   }) : super(
-         AiMatchToolsRoute.name,
-         args: AiMatchToolsRouteArgs(
-           key: key,
-           match: match,
-           employeeId: employeeId,
-           companyId: companyId,
-         ),
-         initialChildren: children,
-       );
+          AiMatchToolsRoute.name,
+          args: AiMatchToolsRouteArgs(
+            key: key,
+            match: match,
+            employeeId: employeeId,
+            companyId: companyId,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'AiMatchToolsRoute';
 
@@ -102,7 +118,7 @@ class AiMatchToolsRouteArgs {
 /// [ApplicationScreen]
 class ApplicationRoute extends PageRouteInfo<void> {
   const ApplicationRoute({List<PageRouteInfo>? children})
-    : super(ApplicationRoute.name, initialChildren: children);
+      : super(ApplicationRoute.name, initialChildren: children);
 
   static const String name = 'ApplicationRoute';
 
@@ -118,7 +134,7 @@ class ApplicationRoute extends PageRouteInfo<void> {
 /// [BlockedAccountsScreen]
 class BlockedAccountsRoute extends PageRouteInfo<void> {
   const BlockedAccountsRoute({List<PageRouteInfo>? children})
-    : super(BlockedAccountsRoute.name, initialChildren: children);
+      : super(BlockedAccountsRoute.name, initialChildren: children);
 
   static const String name = 'BlockedAccountsRoute';
 
@@ -134,7 +150,7 @@ class BlockedAccountsRoute extends PageRouteInfo<void> {
 /// [ChatScreen]
 class ChatRoute extends PageRouteInfo<void> {
   const ChatRoute({List<PageRouteInfo>? children})
-    : super(ChatRoute.name, initialChildren: children);
+      : super(ChatRoute.name, initialChildren: children);
 
   static const String name = 'ChatRoute';
 
@@ -150,7 +166,7 @@ class ChatRoute extends PageRouteInfo<void> {
 /// [CompanyJobsScreen]
 class CompanyJobsRoute extends PageRouteInfo<void> {
   const CompanyJobsRoute({List<PageRouteInfo>? children})
-    : super(CompanyJobsRoute.name, initialChildren: children);
+      : super(CompanyJobsRoute.name, initialChildren: children);
 
   static const String name = 'CompanyJobsRoute';
 
@@ -170,10 +186,10 @@ class ConversationRoute extends PageRouteInfo<ConversationRouteArgs> {
     required Conversation conversation,
     List<PageRouteInfo>? children,
   }) : super(
-         ConversationRoute.name,
-         args: ConversationRouteArgs(key: key, conversation: conversation),
-         initialChildren: children,
-       );
+          ConversationRoute.name,
+          args: ConversationRouteArgs(key: key, conversation: conversation),
+          initialChildren: children,
+        );
 
   static const String name = 'ConversationRoute';
 
@@ -210,6 +226,22 @@ class ConversationRouteArgs {
 }
 
 /// generated route for
+/// [DashboardScreen]
+class DashboardRoute extends PageRouteInfo<void> {
+  const DashboardRoute({List<PageRouteInfo>? children})
+      : super(DashboardRoute.name, initialChildren: children);
+
+  static const String name = 'DashboardRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DashboardScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [EmailVerificationScreen]
 class EmailVerificationRoute extends PageRouteInfo<EmailVerificationRouteArgs> {
   EmailVerificationRoute({
@@ -219,15 +251,15 @@ class EmailVerificationRoute extends PageRouteInfo<EmailVerificationRouteArgs> {
     bool sendCode = false,
     List<PageRouteInfo>? children,
   }) : super(
-         EmailVerificationRoute.name,
-         args: EmailVerificationRouteArgs(
-           key: key,
-           email: email,
-           fromSignup: fromSignup,
-           sendCode: sendCode,
-         ),
-         initialChildren: children,
-       );
+          EmailVerificationRoute.name,
+          args: EmailVerificationRouteArgs(
+            key: key,
+            email: email,
+            fromSignup: fromSignup,
+            sendCode: sendCode,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'EmailVerificationRoute';
 
@@ -285,7 +317,7 @@ class EmailVerificationRouteArgs {
 /// [FavoriteScreen]
 class FavoriteRoute extends PageRouteInfo<void> {
   const FavoriteRoute({List<PageRouteInfo>? children})
-    : super(FavoriteRoute.name, initialChildren: children);
+      : super(FavoriteRoute.name, initialChildren: children);
 
   static const String name = 'FavoriteRoute';
 
@@ -301,7 +333,7 @@ class FavoriteRoute extends PageRouteInfo<void> {
 /// [FeedScreen]
 class FeedRoute extends PageRouteInfo<void> {
   const FeedRoute({List<PageRouteInfo>? children})
-    : super(FeedRoute.name, initialChildren: children);
+      : super(FeedRoute.name, initialChildren: children);
 
   static const String name = 'FeedRoute';
 
@@ -317,7 +349,7 @@ class FeedRoute extends PageRouteInfo<void> {
 /// [ForgotPasswordScreen]
 class ForgotPasswordRoute extends PageRouteInfo<void> {
   const ForgotPasswordRoute({List<PageRouteInfo>? children})
-    : super(ForgotPasswordRoute.name, initialChildren: children);
+      : super(ForgotPasswordRoute.name, initialChildren: children);
 
   static const String name = 'ForgotPasswordRoute';
 
@@ -333,7 +365,7 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
 /// [InterviewScheduleScreen]
 class InterviewScheduleRoute extends PageRouteInfo<void> {
   const InterviewScheduleRoute({List<PageRouteInfo>? children})
-    : super(InterviewScheduleRoute.name, initialChildren: children);
+      : super(InterviewScheduleRoute.name, initialChildren: children);
 
   static const String name = 'InterviewScheduleRoute';
 
@@ -353,17 +385,21 @@ class JobDetailRoute extends PageRouteInfo<JobDetailRouteArgs> {
     required String jobId,
     List<PageRouteInfo>? children,
   }) : super(
-         JobDetailRoute.name,
-         args: JobDetailRouteArgs(key: key, jobId: jobId),
-         initialChildren: children,
-       );
+          JobDetailRoute.name,
+          args: JobDetailRouteArgs(key: key, jobId: jobId),
+          rawPathParams: {'jobId': jobId},
+          initialChildren: children,
+        );
 
   static const String name = 'JobDetailRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<JobDetailRouteArgs>();
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<JobDetailRouteArgs>(
+        orElse: () => JobDetailRouteArgs(jobId: pathParams.getString('jobId')),
+      );
       return JobDetailScreen(key: args.key, jobId: args.jobId);
     },
   );
@@ -396,7 +432,7 @@ class JobDetailRouteArgs {
 /// [LoginScreen]
 class LoginRoute extends PageRouteInfo<void> {
   const LoginRoute({List<PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+      : super(LoginRoute.name, initialChildren: children);
 
   static const String name = 'LoginRoute';
 
@@ -412,7 +448,7 @@ class LoginRoute extends PageRouteInfo<void> {
 /// [MainScreen]
 class MainRoute extends PageRouteInfo<void> {
   const MainRoute({List<PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
@@ -428,7 +464,7 @@ class MainRoute extends PageRouteInfo<void> {
 /// [MatchScreen]
 class MatchRoute extends PageRouteInfo<void> {
   const MatchRoute({List<PageRouteInfo>? children})
-    : super(MatchRoute.name, initialChildren: children);
+      : super(MatchRoute.name, initialChildren: children);
 
   static const String name = 'MatchRoute';
 
@@ -444,7 +480,7 @@ class MatchRoute extends PageRouteInfo<void> {
 /// [NotificationPreferencesScreen]
 class NotificationPreferencesRoute extends PageRouteInfo<void> {
   const NotificationPreferencesRoute({List<PageRouteInfo>? children})
-    : super(NotificationPreferencesRoute.name, initialChildren: children);
+      : super(NotificationPreferencesRoute.name, initialChildren: children);
 
   static const String name = 'NotificationPreferencesRoute';
 
@@ -460,7 +496,7 @@ class NotificationPreferencesRoute extends PageRouteInfo<void> {
 /// [NotificationScreen]
 class NotificationRoute extends PageRouteInfo<void> {
   const NotificationRoute({List<PageRouteInfo>? children})
-    : super(NotificationRoute.name, initialChildren: children);
+      : super(NotificationRoute.name, initialChildren: children);
 
   static const String name = 'NotificationRoute';
 
@@ -481,14 +517,14 @@ class OTPRoute extends PageRouteInfo<OTPRouteArgs> {
     String? phone,
     List<PageRouteInfo>? children,
   }) : super(
-         OTPRoute.name,
-         args: OTPRouteArgs(
-           key: key,
-           twoFactorToken: twoFactorToken,
-           phone: phone,
-         ),
-         initialChildren: children,
-       );
+          OTPRoute.name,
+          args: OTPRouteArgs(
+            key: key,
+            twoFactorToken: twoFactorToken,
+            phone: phone,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'OTPRoute';
 
@@ -538,7 +574,7 @@ class OTPRouteArgs {
 /// [PhoneNumberScreen]
 class PhoneNumberRoute extends PageRouteInfo<void> {
   const PhoneNumberRoute({List<PageRouteInfo>? children})
-    : super(PhoneNumberRoute.name, initialChildren: children);
+      : super(PhoneNumberRoute.name, initialChildren: children);
 
   static const String name = 'PhoneNumberRoute';
 
@@ -554,7 +590,7 @@ class PhoneNumberRoute extends PageRouteInfo<void> {
 /// [ProfileEditScreen]
 class ProfileEditRoute extends PageRouteInfo<void> {
   const ProfileEditRoute({List<PageRouteInfo>? children})
-    : super(ProfileEditRoute.name, initialChildren: children);
+      : super(ProfileEditRoute.name, initialChildren: children);
 
   static const String name = 'ProfileEditRoute';
 
@@ -570,7 +606,7 @@ class ProfileEditRoute extends PageRouteInfo<void> {
 /// [ProfilePrivacyScreen]
 class ProfilePrivacyRoute extends PageRouteInfo<void> {
   const ProfilePrivacyRoute({List<PageRouteInfo>? children})
-    : super(ProfilePrivacyRoute.name, initialChildren: children);
+      : super(ProfilePrivacyRoute.name, initialChildren: children);
 
   static const String name = 'ProfilePrivacyRoute';
 
@@ -590,10 +626,10 @@ class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
     FeedViewer? viewedProfile,
     List<PageRouteInfo>? children,
   }) : super(
-         ProfileRoute.name,
-         args: ProfileRouteArgs(key: key, viewedProfile: viewedProfile),
-         initialChildren: children,
-       );
+          ProfileRoute.name,
+          args: ProfileRouteArgs(key: key, viewedProfile: viewedProfile),
+          initialChildren: children,
+        );
 
   static const String name = 'ProfileRoute';
 
@@ -640,14 +676,14 @@ class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
     bool viaPhone = false,
     List<PageRouteInfo>? children,
   }) : super(
-         ResetPasswordRoute.name,
-         args: ResetPasswordRouteArgs(
-           key: key,
-           sentTo: sentTo,
-           viaPhone: viaPhone,
-         ),
-         initialChildren: children,
-       );
+          ResetPasswordRoute.name,
+          args: ResetPasswordRouteArgs(
+            key: key,
+            sentTo: sentTo,
+            viaPhone: viaPhone,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'ResetPasswordRoute';
 
@@ -694,10 +730,56 @@ class ResetPasswordRouteArgs {
 }
 
 /// generated route for
+/// [ResourcesScreen]
+class ResourcesRoute extends PageRouteInfo<ResourcesRouteArgs> {
+  ResourcesRoute({Key? key, String? document, List<PageRouteInfo>? children})
+      : super(
+          ResourcesRoute.name,
+          args: ResourcesRouteArgs(key: key, document: document),
+          initialChildren: children,
+        );
+
+  static const String name = 'ResourcesRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ResourcesRouteArgs>(
+        orElse: () => const ResourcesRouteArgs(),
+      );
+      return ResourcesScreen(key: args.key, document: args.document);
+    },
+  );
+}
+
+class ResourcesRouteArgs {
+  const ResourcesRouteArgs({this.key, this.document});
+
+  final Key? key;
+
+  final String? document;
+
+  @override
+  String toString() {
+    return 'ResourcesRouteArgs{key: $key, document: $document}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ResourcesRouteArgs) return false;
+    return key == other.key && document == other.document;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ document.hashCode;
+}
+
+/// generated route for
 /// [ResumeBuilderScreen]
 class ResumeBuilderRoute extends PageRouteInfo<void> {
   const ResumeBuilderRoute({List<PageRouteInfo>? children})
-    : super(ResumeBuilderRoute.name, initialChildren: children);
+      : super(ResumeBuilderRoute.name, initialChildren: children);
 
   static const String name = 'ResumeBuilderRoute';
 
@@ -713,7 +795,7 @@ class ResumeBuilderRoute extends PageRouteInfo<void> {
 /// [SavedSearchesScreen]
 class SavedSearchesRoute extends PageRouteInfo<void> {
   const SavedSearchesRoute({List<PageRouteInfo>? children})
-    : super(SavedSearchesRoute.name, initialChildren: children);
+      : super(SavedSearchesRoute.name, initialChildren: children);
 
   static const String name = 'SavedSearchesRoute';
 
@@ -729,7 +811,7 @@ class SavedSearchesRoute extends PageRouteInfo<void> {
 /// [SearchScreen]
 class SearchRoute extends PageRouteInfo<void> {
   const SearchRoute({List<PageRouteInfo>? children})
-    : super(SearchRoute.name, initialChildren: children);
+      : super(SearchRoute.name, initialChildren: children);
 
   static const String name = 'SearchRoute';
 
@@ -745,7 +827,7 @@ class SearchRoute extends PageRouteInfo<void> {
 /// [SettingScreen]
 class SettingRoute extends PageRouteInfo<void> {
   const SettingRoute({List<PageRouteInfo>? children})
-    : super(SettingRoute.name, initialChildren: children);
+      : super(SettingRoute.name, initialChildren: children);
 
   static const String name = 'SettingRoute';
 
@@ -761,7 +843,7 @@ class SettingRoute extends PageRouteInfo<void> {
 /// [SignupAccountScreen]
 class SignupAccountRoute extends PageRouteInfo<void> {
   const SignupAccountRoute({List<PageRouteInfo>? children})
-    : super(SignupAccountRoute.name, initialChildren: children);
+      : super(SignupAccountRoute.name, initialChildren: children);
 
   static const String name = 'SignupAccountRoute';
 
@@ -777,7 +859,7 @@ class SignupAccountRoute extends PageRouteInfo<void> {
 /// [SignupProfileScreen]
 class SignupProfileRoute extends PageRouteInfo<void> {
   const SignupProfileRoute({List<PageRouteInfo>? children})
-    : super(SignupProfileRoute.name, initialChildren: children);
+      : super(SignupProfileRoute.name, initialChildren: children);
 
   static const String name = 'SignupProfileRoute';
 
@@ -793,7 +875,7 @@ class SignupProfileRoute extends PageRouteInfo<void> {
 /// [SignupRoleScreen]
 class SignupRoleRoute extends PageRouteInfo<void> {
   const SignupRoleRoute({List<PageRouteInfo>? children})
-    : super(SignupRoleRoute.name, initialChildren: children);
+      : super(SignupRoleRoute.name, initialChildren: children);
 
   static const String name = 'SignupRoleRoute';
 
@@ -809,7 +891,7 @@ class SignupRoleRoute extends PageRouteInfo<void> {
 /// [SplashScreen]
 class SplashRoute extends PageRouteInfo<void> {
   const SplashRoute({List<PageRouteInfo>? children})
-    : super(SplashRoute.name, initialChildren: children);
+      : super(SplashRoute.name, initialChildren: children);
 
   static const String name = 'SplashRoute';
 
@@ -825,7 +907,7 @@ class SplashRoute extends PageRouteInfo<void> {
 /// [SupportReportScreen]
 class SupportReportRoute extends PageRouteInfo<void> {
   const SupportReportRoute({List<PageRouteInfo>? children})
-    : super(SupportReportRoute.name, initialChildren: children);
+      : super(SupportReportRoute.name, initialChildren: children);
 
   static const String name = 'SupportReportRoute';
 
@@ -841,7 +923,7 @@ class SupportReportRoute extends PageRouteInfo<void> {
 /// [TwoFactorSettingsScreen]
 class TwoFactorSettingsRoute extends PageRouteInfo<void> {
   const TwoFactorSettingsRoute({List<PageRouteInfo>? children})
-    : super(TwoFactorSettingsRoute.name, initialChildren: children);
+      : super(TwoFactorSettingsRoute.name, initialChildren: children);
 
   static const String name = 'TwoFactorSettingsRoute';
 
@@ -851,4 +933,53 @@ class TwoFactorSettingsRoute extends PageRouteInfo<void> {
       return const TwoFactorSettingsScreen();
     },
   );
+}
+
+/// generated route for
+/// [UnsubscribeScreen]
+class UnsubscribeRoute extends PageRouteInfo<UnsubscribeRouteArgs> {
+  UnsubscribeRoute({Key? key, String token = '', List<PageRouteInfo>? children})
+      : super(
+          UnsubscribeRoute.name,
+          args: UnsubscribeRouteArgs(key: key, token: token),
+          rawQueryParams: {'token': token},
+          initialChildren: children,
+        );
+
+  static const String name = 'UnsubscribeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final queryParams = data.queryParams;
+      final args = data.argsAs<UnsubscribeRouteArgs>(
+        orElse: () =>
+            UnsubscribeRouteArgs(token: queryParams.getString('token', '')),
+      );
+      return UnsubscribeScreen(key: args.key, token: args.token);
+    },
+  );
+}
+
+class UnsubscribeRouteArgs {
+  const UnsubscribeRouteArgs({this.key, this.token = ''});
+
+  final Key? key;
+
+  final String token;
+
+  @override
+  String toString() {
+    return 'UnsubscribeRouteArgs{key: $key, token: $token}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! UnsubscribeRouteArgs) return false;
+    return key == other.key && token == other.token;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ token.hashCode;
 }

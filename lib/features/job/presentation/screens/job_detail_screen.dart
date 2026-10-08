@@ -14,6 +14,9 @@ import 'package:apsaratalent_mobile/features/application/providers/application_n
 import 'package:apsaratalent_mobile/features/search/domain/entities/job_posting.dart';
 import 'package:apsaratalent_mobile/features/search/providers/search_notifier.dart';
 import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
+import 'package:apsaratalent_mobile/features/auth/providers/session/auth_session_notifier.dart';
+import 'package:apsaratalent_mobile/features/auth/domain/enums/user_role_enum.dart';
+import 'package:apsaratalent_mobile/routes/app_route.dart';
 
 /// One job posting, read by id.
 ///
@@ -22,7 +25,7 @@ import 'package:apsaratalent_mobile/shared/widgets/ui/ui.dart';
 /// down from a list, and works from a deep link as well as from search.
 @RoutePage()
 class JobDetailScreen extends ConsumerWidget {
-  const JobDetailScreen({super.key, required this.jobId});
+  const JobDetailScreen({super.key, @PathParam('jobId') required this.jobId});
 
   final String jobId;
 
@@ -55,7 +58,10 @@ class JobDetailScreen extends ConsumerWidget {
     final company = job.company;
     // The applications list is already loaded for its own screen, so knowing
     // whether this posting has been applied for costs nothing.
-    final applications = ref.watch(applicationsProvider).value;
+    final session = ref.watch(authSessionProvider).value;
+    final candidate = session?.user?.role == EUserRole.employee;
+    final applications =
+        candidate ? ref.watch(applicationsProvider).value : null;
     final existing = applications?.items
         .where((a) => a.jobId == job.id)
         .cast<JobApplication?>()
@@ -172,14 +178,23 @@ class JobDetailScreen extends ConsumerWidget {
         ),
       ],
       const SizedBox(height: AppShape.space2),
-      AppButton(
-        label: active ? 'Applied' : 'Apply',
-        icon: active ? LucideIcons.check : LucideIcons.send,
-        fullWidth: true,
-        // Applying twice answers 409. The button says so rather than letting
-        // someone tap into a refusal.
-        onPressed: active ? null : () => _apply(context, ref, job),
-      ),
+      if (candidate || session?.isAuthenticated != true)
+        AppButton(
+          label: session?.isAuthenticated != true
+              ? 'Sign in to apply'
+              : active
+                  ? 'Applied'
+                  : 'Apply',
+          icon: active ? LucideIcons.check : LucideIcons.send,
+          fullWidth: true,
+          // Applying twice answers 409. The button says so rather than letting
+          // someone tap into a refusal.
+          onPressed: active
+              ? null
+              : session?.isAuthenticated != true
+                  ? () => context.router.push(const LoginRoute())
+                  : () => _apply(context, ref, job),
+        ),
       if (existing != null)
         Padding(
           padding: const EdgeInsets.only(top: AppShape.space2),

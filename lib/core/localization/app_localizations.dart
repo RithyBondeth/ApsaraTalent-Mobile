@@ -1,4 +1,5 @@
 import 'khmer_product_copy.dart';
+import 'parity_product_copy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,12 @@ class AppLocalizations {
 
   String translate(String source,
       [Map<String, Object?> parameters = const {}]) {
-    var text =
-        isKhmer ? (khmerProductCopy[source] ?? _km[source] ?? source) : source;
+    var text = isKhmer
+        ? (parityProductCopy[source] ??
+            khmerProductCopy[source] ??
+            _km[source] ??
+            source)
+        : source;
     for (final e in parameters.entries) {
       text = text.replaceAll('{${e.key}}', '${e.value ?? ''}');
     }

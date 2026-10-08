@@ -53,6 +53,7 @@ class FakeSavedSearchRepository implements SavedSearchRepository {
     required String name,
     required String keyword,
     List<String> careerScopes = const [],
+    Map<String, dynamic> filters = const {},
     SearchFrequency frequency = SearchFrequency.weekly,
   }) async {
     calls.add('create:$name');
@@ -105,7 +106,7 @@ void main() {
       );
 
   group('parsing and repository', () {
-    test('keeps understood filters and flags filters created on web', () {
+    test('preserves and understands the full web search snapshot', () {
       final parsed = SavedSearch.fromJson({
         ...savedRow('s1'),
         'filters': {
@@ -117,7 +118,8 @@ void main() {
 
       expect(parsed.keyword, 'designer');
       expect(parsed.careerScopes, ['Design']);
-      expect(parsed.hasOtherFilters, isTrue);
+      expect(parsed.hasOtherFilters, isFalse);
+      expect(parsed.filters['workMode'], 'remote');
     });
 
     test('creates the exact validated search snapshot', () async {

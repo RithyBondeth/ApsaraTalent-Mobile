@@ -24,6 +24,7 @@ class _AiWritingScreenState extends ConsumerState<AiWritingScreen> {
   late final _text = TextEditingController(text: widget.initialText);
   bool _busy = false;
   String? _error;
+  String _generatedPreview = '';
   String _pdfStyle = 'classic';
   @override
   void dispose() {
@@ -35,18 +36,25 @@ class _AiWritingScreenState extends ConsumerState<AiWritingScreen> {
     setState(() {
       _busy = true;
       _error = null;
+      _generatedPreview = '';
     });
     final input = _text.text;
     final repository = ref.read(aiRepositoryProvider);
+    void preview(String text) {
+      if (mounted) setState(() => _generatedPreview = text);
+    }
+
     try {
       final result = await runAiRequest(
           ref,
           () => widget.bio
-              ? repository
-                  .refineBio({...widget.contextData, 'currentText': input})
+              ? repository.refineBio(
+                  {...widget.contextData, 'currentText': input},
+                  onChunk: preview)
               : polish
-                  ? repository.polish(input)
-                  : repository.coverLetter(widget.contextData));
+                  ? repository.polishStream(input, onChunk: preview)
+                  : repository.coverLetterStream(widget.contextData,
+                      onChunk: preview));
       if (mounted) setState(() => _text.text = result);
     } catch (e) {
       if (mounted) {
@@ -55,7 +63,12 @@ class _AiWritingScreenState extends ConsumerState<AiWritingScreen> {
             : 'Could not finish writing. Your draft is unchanged.');
       }
     } finally {
-      if (mounted) setState(() => _busy = false);
+      if (mounted) {
+        setState(() {
+          _busy = false;
+          _generatedPreview = '';
+        });
+      }
     }
   }
 
@@ -103,6 +116,14 @@ class _AiWritingScreenState extends ConsumerState<AiWritingScreen> {
           if (_error != null)
             Text(_error!,
                 style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          if (_busy && _generatedPreview.isNotEmpty)
+            AppSurface(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  Text(context.tr('Generating a draft…')),
+                  Text(_generatedPreview),
+                ])),
           TextField(
               controller: _text,
               enabled: !_busy,

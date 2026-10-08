@@ -48,6 +48,7 @@ class SearchState {
   const SearchState({
     required this.mode,
     this.keyword = '',
+    this.filters = const {},
     this.careerScopes = const [],
     this.jobs = const [],
     this.talent = const [],
@@ -61,6 +62,9 @@ class SearchState {
 
   final SearchMode mode;
   final String keyword;
+  final Map<String, dynamic> filters;
+  bool get hasQuery =>
+      keyword.trim().isNotEmpty || filters.isNotEmpty || isNarrowed;
 
   /// Off by default, and deliberately so. Scope matching is exact-string:
   /// none of the career scopes carry embeddings, so the API's similarity
@@ -89,6 +93,7 @@ class SearchState {
 
   SearchState copyWith({
     String? keyword,
+    Map<String, dynamic>? filters,
     List<String>? careerScopes,
     List<JobPosting>? jobs,
     List<FeedEmployee>? talent,
@@ -103,6 +108,7 @@ class SearchState {
       SearchState(
         mode: mode,
         keyword: keyword ?? this.keyword,
+        filters: filters ?? this.filters,
         careerScopes: careerScopes ?? this.careerScopes,
         jobs: jobs ?? this.jobs,
         talent: talent ?? this.talent,
@@ -136,10 +142,12 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
   void onKeyword(String keyword) {
     final current = state;
     if (current == null) return;
-    state = current.copyWith(keyword: keyword);
+    ++_generation;
+    state = current.copyWith(keyword: keyword, isLoadingMore: false);
 
     _timer?.cancel();
-    if (keyword.trim().isEmpty) {
+    if (!state!.hasQuery) {
+      ++_generation;
       // An empty box shows nothing rather than every posting in the country.
       state = state!.copyWith(
         jobs: const [],
@@ -160,7 +168,24 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
     state = current.copyWith(
       careerScopes: narrow ? ref.read(myCareerScopesProvider) : const [],
     );
-    if (current.keyword.trim().isNotEmpty) run();
+    if (state!.hasQuery) run();
+  }
+
+  Future<void> setFilters(Map<String, dynamic> filters) async {
+    _timer?.cancel();
+    final current = state;
+    if (current == null) return;
+    ++_generation;
+    state = current.copyWith(
+        filters: Map.unmodifiable(filters),
+        jobs: const [],
+        talent: const [],
+        total: 0,
+        page: 1,
+        isSearching: false,
+        isLoadingMore: false,
+        clearError: true);
+    if (state!.hasQuery) await run();
   }
 
   /// Restores the exact snapshot that was saved. A user's current profile
@@ -173,6 +198,12 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
     _timer?.cancel();
     state = current.copyWith(
       keyword: saved.keyword ?? '',
+      filters: {
+        for (final entry in saved.filters.entries)
+          if (!{'keyword', 'careerScopes', 'page', 'pageSize'}
+              .contains(entry.key))
+            entry.key: entry.value
+      },
       careerScopes: saved.careerScopes,
       jobs: const [],
       talent: const [],
@@ -186,11 +217,12 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
 
   Future<void> run() async {
     final current = state;
-    if (current == null || current.keyword.trim().isEmpty) return;
+    if (current == null || !current.hasQuery) return;
 
     // A slow first search must not overwrite a faster later one.
     final generation = ++_generation;
-    state = current.copyWith(isSearching: true, clearError: true);
+    state = current.copyWith(
+        isSearching: true, isLoadingMore: false, clearError: true);
 
     try {
       final results = await _fetch(current, page: 1);
@@ -243,12 +275,27 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
   }) async {
     final scopes = from.careerScopes;
     final keyword = from.keyword.trim();
+    final feed = ref.read(feedProvider).value;
+    final exclusionKey = from.mode == SearchMode.jobs
+        ? 'excludeCompanyIds'
+        : 'excludeEmployeeIds';
+    final exclusions = <String>{
+      ...?feed?.likedIds,
+      ...?feed?.hiddenIds,
+      if (from.filters[exclusionKey] is List)
+        ...List<String>.from(from.filters[exclusionKey]),
+    };
+    final filters = {
+      ...from.filters,
+      if (exclusions.isNotEmpty) exclusionKey: exclusions.toList()
+    };
 
     if (from.mode == SearchMode.jobs) {
       final results = await _repository.searchJobs(
         keyword: keyword,
         careerScopes: scopes,
         page: page,
+        filters: filters,
       );
       return (
         results.items,
@@ -261,6 +308,7 @@ class SearchNotifier extends AutoDisposeNotifier<SearchState?> {
       keyword: keyword,
       careerScopes: scopes,
       page: page,
+      filters: filters,
     );
     return (
       const <JobPosting>[],
