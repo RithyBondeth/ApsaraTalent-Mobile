@@ -60,10 +60,10 @@ class AuthScaffold extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (showLogo) ...[
-                // `!h-16` and `mt-5` on the web's auth pages.
+                // Match the web auth lockup's compact horizontal proportions.
                 const Align(
                   alignment: Alignment.centerLeft,
-                  child: AppLogo(height: 64),
+                  child: AppLogo(height: 40),
                 ),
                 const SizedBox(height: AppShape.space5),
               ],

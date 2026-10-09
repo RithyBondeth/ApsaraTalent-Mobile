@@ -51,7 +51,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     return Scaffold(
       backgroundColor: context.tokens.background,
-      body: const Center(child: AppLogo(height: 88)),
+      body: const Center(child: AppLogo(height: 96, withoutTitle: true)),
     );
   }
 }

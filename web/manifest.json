@@ -1,11 +1,11 @@
 {
-    "name": "apsaratalent_mobile",
-    "short_name": "apsaratalent_mobile",
+    "name": "Apsara Talent",
+    "short_name": "Apsara Talent",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFFFFF",
+    "theme_color": "#1A72C9",
+    "description": "Apsara Talent — jobs and professional talent matching.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
