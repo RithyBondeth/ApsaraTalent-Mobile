@@ -282,8 +282,7 @@ class AppTokens extends ThemeExtension<AppTokens> {
     cardForeground: _hsl(0, 0, 83.1),
     popover: _hsl(0, 0, 18.4),
     popoverForeground: _hsl(0, 0, 83.1),
-    // Dark mode takes the logo's highlight tone rather than its outline tone;
-    // the deep one disappears on a black page.
+    // Lighter action blue for dark surfaces; the dark AT artwork matches it.
     primary: _hsl(203, 53.1, 55.7),
     primaryForeground: _hsl(209.8, 60, 12),
     secondary: _hsl(0, 0, 18.4),
