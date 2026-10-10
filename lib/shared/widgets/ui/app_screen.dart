@@ -112,6 +112,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
+    final largeText = MediaQuery.textScalerOf(context).scale(14) >= 21;
 
     return AppBar(
       backgroundColor: t.background,
@@ -120,51 +121,57 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 68,
       automaticallyImplyLeading: false,
       titleSpacing: AppShape.screenPadding,
-      title: GestureDetector(
-        onTap: onProfileTap,
-        behavior: HitTestBehavior.opaque,
-        child: Row(
-          children: [
-            AppAvatar(name: name, imageUrl: avatarUrl, size: AppAvatarSize.md),
-            const SizedBox(width: AppShape.space3),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTypography.label.copyWith(
-                      color: t.foreground,
-                      fontWeight: FontWeight.w600,
-                    ),
+      title: Semantics(
+          button: true,
+          label: context.tr('View profile for {0}', {'0': name}),
+          child: InkWell(
+            onTap: onProfileTap,
+            child: Row(
+              children: [
+                AppAvatar(
+                    name: name, imageUrl: avatarUrl, size: AppAvatarSize.md),
+                const SizedBox(width: AppShape.space3),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.label.copyWith(
+                          color: t.foreground,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (!largeText && subtitle.isNotEmpty)
+                        Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.tiny.copyWith(
+                            color: t.mutedForeground,
+                          ),
+                        ),
+                    ],
                   ),
-                  Text(
-                    subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTypography.tiny.copyWith(
-                      color: t.mutedForeground,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
       actions: [
         if (onMatchesTap != null)
           _BadgedAction(
             icon: LucideIcons.sparkles,
             count: matchCount,
+            label: context.tr('Matches, {0} unseen', {'0': matchCount}),
             onTap: onMatchesTap,
           ),
         _BadgedAction(
           icon: Icons.notifications_none_rounded,
           count: unreadCount,
+          label: context.tr('Notifications, {0} unread', {'0': unreadCount}),
           onTap: onNotificationsTap,
         ),
         const SizedBox(width: AppShape.space2),
@@ -179,58 +186,69 @@ class _BadgedAction extends StatelessWidget {
   const _BadgedAction({
     required this.icon,
     required this.count,
+    required this.label,
     this.onTap,
   });
 
   final IconData icon;
   final int count;
+  final String label;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
 
-    return GestureDetector(
+    return Semantics(
+      label: label,
+      button: true,
+      enabled: onTap != null,
       onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        height: 48,
-        width: 48,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Icon(icon, color: t.foreground),
-            if (count > 0)
-              Positioned(
-                top: 10,
-                right: 8,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
-                    vertical: 1,
-                  ),
-                  constraints: const BoxConstraints(minWidth: 16),
-                  decoration: BoxDecoration(
-                    color: t.destructive,
-                    borderRadius: BorderRadius.circular(AppShape.pill),
-                  ),
-                  child: Text(
-                    // A three-digit count would stretch the dot into a lozenge
-                    // wider than the icon it sits on.
-                    context.tr(count > 9 ? '9+' : '$count'),
-                    textAlign: TextAlign.center,
-                    style: AppTypography.tiny.copyWith(
-                      color: t.destructiveForeground,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                      height: 1.3,
+      child: ExcludeSemantics(
+          child: IconButton(
+        onPressed: onTap,
+        tooltip: label,
+        constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+        icon: ExcludeSemantics(
+            child: SizedBox(
+          height: 32,
+          width: 32,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Icon(icon, color: t.foreground),
+              if (count > 0)
+                Positioned(
+                  top: 10,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                      vertical: 1,
+                    ),
+                    constraints: const BoxConstraints(minWidth: 16),
+                    decoration: BoxDecoration(
+                      color: t.destructive,
+                      borderRadius: BorderRadius.circular(AppShape.pill),
+                    ),
+                    child: Text(
+                      // A three-digit count would stretch the dot into a lozenge
+                      // wider than the icon it sits on.
+                      context.tr(count > 9 ? '9+' : '$count'),
+                      textAlign: TextAlign.center,
+                      style: AppTypography.tiny.copyWith(
+                        color: t.destructiveForeground,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        )),
+      )),
     );
   }
 }

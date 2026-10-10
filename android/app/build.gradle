@@ -5,6 +5,25 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def uploadProperties = new Properties()
+def uploadPropertiesFile = rootProject.file("key.properties")
+if (uploadPropertiesFile.exists()) {
+    uploadPropertiesFile.withInputStream { uploadProperties.load(it) }
+}
+def releaseValue = { name, envName ->
+    System.getenv(envName) ?: uploadProperties.getProperty(name)
+}
+def registeredAppId = releaseValue("applicationId", "APSARA_ANDROID_APP_ID")
+def uploadStore = releaseValue("storeFile", "APSARA_UPLOAD_STORE_FILE")
+def uploadStorePassword = releaseValue("storePassword", "APSARA_UPLOAD_STORE_PASSWORD")
+def uploadKeyAlias = releaseValue("keyAlias", "APSARA_UPLOAD_KEY_ALIAS")
+def uploadKeyPassword = releaseValue("keyPassword", "APSARA_UPLOAD_KEY_PASSWORD")
+
+// Local tests can run without Firebase. Production builds require its real config.
+if (file("google-services.json").exists()) {
+    apply plugin: "com.google.gms.google-services"
+}
+
 android {
     namespace = "com.example.apsaratalent_mobile"
     compileSdk = flutter.compileSdkVersion
@@ -20,8 +39,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.apsaratalent_mobile"
+        applicationId = registeredAppId ?: "com.example.apsaratalent_mobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -30,13 +48,37 @@ android {
         versionName = flutter.versionName
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            if (uploadStore) storeFile = rootProject.file(uploadStore)
+            storePassword = uploadStorePassword
+            keyAlias = uploadKeyAlias
+            keyPassword = uploadKeyPassword
         }
     }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.release
+        }
+    }
+}
+
+tasks.register("validateProductionConfiguration") {
+    doLast {
+        if (!registeredAppId || registeredAppId.startsWith("com.example.")) {
+            throw new GradleException("Set the registered applicationId in android/key.properties or APSARA_ANDROID_APP_ID before building a release.")
+        }
+        if (!uploadStore || !rootProject.file(uploadStore).exists() || !uploadStorePassword || !uploadKeyAlias || !uploadKeyPassword) {
+            throw new GradleException("Configure the existing upload keystore, alias and passwords in android/key.properties or APSARA_UPLOAD_* environment variables.")
+        }
+        if (!file("google-services.json").exists()) {
+            throw new GradleException("Install android/app/google-services.json for the registered production app.")
+        }
+    }
+}
+tasks.configureEach { task ->
+    if (task.name == "preReleaseBuild") task.dependsOn("validateProductionConfiguration")
 }
 
 flutter {

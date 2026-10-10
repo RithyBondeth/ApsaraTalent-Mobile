@@ -89,7 +89,7 @@ class DashboardScreen extends ConsumerWidget {
                                   name: viewer.name,
                                   imageUrl: viewer.avatarUrl),
                               title: Text(context.tr(viewer.name)),
-                              subtitle: Text(_date(
+                              subtitle: Text(_date(context,
                                   viewer.viewedAt?.toIso8601String() ?? ''))),
                         AppButton(
                             label: 'Profile privacy',
@@ -147,7 +147,7 @@ class _Activity extends StatelessWidget {
           ListTile(
               leading: AppAvatar(name: match.name, imageUrl: match.avatar),
               title: Text(match.name),
-              subtitle: Text(_date(match.matchedAt))),
+              subtitle: Text(_date(context, match.matchedAt))),
         AppButton(
             label: 'View matches',
             variant: AppButtonVariant.outline,
@@ -161,5 +161,9 @@ Widget _metric(BuildContext context, String label, Object value) => Padding(
       Expanded(child: Text(context.tr(label))),
       Text('$value', style: Theme.of(context).textTheme.titleMedium),
     ]));
-String _date(String value) =>
-    DateTime.tryParse(value)?.toLocal().toString().split('.').first ?? '';
+String _date(BuildContext context, String value) {
+  final date = DateTime.tryParse(value)?.toLocal();
+  return date == null
+      ? ''
+      : MaterialLocalizations.of(context).formatMediumDate(date);
+}

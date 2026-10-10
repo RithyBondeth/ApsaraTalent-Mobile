@@ -674,6 +674,7 @@ class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
     Key? key,
     String? sentTo,
     bool viaPhone = false,
+    String token = '',
     List<PageRouteInfo>? children,
   }) : super(
           ResetPasswordRoute.name,
@@ -681,7 +682,9 @@ class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
             key: key,
             sentTo: sentTo,
             viaPhone: viaPhone,
+            token: token,
           ),
+          rawQueryParams: {'token': token},
           initialChildren: children,
         );
 
@@ -690,20 +693,29 @@ class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
+      final queryParams = data.queryParams;
       final args = data.argsAs<ResetPasswordRouteArgs>(
-        orElse: () => const ResetPasswordRouteArgs(),
+        orElse: () => ResetPasswordRouteArgs(
+          token: queryParams.getString('token', ''),
+        ),
       );
       return ResetPasswordScreen(
         key: args.key,
         sentTo: args.sentTo,
         viaPhone: args.viaPhone,
+        token: args.token,
       );
     },
   );
 }
 
 class ResetPasswordRouteArgs {
-  const ResetPasswordRouteArgs({this.key, this.sentTo, this.viaPhone = false});
+  const ResetPasswordRouteArgs({
+    this.key,
+    this.sentTo,
+    this.viaPhone = false,
+    this.token = '',
+  });
 
   final Key? key;
 
@@ -711,9 +723,11 @@ class ResetPasswordRouteArgs {
 
   final bool viaPhone;
 
+  final String token;
+
   @override
   String toString() {
-    return 'ResetPasswordRouteArgs{key: $key, sentTo: $sentTo, viaPhone: $viaPhone}';
+    return 'ResetPasswordRouteArgs{key: $key, sentTo: $sentTo, viaPhone: $viaPhone, token: $token}';
   }
 
   @override
@@ -722,11 +736,13 @@ class ResetPasswordRouteArgs {
     if (other is! ResetPasswordRouteArgs) return false;
     return key == other.key &&
         sentTo == other.sentTo &&
-        viaPhone == other.viaPhone;
+        viaPhone == other.viaPhone &&
+        token == other.token;
   }
 
   @override
-  int get hashCode => key.hashCode ^ sentTo.hashCode ^ viaPhone.hashCode;
+  int get hashCode =>
+      key.hashCode ^ sentTo.hashCode ^ viaPhone.hashCode ^ token.hashCode;
 }
 
 /// generated route for

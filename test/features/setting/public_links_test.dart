@@ -28,6 +28,11 @@ void main() {
     expect(unsubscribe.name, UnsubscribeRoute.name);
     expect(unsubscribe.queryParams.getString('token'), 'signed+token');
     expect(unsubscribe.guards, isEmpty);
+    final reset =
+        router.matcher.match('/reset-password?token=signed%2Btoken')!.single;
+    expect(reset.name, ResetPasswordRoute.name);
+    expect(reset.queryParams.getString('token'), 'signed+token');
+    expect(reset.guards, isEmpty);
     expect(router.matcher.match('/admin')!.single.guards, hasLength(1));
     router.dispose();
   });

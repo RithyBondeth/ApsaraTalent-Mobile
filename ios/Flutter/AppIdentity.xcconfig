@@ -1,0 +1,4 @@
+// Debug/simulator default only. ReleaseIdentity.xcconfig supplies registered IDs.
+APSARA_IOS_BUNDLE_ID = com.example.apsaratalentMobile
+APSARA_APPLE_TEAM_ID =
+#include? "ReleaseIdentity.xcconfig"

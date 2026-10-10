@@ -72,6 +72,12 @@ class FeedScreen extends ConsumerWidget {
         },
         children: [
           const VerifyEmailNotice(),
+          if (user != null)
+            FeedQuickActions(
+              onDashboard: () => context.router.push(const DashboardRoute()),
+              onApplications: () =>
+                  context.router.push(const ApplicationRoute()),
+            ),
           ...feed.when(
             skipLoadingOnRefresh: true,
             skipLoadingOnReload: true,
@@ -246,6 +252,32 @@ class FeedScreen extends ConsumerWidget {
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message), action: action));
   }
+}
+
+/// Daily activity belongs on the feed as well as in settings.
+class FeedQuickActions extends StatelessWidget {
+  const FeedQuickActions(
+      {super.key, required this.onDashboard, required this.onApplications});
+  final VoidCallback onDashboard;
+  final VoidCallback onApplications;
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+        spacing: AppShape.space2,
+        runSpacing: AppShape.space2,
+        children: [
+          AppButton(
+              label: 'Dashboard',
+              icon: LucideIcons.chartNoAxesCombined,
+              variant: AppButtonVariant.outline,
+              onPressed: onDashboard),
+          AppButton(
+              label: 'Applications',
+              icon: LucideIcons.briefcaseBusiness,
+              variant: AppButtonVariant.outline,
+              onPressed: onApplications),
+        ],
+      );
 }
 
 class _EndOfFeed extends StatelessWidget {

@@ -1,4 +1,7 @@
 const parityProductCopy = <String, String>{
+  'View profile for {0}': 'មើលប្រវត្តិរូបរបស់ {0}',
+  'Matches, {0} unseen': 'ការផ្គូផ្គង {0} មិនទាន់បានមើល',
+  'Notifications, {0} unread': 'ការជូនដំណឹង {0} មិនទាន់បានអាន',
   'Email preferences': 'ចំណូលចិត្តអ៊ីមែល',
   'Could not unsubscribe. Please try again.':
       'មិនអាចឈប់ជាវបានទេ។ សូមព្យាយាមម្តងទៀត។',
@@ -190,4 +193,11 @@ const parityProductCopy = <String, String>{
   'Our community': 'សហគមន៍របស់យើង',
   'Members': 'សមាជិក',
   'Talent': 'អ្នកមានសមត្ថភាព',
+  'Mon': 'ចន្ទ',
+  'Tue': 'អង្គារ',
+  'Wed': 'ពុធ',
+  'Thu': 'ព្រហស្បតិ៍',
+  'Fri': 'សុក្រ',
+  'Sat': 'សៅរ៍',
+  'Sun': 'អាទិត្យ',
 };
