@@ -1,4 +1,4 @@
-import 'dart:ui' show SemanticsAction, SemanticsFlag;
+import 'dart:ui' show SemanticsAction, Tristate;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:apsaratalent_mobile/features/navigation/presentation/widgets/app_bottom_navigation.dart';
@@ -79,7 +79,7 @@ void main() {
       expect(find.bySemanticsLabel(tooltip), findsOneWidget);
       final feed =
           tester.getSemantics(find.bySemanticsLabel(copy.translate('Feed')));
-      expect(feed.hasFlag(SemanticsFlag.isSelected), isTrue);
+      expect(feed.flagsCollection.isSelected, Tristate.isTrue);
       expect(feed.getSemanticsData().hasAction(SemanticsAction.tap), isTrue);
       await tester.tap(find.text(copy.translate('Chat')));
       expect(tabs.activeIndex, 2);
