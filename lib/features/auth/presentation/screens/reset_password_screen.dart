@@ -18,11 +18,16 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 @RoutePage()
 class ResetPasswordScreen extends ConsumerStatefulWidget {
-  const ResetPasswordScreen({super.key, this.sentTo, this.viaPhone = false});
+  const ResetPasswordScreen(
+      {super.key,
+      this.sentTo,
+      this.viaPhone = false,
+      @QueryParam('token') this.token = ''});
 
   /// Where the token was sent, when arriving from the forgot-password screen.
   final String? sentTo;
   final bool viaPhone;
+  final String token;
 
   @override
   ConsumerState<ResetPasswordScreen> createState() =>
@@ -30,7 +35,7 @@ class ResetPasswordScreen extends ConsumerStatefulWidget {
 }
 
 class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
-  final _token = TextEditingController();
+  late final _token = TextEditingController(text: widget.token);
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   bool _obscure = true;

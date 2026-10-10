@@ -1,0 +1,6 @@
+# Use the existing registered app and upload key. Never commit key.properties.
+applicationId=
+storeFile=
+storePassword=
+keyAlias=
+keyPassword=

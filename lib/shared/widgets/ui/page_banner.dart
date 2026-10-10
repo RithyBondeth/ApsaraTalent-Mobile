@@ -153,12 +153,13 @@ class _Stat extends StatelessWidget {
           children: [
             Icon(stat.icon, size: 13, color: t.mutedForeground),
             const SizedBox(width: 5),
-            Text(
+            Flexible(
+                child: Text(
               context.tr(stat.label).toUpperCase(),
               style: AppTypography.statLabel.copyWith(
                 color: t.mutedForeground,
               ),
-            ),
+            )),
           ],
         ),
         const SizedBox(height: AppShape.space1),

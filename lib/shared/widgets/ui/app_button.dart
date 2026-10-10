@@ -125,7 +125,7 @@ class _AppButtonState extends State<AppButton> {
           Flexible(
             child: Text(
               context.tr(widget.label),
-              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: widget.variant == AppButtonVariant.link
                   ? AppTypography.button.copyWith(
                       color: style.foreground,
@@ -153,10 +153,14 @@ class _AppButtonState extends State<AppButton> {
         duration: const Duration(milliseconds: 120),
         curve: Curves.easeOut,
         child: Container(
-          height: height,
+          height: isIconOnly ? height : null,
+          constraints: BoxConstraints(minHeight: height),
           width:
               isIconOnly ? height : (widget.fullWidth ? double.infinity : null),
-          padding: EdgeInsets.symmetric(horizontal: horizontal),
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontal,
+            vertical: isIconOnly ? 0 : AppShape.space2,
+          ),
           // Only centre when the box is actually wider than its content. A
           // Container with an `alignment` and no width expands to fill its
           // loose constraints, so setting this unconditionally made every

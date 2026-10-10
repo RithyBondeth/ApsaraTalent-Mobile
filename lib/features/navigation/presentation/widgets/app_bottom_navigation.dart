@@ -99,35 +99,46 @@ class _NavButton extends StatelessWidget {
     final t = context.tokens;
     final foreground = selected ? t.primaryForeground : t.mutedForeground;
 
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        curve: Curves.easeOut,
-        padding: const EdgeInsets.symmetric(vertical: AppShape.space2),
-        margin: const EdgeInsets.symmetric(horizontal: 3),
-        decoration: BoxDecoration(
-          color: selected ? t.primary : Colors.transparent,
-          boxShadow: selected ? context.elevation.primaryXs : const [],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(item.icon, size: 20, color: foreground),
-            const SizedBox(height: 3),
-            Text(
-              context.tr(item.label),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTypography.tiny.copyWith(
-                color: foreground,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                fontSize: 10,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: context.tr(item.label),
+      child: Tooltip(
+        message: context.tr(item.label),
+        excludeFromSemantics: true,
+        child: InkWell(
+            onTap: onTap,
+            child: ExcludeSemantics(
+                child: AnimatedContainer(
+              duration: MediaQuery.disableAnimationsOf(context)
+                  ? Duration.zero
+                  : const Duration(milliseconds: 180),
+              curve: Curves.easeOut,
+              padding: const EdgeInsets.symmetric(vertical: AppShape.space2),
+              constraints: const BoxConstraints(minHeight: 48),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              decoration: BoxDecoration(
+                color: selected ? t.primary : Colors.transparent,
+                boxShadow: selected ? context.elevation.primaryXs : const [],
               ),
-            ),
-          ],
-        ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(item.icon, size: 20, color: foreground),
+                  const SizedBox(height: 3),
+                  Text(
+                    context.tr(item.label),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: AppTypography.tiny.copyWith(
+                      color: foreground,
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ))),
       ),
     );
   }
